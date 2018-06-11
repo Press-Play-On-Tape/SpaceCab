@@ -233,20 +233,6 @@ int16_t backdropy = 0;
 
 // Functions -------------------------------------------------------------------
 
-void resetGame()
-{
-  playerx = 17;
-  playery = 47;
-  playerFrame = 1;
-  thrusterFrame = 0;
-  customerx = 73;
-  customery = 47;
-  customerFrame = 0;
-  customerNewPos = 5;
-  gameTime = 60;
-  currentScore = 0;
-}
-
 void playerDisplay()
 {
   Sprites::drawExternalMask(playerx, playery, SpaceTaxi, SpaceTaxiMask, playerFrame, playerFrame);
@@ -384,7 +370,7 @@ void updateTime()
 {
   if(arduboy.everyXFrames(60))
     {
-      gameTime = (gameTime > 1) ? gameTime - 1 : state = 3;
+      gameTime = (gameTime > 1) ? gameTime - 1 : state = 4;
     }
 }
 
@@ -525,7 +511,6 @@ void titleScreen()
   if (arduboy.collide(playerRect, customerRect))
   {
     arduboy.initRandomSeed();
-    resetGame();
     sound.tone(NOTE_C5,50, NOTE_D4,50, NOTE_E3,50);
     state = 2;
   }
@@ -588,12 +573,39 @@ void loop() {
   arduboy.pollButtons();
   arduboy.clear();
 
-  // Here we go!
+  switch (state)
+  {
+
+  case 0:
+    vsBoot();
+    break;
+
+  case 1:
+    titleScreen();
+    break;
+
+  case 2:
+  playerx = 17;
+  playery = 47;
+  playerFrame = 1;
+  thrusterFrame = 0;
+  customerx = 73;
+  customery = 47;
+  customerFrame = 0;
+  customerNewPos = 5;
+  gameTime = 60;
+  currentScore = 0;
+  state = 3;
   
-  if (state == 0)  { vsBoot(); }
-  else if (state == 1)  { titleScreen(); }
-  else if (state == 2)  { inGame(); }
-  else if (state == 3)  { gameoverScreen(); }
+  case 3:
+    inGame();
+    break;
+
+  case 4:
+    gameoverScreen();
+    break;
+
+  }
 
 
   arduboy.display();
