@@ -17,6 +17,21 @@ Sprites sprite;
 #define CLOCK 7
 #define TILE_SIZE 8
 
+struct Player {
+
+  int16_t x;
+  int16_t y;
+
+  int16_t xDelta = 0;
+  int16_t yDelta = 0;
+
+  uint8_t getXDisplay() { return x / 8; }
+  uint8_t getYDisplay() { return y / 8; }
+
+};
+
+Player player;
+
 // Level 1 layout --------------------------------------------------------------
 
 int level1Map[LEVEL_HEIGHT][LEVEL_WIDTH] = {
@@ -207,8 +222,8 @@ const unsigned char PROGMEM tiles[8][8] =
 
 // Global Variables now --------------------------------------------------------
 
-uint8_t playerx = 17;
-uint8_t playery = 47;
+// uint16_t playerx = 17;
+// uint16_t playery = 47;
 uint8_t playerFrame = 0;
 
 uint8_t thrusterFrame = 0;
@@ -235,15 +250,15 @@ int16_t backdropy = 0;
 
 void playerDisplay()
 {
-  Sprites::drawExternalMask(playerx, playery, SpaceTaxi, SpaceTaxiMask, playerFrame, playerFrame);
-  if(arduboy.everyXFrames(3))
-  {
-    ++playery;
-  }
-  if(playery>47)
-  {
-    playery = 47;
-  }
+  Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay(), SpaceTaxi, SpaceTaxiMask, playerFrame, playerFrame);
+  // if(arduboy.everyXFrames(3))
+  // {
+  //   ++playery;
+  // }
+  // if(playery>47)
+  // {
+  //   playery = 47;
+  // }
 }
 
 void customerDisplay()
@@ -256,35 +271,148 @@ void customerDisplay()
   }
 }
 
+void incXDelta() {
+
+  switch (player.xDelta) {
+
+    case -8 ... -2:
+      player.xDelta = player.xDelta / 2;
+      break;
+    
+    case -1:
+      player.xDelta = 0;
+      break;
+    
+    case 0:
+      player.xDelta = 1;
+      break;
+
+    case 1 ... 4:
+      player.xDelta = player.xDelta * 2;
+      break;
+
+  }
+
+}
+
+void decXDelta() {
+
+  switch (player.xDelta) {
+
+    case -4 ... -1:
+      player.xDelta = player.xDelta * 2;
+      break;
+
+    case 0:
+      player.xDelta = -1;
+      break;
+
+    case 1:
+      player.xDelta = 0;
+      break;
+
+    case 2 ... 8:
+      player.xDelta = player.xDelta / 2;
+      break;
+    
+  }
+
+}
+
+void incYDelta() {
+
+  switch (player.yDelta) {
+
+    case -8 ... -2:
+      player.yDelta = player.yDelta / 2;
+      break;
+    
+    case -1:
+      player.yDelta = 0;
+      break;
+    
+    case 0:
+      player.yDelta = 1;
+      break;
+
+    case 1 ... 4:
+      player.yDelta = player.yDelta * 2;
+      break;
+
+  }
+
+}
+
+void decYDelta() {
+
+  switch (player.yDelta) {
+
+    case -4 ... -1:
+      player.yDelta = player.yDelta * 2;
+      break;
+
+    case 0:
+      player.yDelta = -1;
+      break;
+
+    case 1:
+      player.yDelta = 0;
+      break;
+
+    case 2 ... 8:
+      player.yDelta = player.yDelta / 2;
+      break;
+    
+  }
+
+}
+
 void handleInput()
 {
-  if(arduboy.pressed(LEFT_BUTTON) && playerx > 0)
-  {
-    --playerx;
-    playerFrame = 1;
-  }
-  if(arduboy.pressed(RIGHT_BUTTON) && playerx < 111)
-  {
-    ++playerx;
-    playerFrame = 0;
-  }
-  if(arduboy.pressed(A_BUTTON) && playery > 0)
-  {
-    if(playerFrame == 0)
+  if (arduboy.everyXFrames(4)) {
+    if(arduboy.pressed(LEFT_BUTTON)) //  && playerx > 0)
     {
-      Sprites::drawExternalMask(playerx, playery + 8, thrusterRight, thrusterRightMask, thrusterFrame, thrusterFrame);
+      decXDelta();
+      playerFrame = 1;
     }
-    if(playerFrame == 1)
+    if(arduboy.pressed(RIGHT_BUTTON)) // && playerx < 111)
     {
-      Sprites::drawExternalMask(playerx, playery + 8, thrusterLeft, thrusterLeftMask, thrusterFrame, thrusterFrame);
+      incXDelta();
+      playerFrame = 0;
     }
-    if(arduboy.everyXFrames(5))
+    if(arduboy.pressed(A_BUTTON)) // && playery > 0)
     {
-      ++thrusterFrame;
-      thrusterFrame %=2;
+      if(playerFrame == 0)
+      {
+        Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay() + 8, thrusterRight, thrusterRightMask, thrusterFrame, thrusterFrame);
+      }
+      if(playerFrame == 1)
+      {
+        Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay() + 8, thrusterLeft, thrusterLeftMask, thrusterFrame, thrusterFrame);
+      }
+      if(arduboy.everyXFrames(5))
+      {
+        ++thrusterFrame;
+        thrusterFrame %=2;
+      }
+      decYDelta(); // going up
+      sound.tone(NOTE_C1, 50, NOTE_C2, 50, NOTE_C1, 50);
     }
-    --playery;
-    sound.tone(NOTE_C1, 50, NOTE_C2, 50, NOTE_C1, 50);
+
+    if (arduboy.everyXFrames(8)) {
+      if (arduboy.notPressed(A_BUTTON)) {
+        incYDelta(); // start falling.
+      }
+
+      if (arduboy.notPressed(LEFT_BUTTON) && arduboy.notPressed(RIGHT_BUTTON)){ // slow down
+        if (player.xDelta > 0) {
+          decXDelta();
+        }
+        if (player.xDelta < 0) {
+          incXDelta();
+        }
+      }
+    }
   }
 }
 
@@ -406,7 +534,7 @@ void customerPosition()
 
 void checkCollision()
 {
-  Rect playerRect = {playerx, playery, 17, 8};
+  Rect playerRect = {player.getXDisplay(), player.getYDisplay(), 17, 8};
   Rect customerRect = {customerx, customery, 7, 8};
   Rect pad1Rect = {0, 39, 16, 8};
   Rect pad2Rect = {17, 16, 24, 8};
@@ -414,25 +542,70 @@ void checkCollision()
   Rect pad4Rect = {97, 24, 24, 8};
   if (arduboy.collide(playerRect, pad1Rect))
   {
-    playery = playery - 1;
+    player.y = player.y - 8;
   }
   if (arduboy.collide(playerRect, pad2Rect))
   {
-    playery = playery - 1;
+    player.y = player.y - 8;
   }
   if (arduboy.collide(playerRect, pad3Rect))
   {
-    playery = playery - 1;
+    player.y = player.y - 8;
   }
   if (arduboy.collide(playerRect, pad4Rect))
   {
-    playery = playery - 1;
+    player.y = player.y - 8;
   }
   if (arduboy.collide(playerRect, customerRect))
   {
     currentScore = currentScore + 2;
     customerPosition();
     sound.tone(NOTE_E6, 50, NOTE_E3, 50, NOTE_E2, 50);
+  }
+}
+
+void moveCab()
+{
+  Serial.print("x: ");
+  Serial.print(player.x);
+  Serial.print(", xDelta: ");
+  Serial.print(player.xDelta);
+  Serial.print(", y: ");
+  Serial.print(player.y);
+  Serial.print(", yDelta: ");
+  Serial.println(player.yDelta);
+  
+  if (player.yDelta < 0) { 
+    if (player.y > player.yDelta) {
+      player.y = player.y + player.yDelta;
+    }
+    else {
+      player.y = 0;
+    }
+  }
+  if (player.yDelta > 0) { 
+    if (player.y < (47 * 8) - player.yDelta) {
+      player.y = player.y + player.yDelta;
+    }
+    else {
+      player.y = 47 * 8;
+    }
+  }
+  if (player.xDelta < 0) { 
+    if (player.x > player.xDelta) {
+      player.x = player.x + player.xDelta;
+    }
+    else {
+      player.x = 0;
+    }
+  }
+  if (player.xDelta > 0) { 
+    if (player.x < (111 * 8) - player.xDelta) {
+      player.x = player.x + player.xDelta;
+    }
+    else {
+      player.x = (111 * 8);
+    }
   }
 }
 
@@ -461,7 +634,7 @@ void inGame()
 
 void titleScreen()
 {
-  Rect playerRect = {playerx, playery, 17, 8};
+  Rect playerRect = {player.getXDisplay(), player.getYDisplay(), 17, 8};
   Rect customerRect = {97, 48, 7, 8};
   arduboy.drawBitmap(0, 0, SpaceCabSplash, 128, 64, WHITE);
   Sprites::drawExternalMask(97, 48, Customer, CustomerMask, customerFrame, customerFrame);
@@ -470,42 +643,62 @@ void titleScreen()
   ++customerFrame;
   customerFrame %=2;
   }
-  Sprites::drawExternalMask(playerx, playery, SpaceTaxi, SpaceTaxiMask, playerFrame, playerFrame);
-  if(arduboy.everyXFrames(3))
-  {
-    ++playery;
-  }
-  if(playery>47)
-  {
-    playery = 47;
-  }
-  if(arduboy.pressed(LEFT_BUTTON) && playerx > 0)
-  {
-    --playerx;
-    playerFrame = 1;
-  }
-  if(arduboy.pressed(RIGHT_BUTTON) && playerx < 111)
-  {
-    ++playerx;
-    playerFrame = 0;
-  }
-  if(arduboy.pressed(A_BUTTON) && playery > 0)
-  {
-    if(playerFrame == 0)
+  Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay(), SpaceTaxi, SpaceTaxiMask, playerFrame, playerFrame);
+  // if(arduboy.everyXFrames(3))
+  // {
+  //   ++playery;
+  // }
+  // if(playery>47)
+  // {
+  //   playery = 47;
+  // }
+
+  if (arduboy.everyXFrames(4)) {
+
+    if(arduboy.pressed(LEFT_BUTTON))// && playerx > 0)
     {
-      Sprites::drawExternalMask(playerx, playery + 8, thrusterRight, thrusterRightMask, thrusterFrame, thrusterFrame);
+      decXDelta();
+      playerFrame = 1;
     }
-    if(playerFrame == 1)
+    if(arduboy.pressed(RIGHT_BUTTON))// && playerx < 111)
     {
-      Sprites::drawExternalMask(playerx, playery + 8, thrusterLeft, thrusterLeftMask, thrusterFrame, thrusterFrame);
+      incXDelta();
+      playerFrame = 0;
     }
-    if(arduboy.everyXFrames(5))
+    if(arduboy.pressed(A_BUTTON))// && playery > 0)
     {
-      ++thrusterFrame;
-      thrusterFrame %=2;
+      if(playerFrame == 0)
+      {
+        Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay() + 8, thrusterRight, thrusterRightMask, thrusterFrame, thrusterFrame);
+      }
+      if(playerFrame == 1)
+      {
+        Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay() + 8, thrusterLeft, thrusterLeftMask, thrusterFrame, thrusterFrame);
+      }
+      if(arduboy.everyXFrames(5))
+      {
+        ++thrusterFrame;
+        thrusterFrame %=2;
+      }
+      decYDelta();
+      sound.tone(NOTE_C1, 50, NOTE_C2, 50, NOTE_C1, 50);
     }
-    --playery;
-    sound.tone(NOTE_C1, 50, NOTE_C2, 50, NOTE_C1, 50);
+
+    if (arduboy.everyXFrames(8)) {
+
+      if (arduboy.notPressed(A_BUTTON)){
+        incYDelta();
+      }
+      if (arduboy.notPressed(LEFT_BUTTON) && arduboy.notPressed(RIGHT_BUTTON)){
+        if (player.xDelta > 0) {
+          decXDelta();
+        }
+        if (player.xDelta < 0) {
+          incXDelta();
+        }
+      }
+
+    }
   }
 
   if (arduboy.collide(playerRect, customerRect))
@@ -578,6 +771,8 @@ void loop() {
 
   case 0:
     vsBoot();
+    player.x = 17 * 8;
+    player.y = 47 * 8;
     break;
 
   case 1:
@@ -585,17 +780,17 @@ void loop() {
     break;
 
   case 2:
-  playerx = 17;
-  playery = 47;
-  playerFrame = 1;
-  thrusterFrame = 0;
-  customerx = 73;
-  customery = 47;
-  customerFrame = 0;
-  customerNewPos = 5;
-  gameTime = 60;
-  currentScore = 0;
-  state = 3;
+    player.x = 17 * 8;
+    player.y = 47 * 8;
+    playerFrame = 1;
+    thrusterFrame = 0;
+    customerx = 73;
+    customery = 47;
+    customerFrame = 0;
+    customerNewPos = 5;
+    gameTime = 60;
+    currentScore = 0;
+    state = 3;
   
   case 3:
     inGame();
@@ -609,5 +804,6 @@ void loop() {
 
 
   arduboy.display();
+  moveCab();
 }
 
