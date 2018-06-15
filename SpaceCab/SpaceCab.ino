@@ -2,29 +2,24 @@
 #include <ArduboyTones.h>
 #include "Images.h"
 #include "Levels.h"
+#include "Level.h"
+#include "Player.h"
 #include "Utils.h"
- 
+#include "Constants.h"
+#include "FixedPoints.h"
+#include "FixedPointsCommon.h"
+
 ArduboyTones sound(arduboy.audio.enabled);
 Sprites sprite;
 
-struct Player {
-
-  int16_t x;
-  int16_t y;
-
-  int16_t xDelta = 0;
-  int16_t yDelta = 0;
-
-  uint8_t getXDisplay() { return x / 8; }
-  uint8_t getYDisplay() { return y / 8; }
-
-};
 
 Player player;
+Level level;
+
 
 // Global Variables now --------------------------------------------------------
 
-uint8_t playerFrame = 0;
+
 
 uint8_t thrusterFrame = 0;
 
@@ -37,137 +32,34 @@ uint8_t gameTime = 60;
 
 uint16_t currentScore = 0;
 
-uint8_t state = 0;
+uint8_t state = 2;
 
 int16_t backdropx = 0;
 int16_t backdropy = 0;
 
 //------------------------------------------------------------------------------
 
-void incXDelta()
-{
-
-  switch (player.xDelta)
-  {
-
-    case -8 ... -2:
-      player.xDelta = player.xDelta / 2;
-      break;
-    
-    case -1:
-      player.xDelta = 0;
-      break;
-    
-    case 0:
-      player.xDelta = 1;
-      break;
-
-    case 1 ... 4:
-      player.xDelta = player.xDelta * 2;
-      break;
-
-  }
-
-}
-
-void decXDelta()
-{
-
-  switch (player.xDelta)
-  {
-
-    case -4 ... -1:
-      player.xDelta = player.xDelta * 2;
-      break;
-
-    case 0:
-      player.xDelta = -1;
-      break;
-
-    case 1:
-      player.xDelta = 0;
-      break;
-
-    case 2 ... 8:
-      player.xDelta = player.xDelta / 2;
-      break;
-    
-  }
-
-}
-
-void incYDelta()
-{
-
-  switch (player.yDelta)
-  {
-
-    case -8 ... -2:
-      player.yDelta = player.yDelta / 2;
-      break;
-    
-    case -1:
-      player.yDelta = 0;
-      break;
-    
-    case 0:
-      player.yDelta = 1;
-      break;
-
-    case 1 ... 4:
-      player.yDelta = player.yDelta * 2;
-      break;
-
-  }
-
-}
-
-void decYDelta()
-{
-
-  switch (player.yDelta)
-  {
-
-    case -4 ... -1:
-      player.yDelta = player.yDelta * 2;
-      break;
-
-    case 0:
-      player.yDelta = -1;
-      break;
-
-    case 1:
-      player.yDelta = 0;
-      break;
-
-    case 2 ... 8:
-      player.yDelta = player.yDelta / 2;
-      break;
-    
-  }
-
-}
 
 void handleInput()
 {
   if (arduboy.everyXFrames(4)) {
     if(arduboy.pressed(LEFT_BUTTON))
     {
-      decXDelta();
-      playerFrame = 1;
+      player.decXDelta();
+      player.frame = 1;
     }
     if(arduboy.pressed(RIGHT_BUTTON))
     {
-      incXDelta();
-      playerFrame = 0;
+      player.incXDelta();
+      player.frame = 0;
     }
     if(arduboy.pressed(A_BUTTON))
     {
-      if(playerFrame == 0)
+      if(player.frame == 0)
       {
         Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay() + 8, thrusterRight, thrusterRightMask, thrusterFrame, thrusterFrame);
       }
-      if(playerFrame == 1)
+      if(player.frame == 1)
       {
         Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay() + 8, thrusterLeft, thrusterLeftMask, thrusterFrame, thrusterFrame);
       }
@@ -176,7 +68,7 @@ void handleInput()
         ++thrusterFrame;
         thrusterFrame %=2;
       }
-      decYDelta(); // going up
+      player.decYDelta(); // going up
       sound.tone(NOTE_C1, 50, NOTE_C2, 50, NOTE_C1, 50);
     }
 
@@ -184,18 +76,18 @@ void handleInput()
     {
       if (arduboy.notPressed(A_BUTTON))
       {
-        incYDelta(); // start falling.
+        player.incYDelta(); // start falling.
       }
 
       if (arduboy.notPressed(LEFT_BUTTON) && arduboy.notPressed(RIGHT_BUTTON))
       { // slow down
         if (player.xDelta > 0)
         {
-          decXDelta();
+         player. decXDelta();
         }
         if (player.xDelta < 0)
         {
-          incXDelta();
+          player.incXDelta();
         }
       }
     }
@@ -274,15 +166,19 @@ void checkCollision()
 
 void moveCab()
 {
-  Serial.print("x: ");
-  Serial.print(player.x);
-  Serial.print(", xDelta: ");
-  Serial.print(player.xDelta);
-  Serial.print(", y: ");
-  Serial.print(player.y);
-  Serial.print(", yDelta: ");
-  Serial.println(player.yDelta);
+  // Serial.print("x: ");
+  // Serial.print(player.x);
+  // Serial.print(", xDelta: ");
+  // Serial.print(player.xDelta);
+  // Serial.print(", y: ");
+  // Serial.print(player.y);
+  // Serial.print(", yDelta: ");
+  // Serial.println(player.yDelta);
   
+
+  // X range 0 to 111 or 0 to 127 - 16
+  // y range 0 to 47 or 0 to 63 - 16
+
   if (player.yDelta < 0) { 
     if (player.y > player.yDelta) {
       player.y = player.y + player.yDelta;
@@ -292,29 +188,172 @@ void moveCab()
     }
   }
   if (player.yDelta > 0) { 
-    if (player.y < (47 * 8) - player.yDelta) {
+    if (player.y < 47 - player.yDelta) {
       player.y = player.y + player.yDelta;
     }
     else {
-      player.y = 47 * 8;
+      player.y = 47;
     }
   }
+
+  // Serial.print("px: ");
+  // Serial.print((float)player.x);
+  // Serial.print(", pxd: ");
+  // Serial.print((float)player.xDelta);
+  // Serial.print(", py: ");
+  // Serial.print((float)player.y);
+  // Serial.print(", lv: ");
+  // Serial.print((float)level.xOffset);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   if (player.xDelta < 0) { 
-    if (player.x > player.xDelta) {
-      player.x = player.x + player.xDelta;
+
+    if (level.xOffset < 0) {
+
+      if (level.xOffset < player.getXDeltaVal()) {
+        level.xOffset = level.xOffset - player.getXDeltaVal();
+      }
+      else {
+        level.xOffset = 0;
+      }
+
     }
     else {
-      player.x = 0;
+
+      if (level.xOffset == 0) {
+        if (player.x > player.getXDeltaVal()) {
+          player.x = player.x + player.getXDeltaVal();
+        }
+        else {
+          player.x = 0;
+        }
+
+      }
+
+
+      // if (player.x > player.xDelta) {
+      //   player.x = player.x + player.xDelta;
+      // }
+      // else {
+      //   player.x = 0;
+      // }
+
     }
+    
   }
-  if (player.xDelta > 0) { 
-    if (player.x < (111 * 8) - player.xDelta) {
-      player.x = player.x + player.xDelta;
+  if (player.xDelta > 0) {
+
+    if (player.x < player.getXCentre()) {
+      if (player.x + player.getXDeltaVal() < player.getXCentre()) {
+        player.x = player.x + player.getXDeltaVal();
+      }
+      else {
+        level.xOffset = player.getXDeltaVal() - player.getXCentre() - player.x;
+        player.x = player.getXCentre();
+      }
     }
     else {
-      player.x = (111 * 8);
+      if (player.x == player.getXCentre()) {
+        if (level.xOffset < 240) {
+          Serial.print((float) level.xOffset);
+          Serial.print(" + ");
+          Serial.print((float) player.getXDeltaVal());
+          Serial.print(" = ");
+          
+          level.xOffset = level.xOffset + player.getXDeltaVal();
+          Serial.print((float) level.xOffset);
+        }
+      }
     }
+
+
+
+
+    // if (level.xOffset < 0) {
+    //   if 
+
+
+
+
+    //   if (-level.xOffset > player.xDelta) {
+    //     level.xOffset = level.xOffset + player.xDelta;
+    //   }
+    //   else {
+    //     pleyer.x
+    //     level.xOffset = 0;
+    //   }
+
+    // } 
+    // if (player.x < (111 * 8) - player.xDelta) {
+    //   player.x = player.x + player.xDelta;
+    // }
+    // else {
+    //   player.x = (111 * 8);
+    // }
   }
+
+
+
+
+
+
+
+
+
+Serial.println("");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 void inGame()
@@ -355,8 +394,8 @@ void loop() {
 
   case 0:
     vsBoot();
-    player.x = 17 * 8;
-    player.y = 47 * 8;
+    player.x = 17;
+    player.y = 47;
     break;
 
   case 1:
@@ -364,9 +403,9 @@ void loop() {
     break;
 
   case 2:
-    player.x = 17 * 8;
-    player.y = 47 * 8;
-    playerFrame = 1;
+    player.x = player.getXCentre();
+    player.y = 47;
+    player.frame = 1;
     thrusterFrame = 0;
     customerx = 73;
     customery = 47;
@@ -374,8 +413,12 @@ void loop() {
     customerNewPos = 5;
     gameTime = 60;
     currentScore = 0;
+
+    level.number = 0;
+    level.xOffset = -32;
+
     state = 3;
-  
+      
   case 3:
     inGame();
     break;

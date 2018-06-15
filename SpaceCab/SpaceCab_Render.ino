@@ -1,15 +1,30 @@
 #include <Arduboy2.h>
 
-void drawLevel()
-{
-  for(int y = 0; y < LEVEL_HEIGHT; y++)
-  {
-    for(int x = 0; x < LEVEL_WIDTH; x++)
-    {
-      arduboy.drawBitmap(x * TILE_SIZE, y * TILE_SIZE, tiles[level1Map[y][x]], TILE_SIZE, TILE_SIZE, WHITE);
-      
+void drawLevel() {
+
+  uint8_t levelNumber = level.number;
+  const uint8_t *levelMap = levelMaps[levelNumber];
+
+  for (int y = 0; y < LEVEL_HEIGHT; y++) {
+
+    for (int x = 0; x < LEVEL_WIDTH; x++) {
+
+      // Do we really need to render the tile?
+
+      if (((x * TILE_SIZE) + level.getXOffsetDisplay()) > -8 && ((x * TILE_SIZE) + level.getXOffsetDisplay()) < 128) {
+
+        uint8_t tile = pgm_read_byte(&levelMap[(y * LEVEL_WIDTH) + x]);
+        arduboy.drawBitmap(((x * TILE_SIZE) + level.getXOffsetDisplay()), y * TILE_SIZE, tiles[tile], TILE_SIZE, TILE_SIZE, WHITE);
+
+      }      
+
     }
+
   }
+
+      // Serial.println(" ");
+      // Serial.println(" ");
+
 }
 
 void drawHUD()
@@ -51,7 +66,7 @@ void scrollingBackground()
 
 void playerDisplay()
 {
-  Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay(), SpaceTaxi, SpaceTaxiMask, playerFrame, playerFrame);
+  Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay(), SpaceTaxi, SpaceTaxiMask, player.frame, player.frame);
 }
 
 void customerDisplay()

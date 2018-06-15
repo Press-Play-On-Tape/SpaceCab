@@ -21,27 +21,27 @@ void titleScreen()
   ++customerFrame;
   customerFrame %=2;
   }
-  Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay(), SpaceTaxi, SpaceTaxiMask, playerFrame, playerFrame);
+  Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay(), SpaceTaxi, SpaceTaxiMask, player.frame, player.frame);
 
   if (arduboy.everyXFrames(4)) {
 
     if(arduboy.pressed(LEFT_BUTTON))// && playerx > 0)
     {
-      decXDelta();
-      playerFrame = 1;
+      player.decXDelta();
+      player.frame = 1;
     }
     if(arduboy.pressed(RIGHT_BUTTON))// && playerx < 111)
     {
-      incXDelta();
-      playerFrame = 0;
+      player.incXDelta();
+      player.frame = 0;
     }
     if(arduboy.pressed(A_BUTTON))// && playery > 0)
     {
-      if(playerFrame == 0)
+      if(player.frame == 0)
       {
         Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay() + 8, thrusterRight, thrusterRightMask, thrusterFrame, thrusterFrame);
       }
-      if(playerFrame == 1)
+      if(player.frame == 1)
       {
         Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay() + 8, thrusterLeft, thrusterLeftMask, thrusterFrame, thrusterFrame);
       }
@@ -50,21 +50,21 @@ void titleScreen()
         ++thrusterFrame;
         thrusterFrame %=2;
       }
-      decYDelta();
+      player.decYDelta();
       sound.tone(NOTE_C1, 50, NOTE_C2, 50, NOTE_C1, 50);
     }
 
     if (arduboy.everyXFrames(8)) {
 
       if (arduboy.notPressed(A_BUTTON)){
-        incYDelta();
+        player.incYDelta();
       }
       if (arduboy.notPressed(LEFT_BUTTON) && arduboy.notPressed(RIGHT_BUTTON)){
         if (player.xDelta > 0) {
-          decXDelta();
+          player.decXDelta();
         }
         if (player.xDelta < 0) {
-          incXDelta();
+          player.incXDelta();
         }
       }
 
