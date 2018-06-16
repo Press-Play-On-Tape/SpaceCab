@@ -3,7 +3,10 @@
 #define PLAYER_WIDTH 17
 #define PLAYER_WIDTH_HALF PLAYER_WIDTH / 2
 
-#define LEVEL_WIDTH 32
+#define CUSTOMER_WIDTH 7
+#define CUSTOMER_HEIGHT 8
+
+#define LEVEL_WIDTH 34
 #define LEVEL_HEIGHT 8
 #define PLAT1 0
 #define EMPTY 1

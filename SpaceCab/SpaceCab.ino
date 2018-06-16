@@ -4,6 +4,7 @@
 #include "Levels.h"
 #include "Level.h"
 #include "Player.h"
+#include "Customer.h"
 #include "Utils.h"
 #include "Constants.h"
 #include "FixedPoints.h"
@@ -12,28 +13,17 @@
 ArduboyTones sound(arduboy.audio.enabled);
 Sprites sprite;
 
-
 Player player;
+Customer customer;
 Level level;
 
 
 // Global Variables now --------------------------------------------------------
 
-
-
 uint8_t thrusterFrame = 0;
-
-uint8_t customerx = 73;
-uint8_t customery = 47;
-uint8_t customerFrame = 0;
-uint8_t customerNewPos = 5;
-
 uint8_t gameTime = 60;
-
 uint16_t currentScore = 0;
-
-uint8_t state = 2;
-
+uint8_t state = 0;
 int16_t backdropx = 0;
 int16_t backdropy = 0;
 
@@ -104,255 +94,202 @@ void updateTime()
 
 void customerPosition()
 {
-  customerNewPos = random(5);
-  if(customerNewPos == 0)
-  {
-    customerx = 1;
-    customery = 32;
-  }
-  if(customerNewPos == 1)
-  {
-    customerx = 20;
-    customery = 8;
-  }
-  if(customerNewPos == 2)
-  {
-    customerx = 49;
-    customery = 24;
-  }
-  if(customerNewPos == 3)
-  {
-    customerx = 98;
-    customery = 16;
-  }
-  if(customerNewPos == 4)
-  {
-    customerx = 73;
-    customery = 47;
-  }
+  uint8_t numberOfStartingPositions = levelStartingPositionsCount[level.number];
+  uint8_t customerNewPos = random(numberOfStartingPositions);
+
+  const uint8_t *levelStartingPosition = levelStartingPositions[level.number];
+  customer.x = pgm_read_byte(&levelStartingPosition[customerNewPos * 2]) * TILE_SIZE;
+  customer.y = pgm_read_byte(&levelStartingPosition[(customerNewPos * 2) + 1]) * TILE_SIZE;
+
+for (uint8_t x =0; x< 10 ;x ++) {
+  Serial.print(pgm_read_byte(&levelStartingPosition[x]));
+  Serial.print(", ");
+
+}
+Serial.println(" ");
+
+Serial.print(customerNewPos);
+Serial.print(" ");
+Serial.print(pgm_read_byte(&levelStartingPosition[customerNewPos * 4]));
+Serial.print(" ");
+Serial.print(pgm_read_byte(&levelStartingPosition[customerNewPos * 4] + 2));
+Serial.println(" ");
+
 }
 
 void checkCollision()
 {
-  Rect playerRect = {player.getXDisplay(), player.getYDisplay(), 17, 8};
-  Rect customerRect = {customerx, customery, 7, 8};
-  Rect pad1Rect = {0, 39, 16, 8};
-  Rect pad2Rect = {17, 16, 24, 8};
-  Rect pad3Rect = {49, 32, 16, 8};
-  Rect pad4Rect = {97, 24, 24, 8};
-  if (arduboy.collide(playerRect, pad1Rect))
-  {
-    player.y = player.y - 8;
+  // Rect playerRect = {player.getXDisplay(), player.getYDisplay(), 17, 8};
+  // Rect customerRect = {customerx, customery, 7, 8};
+  // Rect pad1Rect = {0, 39, 16, 8};
+  // Rect pad2Rect = {17, 16, 24, 8};
+  // Rect pad3Rect = {49, 32, 16, 8};
+  // Rect pad4Rect = {97, 24, 24, 8};
+  // if (arduboy.collide(playerRect, pad1Rect))
+  // {
+  //   player.y = player.y - 8;
+  // }
+  // if (arduboy.collide(playerRect, pad2Rect))
+  // {
+  //   player.y = player.y - 8;
+  // }
+  // if (arduboy.collide(playerRect, pad3Rect))
+  // {
+  //   player.y = player.y - 8;
+  // }
+  // if (arduboy.collide(playerRect, pad4Rect))
+  // {
+  //   player.y = player.y - 8;
+  // }
+  // if (arduboy.collide(playerRect, customerRect))
+  // {
+  //   currentScore = currentScore + 2;
+  //   customerPosition();
+  //   sound.tone(NOTE_E6, 50, NOTE_E3, 50, NOTE_E2, 50);
+  // }
+
+  Rect playerRect = { player.getXDisplay(), player.getYDisplay(), 17, 8 };
+
+
+  // Check customer collision only if they are on screen ..
+
+  int16_t customerXVal = customer.x + level.xOffset.getInteger();
+
+  if (customerXVal >= -CUSTOMER_WIDTH && customerXVal < 128) {
+  
+    Rect customerRect = { customerXVal, customer.y, CUSTOMER_WIDTH, CUSTOMER_HEIGHT };
+
+    if (arduboy.collide(playerRect, customerRect)) {
+      currentScore = currentScore + 2;
+      customerPosition();
+      sound.tone(NOTE_E6, 50, NOTE_E3, 50, NOTE_E2, 50);
+    }
+
   }
-  if (arduboy.collide(playerRect, pad2Rect))
-  {
-    player.y = player.y - 8;
-  }
-  if (arduboy.collide(playerRect, pad3Rect))
-  {
-    player.y = player.y - 8;
-  }
-  if (arduboy.collide(playerRect, pad4Rect))
-  {
-    player.y = player.y - 8;
-  }
-  if (arduboy.collide(playerRect, customerRect))
-  {
-    currentScore = currentScore + 2;
-    customerPosition();
-    sound.tone(NOTE_E6, 50, NOTE_E3, 50, NOTE_E2, 50);
-  }
+
 }
 
-void moveCab()
-{
-  // Serial.print("x: ");
-  // Serial.print(player.x);
-  // Serial.print(", xDelta: ");
-  // Serial.print(player.xDelta);
-  // Serial.print(", y: ");
-  // Serial.print(player.y);
-  // Serial.print(", yDelta: ");
-  // Serial.println(player.yDelta);
-  
+void moveCab() {
 
-  // X range 0 to 111 or 0 to 127 - 16
-  // y range 0 to 47 or 0 to 63 - 16
+  SQ15x16 playerYDeltaVal = player.getYDeltaVal();
+
+
+  // --  Moving up --------------------------------------------------------------------------------------------
 
   if (player.yDelta < 0) { 
-    if (player.y > player.yDelta) {
-      player.y = player.y + player.yDelta;
+    if (player.y > playerYDeltaVal) {
+      player.y = player.y + playerYDeltaVal;
     }
     else {
       player.y = 0;
     }
   }
+
+
+  // --  Moving down --------------------------------------------------------------------------------------------
+
   if (player.yDelta > 0) { 
-    if (player.y < 47 - player.yDelta) {
-      player.y = player.y + player.yDelta;
+    if (player.y < 47 - playerYDeltaVal) {
+      player.y = player.y + playerYDeltaVal;
     }
     else {
       player.y = 47;
     }
   }
 
-  // Serial.print("px: ");
-  // Serial.print((float)player.x);
-  // Serial.print(", pxd: ");
-  // Serial.print((float)player.xDelta);
-  // Serial.print(", py: ");
-  // Serial.print((float)player.y);
-  // Serial.print(", lv: ");
-  // Serial.print((float)level.xOffset);
 
+  // --  Moving left --------------------------------------------------------------------------------------------
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  uint8_t playerXCentre = player.getXCentre();
+  SQ15x16 playerXDeltaVal = player.getXDeltaVal();
 
   if (player.xDelta < 0) { 
 
     if (level.xOffset < 0) {
 
-      if (level.xOffset < player.getXDeltaVal()) {
-        level.xOffset = level.xOffset - player.getXDeltaVal();
+      if (player.x < playerXCentre) {
+        if (level.xOffset < playerXDeltaVal) {
+          level.xOffset = level.xOffset - playerXDeltaVal;
+        }
+        else {
+          level.xOffset = 0;
+        }
       }
-      else {
-        level.xOffset = 0;
+      else if (player.x == playerXCentre) {
+        if (level.xOffset < playerXDeltaVal) {
+          level.xOffset = level.xOffset - playerXDeltaVal;
+        }
+        else {
+          player.x = player.x + playerXDeltaVal - level.xOffset;
+          level.xOffset = 0;
+        }
+      }
+      else if (player.x > playerXCentre) {
+        if (player.x + playerXDeltaVal > playerXCentre) {
+          player.x = player.x + playerXDeltaVal;
+        }
+        else {
+          level.xOffset = level.xOffset + playerXCentre - player.x - playerXDeltaVal;
+          player.x = playerXCentre;
+        }
       }
 
     }
     else {
 
-      if (level.xOffset == 0) {
-        if (player.x > player.getXDeltaVal()) {
-          player.x = player.x + player.getXDeltaVal();
-        }
-        else {
-          player.x = 0;
-        }
-
+      if (player.x > -playerXDeltaVal) {
+        player.x = player.x + playerXDeltaVal;
       }
-
-
-      // if (player.x > player.xDelta) {
-      //   player.x = player.x + player.xDelta;
-      // }
-      // else {
-      //   player.x = 0;
-      // }
+      else {
+        player.x = 0;
+      }
 
     }
     
   }
+
+  // --  Moving Right -------------------------------------------------------------------------------------------
+
   if (player.xDelta > 0) {
 
-    if (player.x < player.getXCentre()) {
-      if (player.x + player.getXDeltaVal() < player.getXCentre()) {
-        player.x = player.x + player.getXDeltaVal();
+    if (player.x < playerXCentre) {
+      if (player.x + playerXDeltaVal < playerXCentre) {
+        player.x = player.x + playerXDeltaVal;
       }
       else {
-        level.xOffset = player.getXDeltaVal() - player.getXCentre() - player.x;
-        player.x = player.getXCentre();
+        level.xOffset = playerXCentre - player.x - playerXDeltaVal;
+        player.x = playerXCentre;
       }
     }
-    else {
-      if (player.x == player.getXCentre()) {
-        if (level.xOffset < 240) {
-          Serial.print((float) level.xOffset);
-          Serial.print(" + ");
-          Serial.print((float) player.getXDeltaVal());
-          Serial.print(" = ");
-          
-          level.xOffset = level.xOffset + player.getXDeltaVal();
-          Serial.print((float) level.xOffset);
+    else if (player.x == playerXCentre) {                            
+      if (level.xOffset - playerXDeltaVal > -level.width + WIDTH) {
+        level.xOffset = level.xOffset - playerXDeltaVal;
+      }
+      else {
+        player.x = player.x + ((level.width - WIDTH) + level.xOffset) + playerXDeltaVal;
+        level.xOffset = -level.width + WIDTH;
+      }
+    }
+    else if (player.x > playerXCentre) {
+      if (level.xOffset == -level.width + WIDTH) {
+        if (player.x + playerXDeltaVal + PLAYER_WIDTH < WIDTH) {
+          player.x = player.x + playerXDeltaVal;
+        }
+        else {
+          player.x = WIDTH - PLAYER_WIDTH;
+        }
+      }
+      else {
+        if (player.x + playerXDeltaVal - PLAYER_WIDTH < (WIDTH * TILE_SIZE)) {
+          player.x = player.x + playerXDeltaVal;
+        }
+        else {
+          player.x = (WIDTH * TILE_SIZE) - PLAYER_WIDTH;          
         }
       }
     }
-
-
-
-
-    // if (level.xOffset < 0) {
-    //   if 
-
-
-
-
-    //   if (-level.xOffset > player.xDelta) {
-    //     level.xOffset = level.xOffset + player.xDelta;
-    //   }
-    //   else {
-    //     pleyer.x
-    //     level.xOffset = 0;
-    //   }
-
-    // } 
-    // if (player.x < (111 * 8) - player.xDelta) {
-    //   player.x = player.x + player.xDelta;
-    // }
-    // else {
-    //   player.x = (111 * 8);
-    // }
+  
   }
-
-
-
-
-
-
-
-
-
-Serial.println("");
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
 
@@ -396,6 +333,9 @@ void loop() {
     vsBoot();
     player.x = 17;
     player.y = 47;
+    level.number = 0;
+    level.xOffset = 0;
+    level.width = 16 * TILE_SIZE;
     break;
 
   case 1:
@@ -407,15 +347,15 @@ void loop() {
     player.y = 47;
     player.frame = 1;
     thrusterFrame = 0;
-    customerx = 73;
-    customery = 47;
-    customerFrame = 0;
-    customerNewPos = 5;
+    customer.x = 73;
+    customer.y = 47;
+    customer.frame = 0;
     gameTime = 60;
     currentScore = 0;
 
     level.number = 0;
     level.xOffset = -32;
+    level.width = LEVEL_WIDTH * TILE_SIZE;
 
     state = 3;
       

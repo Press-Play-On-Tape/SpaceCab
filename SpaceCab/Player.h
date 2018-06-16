@@ -20,6 +20,7 @@ struct Player {
   uint8_t getXCentre() { return (64 - PLAYER_WIDTH_HALF); }
 
   SQ15x16 getXDeltaVal() { return (static_cast<SQ15x16>(xDelta) / 8.00); }
+  SQ15x16 getYDeltaVal() { return (static_cast<SQ15x16>(yDelta) / 8.00); }
 
   void incXDelta() {
 

@@ -2,8 +2,7 @@
 
 void drawLevel() {
 
-  uint8_t levelNumber = level.number;
-  const uint8_t *levelMap = levelMaps[levelNumber];
+  const uint8_t *levelMap = levelMaps[level.number];
 
   for (int y = 0; y < LEVEL_HEIGHT; y++) {
 
@@ -21,9 +20,6 @@ void drawLevel() {
     }
 
   }
-
-      // Serial.println(" ");
-      // Serial.println(" ");
 
 }
 
@@ -64,17 +60,22 @@ void scrollingBackground()
   }
 }
 
-void playerDisplay()
-{
+void playerDisplay() {
   Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay(), SpaceTaxi, SpaceTaxiMask, player.frame, player.frame);
 }
 
-void customerDisplay()
-{
-  Sprites::drawExternalMask(customerx, customery, Customer, CustomerMask, customerFrame, customerFrame);
-  if(arduboy.everyXFrames(15))
-  {
-  ++customerFrame;
-  customerFrame %=2;
+void customerDisplay() {
+
+  int16_t customerXVal = customer.x + level.xOffset.getInteger();
+
+  if (customerXVal >= -CUSTOMER_WIDTH && customerXVal < 128) {
+
+    Sprites::drawExternalMask(customerXVal, customer.y, Customer_Img, Customer_Img_Mask, customer.frame, customer.frame);
+
+    if(arduboy.everyXFrames(15)) {
+      customer.incFrame();
+    }
+
   }
+
 }

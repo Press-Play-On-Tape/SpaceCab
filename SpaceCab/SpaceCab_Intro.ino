@@ -15,11 +15,10 @@ void titleScreen()
   Rect playerRect = {player.getXDisplay(), player.getYDisplay(), 17, 8};
   Rect customerRect = {97, 48, 7, 8};
   arduboy.drawBitmap(0, 0, SpaceCabSplash, 128, 64, WHITE);
-  Sprites::drawExternalMask(97, 48, Customer, CustomerMask, customerFrame, customerFrame);
+  Sprites::drawExternalMask(97, 48, Customer_Img, Customer_Img_Mask, customer.frame, customer.frame);
   if(arduboy.everyXFrames(15))
   {
-  ++customerFrame;
-  customerFrame %=2;
+    customer.incFrame();
   }
   Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay(), SpaceTaxi, SpaceTaxiMask, player.frame, player.frame);
 
