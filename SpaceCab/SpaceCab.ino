@@ -92,28 +92,13 @@ void updateTime()
     }
 }
 
-void customerPosition()
-{
+void customerPosition() {
   uint8_t numberOfStartingPositions = levelStartingPositionsCount[level.number];
   uint8_t customerNewPos = random(numberOfStartingPositions);
 
   const uint8_t *levelStartingPosition = levelStartingPositions[level.number];
   customer.x = pgm_read_byte(&levelStartingPosition[customerNewPos * 2]) * TILE_SIZE;
   customer.y = pgm_read_byte(&levelStartingPosition[(customerNewPos * 2) + 1]) * TILE_SIZE;
-
-for (uint8_t x =0; x< 10 ;x ++) {
-  Serial.print(pgm_read_byte(&levelStartingPosition[x]));
-  Serial.print(", ");
-
-}
-Serial.println(" ");
-
-Serial.print(customerNewPos);
-Serial.print(" ");
-Serial.print(pgm_read_byte(&levelStartingPosition[customerNewPos * 4]));
-Serial.print(" ");
-Serial.print(pgm_read_byte(&levelStartingPosition[customerNewPos * 4] + 2));
-Serial.println(" ");
 
 }
 
