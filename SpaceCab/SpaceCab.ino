@@ -324,6 +324,7 @@ void loop() {
     break;
 
   case 1:
+    level.width = 16 * TILE_SIZE;
     titleScreen();
     break;
 
