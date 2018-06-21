@@ -1,15 +1,26 @@
 #include <Arduboy2.h>
 
-void drawLevel()
-{
-  for(int y = 0; y < LEVEL_HEIGHT; y++)
-  {
-    for(int x = 0; x < LEVEL_WIDTH; x++)
-    {
-      arduboy.drawBitmap(x * TILE_SIZE, y * TILE_SIZE, tiles[level1Map[y][x]], TILE_SIZE, TILE_SIZE, WHITE);
-      
+void drawLevel() {
+
+  const uint8_t *levelMap = levelMaps[level.number];
+
+  for (int y = 0; y < LEVEL_HEIGHT; y++) {
+
+    for (int x = 0; x < LEVEL_WIDTH; x++) {
+
+      // Do we really need to render the tile?
+
+      if (((x * TILE_SIZE) + level.getXOffsetDisplay()) > -8 && ((x * TILE_SIZE) + level.getXOffsetDisplay()) < 128) {
+
+        uint8_t tile = pgm_read_byte(&levelMap[(y * LEVEL_WIDTH) + x]);
+        arduboy.drawBitmap(((x * TILE_SIZE) + level.getXOffsetDisplay()), y * TILE_SIZE, tiles[tile], TILE_SIZE, TILE_SIZE, WHITE);
+
+      }      
+
     }
+
   }
+
 }
 
 void drawHUD()
@@ -49,17 +60,22 @@ void scrollingBackground()
   }
 }
 
-void playerDisplay()
-{
-  Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay(), SpaceTaxi, SpaceTaxiMask, playerFrame, playerFrame);
+void playerDisplay() {
+  Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay(), SpaceTaxi, SpaceTaxiMask, player.frame, player.frame);
 }
 
-void customerDisplay()
-{
-  Sprites::drawExternalMask(customerx, customery, Customer, CustomerMask, customerFrame, customerFrame);
-  if(arduboy.everyXFrames(15))
-  {
-  ++customerFrame;
-  customerFrame %=2;
+void customerDisplay() {
+
+  int16_t customerXVal = customer.x + level.xOffset.getInteger();
+
+  if (customerXVal >= -CUSTOMER_WIDTH && customerXVal < 128) {
+
+    Sprites::drawExternalMask(customerXVal, customer.y, Customer_Img, Customer_Img_Mask, customer.frame, customer.frame);
+
+    if(arduboy.everyXFrames(15)) {
+      customer.incFrame();
+    }
+
   }
+
 }
