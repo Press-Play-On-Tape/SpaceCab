@@ -19,3 +19,4 @@
 #define SHADE 8
 #define BRICK 9
 #define TILE_SIZE 8
+#define NO_TILE 255

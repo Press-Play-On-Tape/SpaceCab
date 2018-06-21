@@ -27,6 +27,10 @@ uint8_t state = 0;
 int16_t backdropx = 0;
 int16_t backdropy = 0;
 
+uint8_t tileX = 0;
+uint8_t tileY1 = NO_TILE;
+uint8_t tileY2 = NO_TILE;
+
 //------------------------------------------------------------------------------
 
 
@@ -104,47 +108,45 @@ void customerPosition() {
 
 void checkCollision()
 {
-  // Rect playerRect = {player.getXDisplay(), player.getYDisplay(), 17, 8};
-  // Rect customerRect = {customerx, customery, 7, 8};
-  // Rect pad1Rect = {0, 39, 16, 8};
-  // Rect pad2Rect = {17, 16, 24, 8};
-  // Rect pad3Rect = {49, 32, 16, 8};
-  // Rect pad4Rect = {97, 24, 24, 8};
-  // if (arduboy.collide(playerRect, pad1Rect))
-  // {
-  //   player.y = player.y - 8;
-  // }
-  // if (arduboy.collide(playerRect, pad2Rect))
-  // {
-  //   player.y = player.y - 8;
-  // }
-  // if (arduboy.collide(playerRect, pad3Rect))
-  // {
-  //   player.y = player.y - 8;
-  // }
-  // if (arduboy.collide(playerRect, pad4Rect))
-  // {
-  //   player.y = player.y - 8;
-  // }
-  // if (arduboy.collide(playerRect, customerRect))
-  // {
-  //   currentScore = currentScore + 2;
-  //   customerPosition();
-  //   sound.tone(NOTE_E6, 50, NOTE_E3, 50, NOTE_E2, 50);
-  // }
-
   Rect playerRect = { player.getXDisplay(), player.getYDisplay(), 17, 8 };
+
+  const uint8_t *levelMap = levelMaps[level.number];
+
+  if (player.getXDisplay() % TILE_SIZE == 0)
+  {
+
+    tileX = (player.getXDisplay() / 8) - 1;
+    tileY1 = (player.getYDisplay() / 8);
+
+    if (player.getYDisplay() % TILE_SIZE != 0)
+    {
+    // We are actually straddling two tiles vertically ..
+    tileY2 = (player.getYDisplay() / 8);
+    }
+
+    // Retrieve the tile from the level defintion  
+      if ( pgm_read_byte(&levelMap[(tileY1 * LEVEL_WIDTH) + tileX]) == BRICK)
+      { 
+        player.y = player.y - 1;
+      }
+      if ( tileY2 != NO_TILE  && pgm_read_byte(&levelMap[(tileY1 * LEVEL_WIDTH) + tileX]) == BRICK)
+      { 
+        //player.y = player.y - 1; 
+      }
+  }
 
 
   // Check customer collision only if they are on screen ..
 
   int16_t customerXVal = customer.x + level.xOffset.getInteger();
 
-  if (customerXVal >= -CUSTOMER_WIDTH && customerXVal < 128) {
+  if (customerXVal >= -CUSTOMER_WIDTH && customerXVal < 128) 
+  {
   
     Rect customerRect = { customerXVal, customer.y, CUSTOMER_WIDTH, CUSTOMER_HEIGHT };
 
-    if (arduboy.collide(playerRect, customerRect)) {
+    if (arduboy.collide(playerRect, customerRect))
+    {
       currentScore = currentScore + 2;
       customerPosition();
       sound.tone(NOTE_E6, 50, NOTE_E3, 50, NOTE_E2, 50);
