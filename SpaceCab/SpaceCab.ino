@@ -27,10 +27,6 @@ uint8_t state = 0;
 int16_t backdropx = 0;
 int16_t backdropy = 0;
 
-uint8_t tileX = 0;
-uint8_t tileY1 = NO_TILE;
-uint8_t tileY2 = NO_TILE;
-
 //------------------------------------------------------------------------------
 
 
@@ -39,6 +35,7 @@ void handleInput()
   if (arduboy.everyXFrames(4)) {
     if(arduboy.pressed(LEFT_BUTTON))
     {
+
       player.decXDelta();
       player.frame = 1;
     }
@@ -106,34 +103,277 @@ void customerPosition() {
 
 }
 
+bool canMoveLeft() {
+
+  uint8_t tileX  = NO_TILE;
+  uint8_t tileY1 = NO_TILE;
+  uint8_t tileY2 = NO_TILE;
+
+  const uint8_t *levelMap = levelMaps[level.number];
+  uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay();
+
+
+  // Only test if we can move if we are already at the left hand side of a tile ..
+  
+  if (playerXPosition % TILE_SIZE == 0) {
+
+    tileX = (playerXPosition / 8) - 1;
+    tileY1 = (player.getYDisplay() / 8);
+
+
+    // Are we are actually straddling two tiles vertically ..
+    
+    if (player.getYDisplay() % TILE_SIZE != 0) {
+      tileY2 = (player.getYDisplay() / 8) + 1;
+    }
+
+
+    // Retrieve the tile from the level defintion for x, y1 ..
+
+    switch (pgm_read_byte(&levelMap[(tileY1 * LEVEL_WIDTH) + tileX])) { 
+
+      case BRICK:
+      case EDGE1:
+        Serial.println("Brick or edge to left of Y1.");
+        return false;
+
+      default: break;
+
+    }
+
+    if (tileY2 != NO_TILE) {
+
+      switch (pgm_read_byte(&levelMap[(tileY2 * LEVEL_WIDTH) + tileX])) {
+
+        case BRICK:
+        case EDGE1:
+          Serial.println("Brick or edge to left of Y2.");
+          return false;
+
+        default: break;
+
+      }
+
+    }
+
+    return true;
+
+  }
+  else {
+
+    // We are not yet at the left hand edge of tile so movement is possible ..
+
+    return true;
+
+  }
+
+}
+
+
+bool canMoveRight() {
+
+  uint8_t tileX  = NO_TILE;
+  uint8_t tileY1 = NO_TILE;
+  uint8_t tileY2 = NO_TILE;
+
+  const uint8_t *levelMap = levelMaps[level.number];
+  uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay() + PLAYER_WIDTH;
+
+
+  // Only test if we can move if we are already at the right hand side of a tile ..
+
+  if (playerXPosition % TILE_SIZE == TILE_SIZE - 1) {
+
+    tileX = (playerXPosition / 8) + 1;
+    tileY1 = (player.getYDisplay() / 8);
+
+
+    // Are we are actually straddling two tiles vertically ..
+    
+    if (player.getYDisplay() % TILE_SIZE != 0) {
+      tileY2 = (player.getYDisplay() / 8) + 1;
+    }
+
+
+    // Retrieve the tile from the level defintion for x, y1 ..
+
+    switch (pgm_read_byte(&levelMap[(tileY1 * LEVEL_WIDTH) + tileX])) { 
+
+      case BRICK:
+      case EDGE1:
+        Serial.println("Brick or Edge to right of Y1.");
+        return false;
+
+      default: break;
+
+    }
+
+    if (tileY2 != NO_TILE) {
+
+      switch (pgm_read_byte(&levelMap[(tileY2 * LEVEL_WIDTH) + tileX])) {
+
+        case BRICK:
+        case EDGE1:
+          Serial.println("Brick or edge to right of Y2.");
+          return false;
+
+        default: break;
+
+      }
+
+    }
+
+    return true;
+
+  }
+  else {
+
+    // We are not yet at the right hand edge of tile so movement is possible ..
+
+    return true;
+
+  }
+
+}
+
+
+bool canMoveUp() {
+
+  uint8_t tileX1 = NO_TILE;
+  uint8_t tileX2 = NO_TILE;
+  uint8_t tileY  = NO_TILE;
+
+  const uint8_t *levelMap = levelMaps[level.number];
+  uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay();
+
+
+  // Only test if we can move if we are already at the top of a tile ..
+  
+  if (player.getYDisplay() % TILE_SIZE == 0) {
+
+    tileY = (player.getYDisplay() / 8) - 1;
+    tileX1 = (playerXPosition / 8);
+
+
+    // Are we are actually straddling two tiles horizontally ..
+    
+    if (playerXPosition % TILE_SIZE != 0) {
+      tileX2 = (playerXPosition / 8) + 1;
+    }
+
+
+    // Retrieve the tile from the level defintion for x, y1 ..
+
+    switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX1])) { 
+
+      case BRICK:
+      case EDGE1:
+        Serial.println("Brick or edge to top of X1.");
+        return false;
+
+      default: break;
+
+    }
+
+    if (tileX2 != NO_TILE) {
+
+      switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX2])) {
+
+        case BRICK:
+        case EDGE1:
+          Serial.println("Brick or edge to top of X2.");
+          return false;
+
+        default: break;
+
+      }
+
+    }
+
+    return true;
+
+  }
+  else {
+
+    // We are not yet at the top of the tile so movement is possible ..
+
+    return true;
+
+  }
+
+}
+
+
+bool canMoveDown() {
+
+  uint8_t tileX1 = NO_TILE;
+  uint8_t tileX2 = NO_TILE;
+  uint8_t tileY  = NO_TILE;
+
+  const uint8_t *levelMap = levelMaps[level.number];
+  uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay();
+
+
+  // Only test if we can move if we are already at the top of a tile ..
+  
+  if ((player.getYDisplay() + PLAYER_HEIGHT) % TILE_SIZE == TILE_SIZE - 1) {
+
+    tileY = (player.getYDisplay() / 8) + 1;
+    tileX1 = (playerXPosition / 8);
+
+
+    // Are we are actually straddling two tiles horizontally ..
+    
+    if (playerXPosition % TILE_SIZE != 0) {
+      tileX2 = (playerXPosition / 8) + 1;
+    }
+
+
+    // Retrieve the tile from the level defintion for x, y1 ..
+
+    switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX1])) { 
+
+      case BRICK:
+      case EDGE1:
+        Serial.println("Brick or edge to bottom of X1.");
+        return false;
+
+      default: break;
+
+    }
+
+    if (tileX2 != NO_TILE) {
+
+      switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX2])) {
+
+        case BRICK:
+        case EDGE1:
+          Serial.println("Brick or edge to bottom of X2.");
+          return false;
+
+        default: break;
+
+      }
+
+    }
+
+    return true;
+
+  }
+  else {
+
+    // We are not yet at the top of the tile so movement is possible ..
+
+    return true;
+
+  }
+
+}
+
+
 void checkCollision()
 {
   Rect playerRect = { player.getXDisplay(), player.getYDisplay(), 17, 8 };
-
-  const uint8_t *levelMap = levelMaps[level.number];
-
-  if (player.getXDisplay() % TILE_SIZE == 0)
-  {
-
-    tileX = (player.getXDisplay() / 8) - 1;
-    tileY1 = (player.getYDisplay() / 8);
-
-    if (player.getYDisplay() % TILE_SIZE != 0)
-    {
-    // We are actually straddling two tiles vertically ..
-    tileY2 = (player.getYDisplay() / 8);
-    }
-
-    // Retrieve the tile from the level defintion  
-      if ( pgm_read_byte(&levelMap[(tileY1 * LEVEL_WIDTH) + tileX]) == BRICK)
-      { 
-        player.y = player.y - 1;
-      }
-      if ( tileY2 != NO_TILE  && pgm_read_byte(&levelMap[(tileY1 * LEVEL_WIDTH) + tileX]) == BRICK)
-      { 
-        //player.y = player.y - 1; 
-      }
-  }
 
 
   // Check customer collision only if they are on screen ..
@@ -164,24 +404,36 @@ void moveCab() {
   // --  Moving up --------------------------------------------------------------------------------------------
 
   if (player.yDelta < 0) { 
-    if (player.y > playerYDeltaVal) {
-      player.y = player.y + playerYDeltaVal;
+
+    if (canMoveUp()) {
+
+      if (player.y > playerYDeltaVal) {
+        player.y = player.y + playerYDeltaVal;
+      }
+      else {
+        player.y = 0;
+      }
+
     }
-    else {
-      player.y = 0;
-    }
+
   }
 
 
   // --  Moving down --------------------------------------------------------------------------------------------
 
   if (player.yDelta > 0) { 
-    if (player.y < 47 - playerYDeltaVal) {
-      player.y = player.y + playerYDeltaVal;
+
+    if (canMoveDown()) {
+
+      if (player.y < 47 - playerYDeltaVal) {
+        player.y = player.y + playerYDeltaVal;
+      }
+      else {
+        player.y = 47;
+      }
+
     }
-    else {
-      player.y = 47;
-    }
+
   }
 
 
@@ -192,43 +444,47 @@ void moveCab() {
 
   if (player.xDelta < 0) { 
 
-    if (level.xOffset < 0) {
+    if (canMoveLeft()) {
 
-      if (player.x < playerXCentre) {
-        if (level.xOffset < playerXDeltaVal) {
-          level.xOffset = level.xOffset - playerXDeltaVal;
+      if (level.xOffset < 0) {
+
+        if (player.x < playerXCentre) {
+          if (level.xOffset < playerXDeltaVal) {
+            level.xOffset = level.xOffset - playerXDeltaVal;
+          }
+          else {
+            level.xOffset = 0;
+          }
         }
-        else {
-          level.xOffset = 0;
+        else if (player.x == playerXCentre) {
+          if (level.xOffset < playerXDeltaVal) {
+            level.xOffset = level.xOffset - playerXDeltaVal;
+          }
+          else {
+            player.x = player.x + playerXDeltaVal - level.xOffset;
+            level.xOffset = 0;
+          }
         }
+        else if (player.x > playerXCentre) {
+          if (player.x + playerXDeltaVal > playerXCentre) {
+            player.x = player.x + playerXDeltaVal;
+          }
+          else {
+            level.xOffset = level.xOffset + playerXCentre - player.x - playerXDeltaVal;
+            player.x = playerXCentre;
+          }
+        }
+
       }
-      else if (player.x == playerXCentre) {
-        if (level.xOffset < playerXDeltaVal) {
-          level.xOffset = level.xOffset - playerXDeltaVal;
-        }
-        else {
-          player.x = player.x + playerXDeltaVal - level.xOffset;
-          level.xOffset = 0;
-        }
-      }
-      else if (player.x > playerXCentre) {
-        if (player.x + playerXDeltaVal > playerXCentre) {
+      else {
+
+        if (player.x > -playerXDeltaVal) {
           player.x = player.x + playerXDeltaVal;
         }
         else {
-          level.xOffset = level.xOffset + playerXCentre - player.x - playerXDeltaVal;
-          player.x = playerXCentre;
+          player.x = 0;
         }
-      }
 
-    }
-    else {
-
-      if (player.x > -playerXDeltaVal) {
-        player.x = player.x + playerXDeltaVal;
-      }
-      else {
-        player.x = 0;
       }
 
     }
@@ -239,41 +495,45 @@ void moveCab() {
 
   if (player.xDelta > 0) {
 
-    if (player.x < playerXCentre) {
-      if (player.x + playerXDeltaVal < playerXCentre) {
-        player.x = player.x + playerXDeltaVal;
-      }
-      else {
-        level.xOffset = playerXCentre - player.x - playerXDeltaVal;
-        player.x = playerXCentre;
-      }
-    }
-    else if (player.x == playerXCentre) {                            
-      if (level.xOffset - playerXDeltaVal > -level.width + WIDTH) {
-        level.xOffset = level.xOffset - playerXDeltaVal;
-      }
-      else {
-        player.x = player.x + ((level.width - WIDTH) + level.xOffset) + playerXDeltaVal;
-        level.xOffset = -level.width + WIDTH;
-      }
-    }
-    else if (player.x > playerXCentre) {
-      if (level.xOffset == -level.width + WIDTH) {
-        if (player.x + playerXDeltaVal + PLAYER_WIDTH < WIDTH) {
+    if (canMoveRight()) {
+
+      if (player.x < playerXCentre) {
+        if (player.x + playerXDeltaVal < playerXCentre) {
           player.x = player.x + playerXDeltaVal;
         }
         else {
-          player.x = WIDTH - PLAYER_WIDTH;
+          level.xOffset = playerXCentre - player.x - playerXDeltaVal;
+          player.x = playerXCentre;
         }
       }
-      else {
-        if (player.x + playerXDeltaVal - PLAYER_WIDTH < (WIDTH * TILE_SIZE)) {
-          player.x = player.x + playerXDeltaVal;
+      else if (player.x == playerXCentre) {                            
+        if (level.xOffset - playerXDeltaVal > -level.width + WIDTH) {
+          level.xOffset = level.xOffset - playerXDeltaVal;
         }
         else {
-          player.x = (WIDTH * TILE_SIZE) - PLAYER_WIDTH;          
+          player.x = player.x + ((level.width - WIDTH) + level.xOffset) + playerXDeltaVal;
+          level.xOffset = -level.width + WIDTH;
         }
       }
+      else if (player.x > playerXCentre) {
+        if (level.xOffset == -level.width + WIDTH) {
+          if (player.x + playerXDeltaVal + PLAYER_WIDTH < WIDTH) {
+            player.x = player.x + playerXDeltaVal;
+          }
+          else {
+            player.x = WIDTH - PLAYER_WIDTH;
+          }
+        }
+        else {
+          if (player.x + playerXDeltaVal - PLAYER_WIDTH < (WIDTH * TILE_SIZE)) {
+            player.x = player.x + playerXDeltaVal;
+          }
+          else {
+            player.x = (WIDTH * TILE_SIZE) - PLAYER_WIDTH;          
+          }
+        }
+      }
+
     }
   
   }
@@ -282,13 +542,13 @@ void moveCab() {
 
 void inGame()
 {
-  drawHUD();
-  drawLevel();
   playerDisplay();
   customerDisplay();
-  checkCollision();
   updateTime();
   handleInput();
+  checkCollision();
+  drawHUD();
+  drawLevel();
 }
 
 //------------------------------------------------------------------------------
