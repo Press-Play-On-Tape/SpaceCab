@@ -241,6 +241,7 @@ bool canMoveUp() {
 
   uint8_t tileX1 = NO_TILE;
   uint8_t tileX2 = NO_TILE;
+  uint8_t tileX3 = NO_TILE;
   uint8_t tileY  = NO_TILE;
 
   const uint8_t *levelMap = levelMaps[level.number];
@@ -253,12 +254,12 @@ bool canMoveUp() {
 
     tileY = (player.getYDisplay() / 8) - 1;
     tileX1 = (playerXPosition / 8);
+    tileX2 = (playerXPosition / 8) + 1;
 
-
-    // Are we are actually straddling two tiles horizontally ..
+    // Are we are actually straddling three tiles horizontally ..
     
     if (playerXPosition % TILE_SIZE != 0) {
-      tileX2 = (playerXPosition / 8) + 1;
+      tileX3 = (playerXPosition / 8) + 1;
     }
 
 
@@ -275,13 +276,24 @@ bool canMoveUp() {
 
     }
 
+    switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX2])) {
+
+      case BRICK:
+      case EDGE1:
+        Serial.println("Brick or edge to top of X2.");
+        return false;
+
+      default: break;
+
+    }
+
     if (tileX2 != NO_TILE) {
 
-      switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX2])) {
+      switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX3])) {
 
         case BRICK:
         case EDGE1:
-          Serial.println("Brick or edge to top of X2.");
+          Serial.println("Brick or edge to top of X3.");
           return false;
 
         default: break;
@@ -308,6 +320,7 @@ bool canMoveDown() {
 
   uint8_t tileX1 = NO_TILE;
   uint8_t tileX2 = NO_TILE;
+  uint8_t tileX3 = NO_TILE;
   uint8_t tileY  = NO_TILE;
 
   const uint8_t *levelMap = levelMaps[level.number];
@@ -320,12 +333,13 @@ bool canMoveDown() {
 
     tileY = (player.getYDisplay() / 8) + 1;
     tileX1 = (playerXPosition / 8);
+    tileX2 = (playerXPosition / 8) + 1;
 
 
     // Are we are actually straddling two tiles horizontally ..
     
     if (playerXPosition % TILE_SIZE != 0) {
-      tileX2 = (playerXPosition / 8) + 1;
+      tileX3 = (playerXPosition / 8) + 1;
     }
 
 
@@ -342,13 +356,24 @@ bool canMoveDown() {
 
     }
 
+    switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX2])) {
+
+      case BRICK:
+      case EDGE1:
+        Serial.println("Brick or edge to bottom of X2.");
+        return false;
+
+      default: break;
+
+    }
+
     if (tileX2 != NO_TILE) {
 
-      switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX2])) {
+      switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX3])) {
 
         case BRICK:
         case EDGE1:
-          Serial.println("Brick or edge to bottom of X2.");
+          Serial.println("Brick or edge to bottom of X3.");
           return false;
 
         default: break;
@@ -371,8 +396,8 @@ bool canMoveDown() {
 }
 
 
-void checkCollision()
-{
+void checkCollision() {
+
   Rect playerRect = { player.getXDisplay(), player.getYDisplay(), 17, 8 };
 
 
@@ -380,13 +405,11 @@ void checkCollision()
 
   int16_t customerXVal = customer.x + level.xOffset.getInteger();
 
-  if (customerXVal >= -CUSTOMER_WIDTH && customerXVal < 128) 
-  {
+  if (customerXVal >= -CUSTOMER_WIDTH && customerXVal < 128) {
   
     Rect customerRect = { customerXVal, customer.y, CUSTOMER_WIDTH, CUSTOMER_HEIGHT };
 
-    if (arduboy.collide(playerRect, customerRect))
-    {
+    if (arduboy.collide(playerRect, customerRect)) {
       currentScore = currentScore + 2;
       customerPosition();
       sound.tone(NOTE_E6, 50, NOTE_E3, 50, NOTE_E2, 50);
@@ -554,6 +577,7 @@ void inGame()
 //------------------------------------------------------------------------------
 
 void setup() {
+  
   arduboy.boot();
   arduboy.display();
   arduboy.flashlight();
