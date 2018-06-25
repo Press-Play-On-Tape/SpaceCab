@@ -36,6 +36,7 @@ void drawHUD()
   for(uint8_t i = 5; i > 0; --i)
   arduboy.print(digits[i - 1]);
   arduboy.setCursor(50, 57);
+  arduboy.drawBitmap(40, 56, clockImage, 8, 8, WHITE);
   extractDigits(digitsTime, gameTime);
   for(uint8_t i = 2; i > 0; --i)
   arduboy.print(digitsTime[i - 1]);

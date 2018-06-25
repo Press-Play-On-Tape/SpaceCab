@@ -565,13 +565,13 @@ void moveCab() {
 
 void inGame()
 {
-  playerDisplay();
-  customerDisplay();
   updateTime();
   handleInput();
   checkCollision();
-  drawHUD();
   drawLevel();
+  customerDisplay();
+  drawHUD();
+  playerDisplay();
 }
 
 //------------------------------------------------------------------------------
@@ -611,6 +611,7 @@ void loop() {
 
   case 1:
     level.width = 16 * TILE_SIZE;
+    level.number = 0;
     titleScreen();
     break;
 
@@ -625,7 +626,7 @@ void loop() {
     gameTime = 60;
     currentScore = 0;
 
-    level.number = 0;
+    level.number = 1;
     level.xOffset = -32;
     level.width = LEVEL_WIDTH * TILE_SIZE;
 
