@@ -28,6 +28,7 @@ void drawHUD()
   uint8_t digits[5];
   uint8_t digitsTime[2];
   arduboy.drawLine(0, 53, 128, 53, WHITE);
+  arduboy.drawLine(0, 54, 128, 54, BLACK);
   arduboy.fillRect(0, 55, 128, 64, WHITE);
   Sprites::drawExternalMask(0, 55, SpaceCabHUD, SpaceCabHUDMask, 0, 0);
   arduboy.setCursor(2, 57);
@@ -36,7 +37,6 @@ void drawHUD()
   for(uint8_t i = 5; i > 0; --i)
   arduboy.print(digits[i - 1]);
   arduboy.setCursor(50, 57);
-  arduboy.drawBitmap(40, 56, clockImage, 8, 8, WHITE);
   extractDigits(digitsTime, gameTime);
   for(uint8_t i = 2; i > 0; --i)
   arduboy.print(digitsTime[i - 1]);

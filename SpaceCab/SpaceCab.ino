@@ -85,15 +85,16 @@ void handleInput()
   }
 }
 
-void updateTime()
-{
-  if(arduboy.everyXFrames(60))
-    {
-      gameTime = (gameTime > 1) ? gameTime - 1 : state = 4;
-    }
+void updateTime() {
+
+  if (arduboy.everyXFrames(60)) {
+    gameTime = (gameTime > 1) ? gameTime - 1 : state = 4;
+  }
+
 }
 
 void customerPosition() {
+
   uint8_t numberOfStartingPositions = levelStartingPositionsCount[level.number];
   uint8_t customerNewPos = random(numberOfStartingPositions);
 
@@ -133,8 +134,11 @@ bool canMoveLeft() {
     switch (pgm_read_byte(&levelMap[(tileY1 * LEVEL_WIDTH) + tileX])) { 
 
       case BRICK:
-      case EDGE1:
-        Serial.println("Brick or edge to left of Y1.");
+      case ROOF2:
+        Serial.print(tileX);
+        Serial.print(" ");
+        Serial.print(tileY1);
+        Serial.println(", brick or edge to left of Y1.");
         return false;
 
       default: break;
@@ -146,8 +150,11 @@ bool canMoveLeft() {
       switch (pgm_read_byte(&levelMap[(tileY2 * LEVEL_WIDTH) + tileX])) {
 
         case BRICK:
-        case EDGE1:
-          Serial.println("Brick or edge to left of Y2.");
+        case ROOF2:
+          Serial.print(tileX);
+          Serial.print(" ");
+          Serial.print(tileY2);
+          Serial.println(", brick or edge to left of Y2.");
           return false;
 
         default: break;
@@ -200,8 +207,11 @@ bool canMoveRight() {
     switch (pgm_read_byte(&levelMap[(tileY1 * LEVEL_WIDTH) + tileX])) { 
 
       case BRICK:
-      case EDGE1:
-        Serial.println("Brick or Edge to right of Y1.");
+      case ROOF2:
+        Serial.print(tileX);
+        Serial.print(" ");
+        Serial.print(tileY1);
+        Serial.println(", brick or Edge to right of Y1.");
         return false;
 
       default: break;
@@ -213,8 +223,11 @@ bool canMoveRight() {
       switch (pgm_read_byte(&levelMap[(tileY2 * LEVEL_WIDTH) + tileX])) {
 
         case BRICK:
-        case EDGE1:
-          Serial.println("Brick or edge to right of Y2.");
+        case ROOF2:
+          Serial.print(tileX);
+          Serial.print(" ");
+          Serial.print(tileY2);
+          Serial.println(", brick or edge to right of Y2.");
           return false;
 
         default: break;
@@ -255,12 +268,7 @@ bool canMoveUp() {
     tileY = (player.getYDisplay() / 8) - 1;
     tileX1 = (playerXPosition / 8);
     tileX2 = (playerXPosition / 8) + 1;
-
-    // Are we are actually straddling three tiles horizontally ..
-    
-    if (playerXPosition % TILE_SIZE != 0) {
-      tileX3 = (playerXPosition / 8) + 1;
-    }
+    tileX3 = (playerXPosition / 8) + 2;
 
 
     // Retrieve the tile from the level defintion for x, y1 ..
@@ -268,8 +276,11 @@ bool canMoveUp() {
     switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX1])) { 
 
       case BRICK:
-      case EDGE1:
-        Serial.println("Brick or edge to top of X1.");
+      case ROOF2:
+        Serial.print(tileX1);
+        Serial.print(" ");
+        Serial.print(tileY);
+        Serial.println(", brick or edge to top of X1.");
         return false;
 
       default: break;
@@ -279,26 +290,28 @@ bool canMoveUp() {
     switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX2])) {
 
       case BRICK:
-      case EDGE1:
-        Serial.println("Brick or edge to top of X2.");
+      case ROOF2:
+        Serial.print(tileX2);
+        Serial.print(" ");
+        Serial.print(tileY);
+        Serial.println(", brick or edge to top of X2.");
         return false;
 
       default: break;
 
     }
 
-    if (tileX2 != NO_TILE) {
+    switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX3])) {
 
-      switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX3])) {
+      case BRICK:
+      case ROOF2:
+        Serial.print(tileX3);
+        Serial.print(" ");
+        Serial.print(tileY);
+        Serial.println(", brick or edge to top of X3.");
+        return false;
 
-        case BRICK:
-        case EDGE1:
-          Serial.println("Brick or edge to top of X3.");
-          return false;
-
-        default: break;
-
-      }
+      default: break;
 
     }
 
@@ -325,22 +338,18 @@ bool canMoveDown() {
 
   const uint8_t *levelMap = levelMaps[level.number];
   uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay();
+  uint16_t playerYPosition = player.getYDisplay() + PLAYER_HEIGHT;
 
 
   // Only test if we can move if we are already at the top of a tile ..
   
-  if ((player.getYDisplay() + PLAYER_HEIGHT) % TILE_SIZE == TILE_SIZE - 1) {
+//  if (playerYPosition % TILE_SIZE == TILE_SIZE - 1) {
+  if (playerYPosition % TILE_SIZE == 0) {
 
-    tileY = (player.getYDisplay() / 8) + 1;
+    tileY = (playerYPosition / 8);
     tileX1 = (playerXPosition / 8);
     tileX2 = (playerXPosition / 8) + 1;
-
-
-    // Are we are actually straddling two tiles horizontally ..
-    
-    if (playerXPosition % TILE_SIZE != 0) {
-      tileX3 = (playerXPosition / 8) + 1;
-    }
+    tileX3 = (playerXPosition / 8) + 2;
 
 
     // Retrieve the tile from the level defintion for x, y1 ..
@@ -348,8 +357,11 @@ bool canMoveDown() {
     switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX1])) { 
 
       case BRICK:
-      case EDGE1:
-        Serial.println("Brick or edge to bottom of X1.");
+      case ROOF2:
+        Serial.print(tileX1);
+        Serial.print(" ");
+        Serial.print(tileY);
+        Serial.println(", brick or edge to bottom of X1.");
         return false;
 
       default: break;
@@ -359,26 +371,28 @@ bool canMoveDown() {
     switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX2])) {
 
       case BRICK:
-      case EDGE1:
-        Serial.println("Brick or edge to bottom of X2.");
+      case ROOF2:
+        Serial.print(tileX2);
+        Serial.print(" ");
+        Serial.print(tileY);
+        Serial.println(", brick or edge to bottom of X2.");
         return false;
 
       default: break;
 
     }
 
-    if (tileX2 != NO_TILE) {
+    switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX3])) {
 
-      switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX3])) {
+      case BRICK:
+      case ROOF2:
+        Serial.print(tileX3);
+        Serial.print(" ");
+        Serial.print(tileY);
+        Serial.println(", brick or edge to bottom of X3.");
+        return false;
 
-        case BRICK:
-        case EDGE1:
-          Serial.println("Brick or edge to bottom of X3.");
-          return false;
-
-        default: break;
-
-      }
+      default: break;
 
     }
 
@@ -424,6 +438,11 @@ void moveCab() {
   SQ15x16 playerYDeltaVal = player.getYDeltaVal();
 
 
+Serial.print("X: ");
+Serial.print(player.getXDisplay());
+Serial.print(",Y: ");
+Serial.println(player.getYDisplay());
+
   // --  Moving up --------------------------------------------------------------------------------------------
 
   if (player.yDelta < 0) { 
@@ -448,11 +467,11 @@ void moveCab() {
 
     if (canMoveDown()) {
 
-      if (player.y < 47 - playerYDeltaVal) {
+      if (player.y + PLAYER_HEIGHT < 55 - playerYDeltaVal) {
         player.y = player.y + playerYDeltaVal;
       }
       else {
-        player.y = 47;
+        player.y = 55 - PLAYER_HEIGHT;
       }
 
     }
@@ -569,9 +588,9 @@ void inGame()
   handleInput();
   checkCollision();
   drawLevel();
-  customerDisplay();
   drawHUD();
   playerDisplay();
+  customerDisplay();
 }
 
 //------------------------------------------------------------------------------

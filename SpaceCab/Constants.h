@@ -16,8 +16,8 @@
 #define SIGN1 4
 #define GATE1 5
 #define ROCK2 6
-#define CLOCK 7
-#define SHADE 8
+#define SHADE 7
+#define ROOF2 8
 #define BRICK 9
 #define TILE_SIZE 8
 #define NO_TILE 255
