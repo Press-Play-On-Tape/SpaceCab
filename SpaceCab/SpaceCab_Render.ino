@@ -4,23 +4,23 @@ void drawLevel() {
 
   const uint8_t *levelMap = levelMaps[level.number];
 
-  for (int y = 0; y < LEVEL_HEIGHT; y++) {
-
-    for (int x = 0; x < LEVEL_WIDTH; x++) {
-
+  for (int y = 0; y < LEVEL_HEIGHT; y++)
+  {
+    for (int x = 0; x < LEVEL_WIDTH; x++)
+    {
+      const int tileX = (x * TILE_SIZE);
+      const int tileY = (y * TILE_SIZE);
+      const auto bitmapX = tileX + level.getXOffsetDisplay();
+      const auto bitmapY = tileY + level.getYOffsetDisplay();
+      
       // Do we really need to render the tile?
+      if (bitmapX < -8 || bitmapX > 128 || bitmapY < -8 || bitmapY > 128)
+        continue;
 
-      if (((x * TILE_SIZE) + level.getXOffsetDisplay()) > -8 && ((x * TILE_SIZE) + level.getXOffsetDisplay()) < 128) {
-
-        uint8_t tile = pgm_read_byte(&levelMap[(y * LEVEL_WIDTH) + x]);
-        arduboy.drawBitmap(((x * TILE_SIZE) + level.getXOffsetDisplay()), y * TILE_SIZE, tiles[tile], TILE_SIZE, TILE_SIZE, WHITE);
-
-      }      
-
+      uint8_t tile = pgm_read_byte(&levelMap[(y * LEVEL_WIDTH) + x]);
+      arduboy.drawBitmap(bitmapX, bitmapY, tiles[tile], TILE_SIZE, TILE_SIZE, WHITE);
     }
-
   }
-
 }
 
 void drawHUD()
