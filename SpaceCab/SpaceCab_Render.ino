@@ -27,12 +27,9 @@ void drawHUD()
 {
   uint8_t digits[5];
   uint8_t digitsTime[2];
-  arduboy.drawLine(0, 53, 128, 53, WHITE);
-  arduboy.drawLine(0, 54, 128, 54, BLACK);
-  arduboy.fillRect(0, 55, 128, 64, WHITE);
-  Sprites::drawExternalMask(0, 55, SpaceCabHUD, SpaceCabHUDMask, 0, 0);
-  arduboy.setCursor(2, 57);
-  arduboy.print(F("$"));
+  //arduboy.drawLine(0, 53, 128, 53, WHITE);
+  Sprites::drawExternalMask(0, 54, SpaceCabHUD, SpaceCabHUDMask, 0, 0);
+  arduboy.setCursor(8, 57);
   extractDigits(digits, currentScore);
   for(uint8_t i = 5; i > 0; --i)
   arduboy.print(digits[i - 1]);

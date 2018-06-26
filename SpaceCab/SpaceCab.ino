@@ -134,6 +134,7 @@ bool canMoveLeft() {
     switch (pgm_read_byte(&levelMap[(tileY1 * LEVEL_WIDTH) + tileX])) { 
 
       case BRICK:
+      case PLAT1:
       case ROOF2:
         Serial.print(tileX);
         Serial.print(" ");
@@ -150,6 +151,7 @@ bool canMoveLeft() {
       switch (pgm_read_byte(&levelMap[(tileY2 * LEVEL_WIDTH) + tileX])) {
 
         case BRICK:
+        case PLAT1:
         case ROOF2:
           Serial.print(tileX);
           Serial.print(" ");
@@ -207,6 +209,7 @@ bool canMoveRight() {
     switch (pgm_read_byte(&levelMap[(tileY1 * LEVEL_WIDTH) + tileX])) { 
 
       case BRICK:
+      case PLAT1:
       case ROOF2:
         Serial.print(tileX);
         Serial.print(" ");
@@ -223,6 +226,7 @@ bool canMoveRight() {
       switch (pgm_read_byte(&levelMap[(tileY2 * LEVEL_WIDTH) + tileX])) {
 
         case BRICK:
+        case PLAT1:
         case ROOF2:
           Serial.print(tileX);
           Serial.print(" ");
@@ -276,6 +280,7 @@ bool canMoveUp() {
     switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX1])) { 
 
       case BRICK:
+      case PLAT1:
       case ROOF2:
         Serial.print(tileX1);
         Serial.print(" ");
@@ -290,6 +295,7 @@ bool canMoveUp() {
     switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX2])) {
 
       case BRICK:
+      case PLAT1:
       case ROOF2:
         Serial.print(tileX2);
         Serial.print(" ");
@@ -304,6 +310,7 @@ bool canMoveUp() {
     switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX3])) {
 
       case BRICK:
+      case PLAT1:
       case ROOF2:
         Serial.print(tileX3);
         Serial.print(" ");
@@ -357,6 +364,7 @@ bool canMoveDown() {
     switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX1])) { 
 
       case BRICK:
+      case PLAT1:
       case ROOF2:
         Serial.print(tileX1);
         Serial.print(" ");
@@ -371,6 +379,7 @@ bool canMoveDown() {
     switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX2])) {
 
       case BRICK:
+      case PLAT1:
       case ROOF2:
         Serial.print(tileX2);
         Serial.print(" ");
@@ -385,6 +394,7 @@ bool canMoveDown() {
     switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX3])) {
 
       case BRICK:
+      case PLAT1:
       case ROOF2:
         Serial.print(tileX3);
         Serial.print(" ");
