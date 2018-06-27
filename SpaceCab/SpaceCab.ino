@@ -104,319 +104,150 @@ void customerPosition() {
 
 }
 
-bool canMoveLeft() {
-
-  uint8_t tileX  = NO_TILE;
-  uint8_t tileY1 = NO_TILE;
-  uint8_t tileY2 = NO_TILE;
-
-  const uint8_t *levelMap = levelMaps[level.number];
-  uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay();
-
-
-  // Only test if we can move if we are already at the left hand side of a tile ..
-  
-  if (playerXPosition % TILE_SIZE == 0) {
-
-    tileX = (playerXPosition / 8) - 1;
-    tileY1 = (player.getYDisplay() / 8);
-
-
-    // Are we are actually straddling two tiles vertically ..
-    
-    if (player.getYDisplay() % TILE_SIZE != 0) {
-      tileY2 = (player.getYDisplay() / 8) + 1;
-    }
-
-
-    // Retrieve the tile from the level defintion for x, y1 ..
-
-    switch (pgm_read_byte(&levelMap[(tileY1 * LEVEL_WIDTH) + tileX])) { 
-
+bool isTileSolid(uint8_t tileType)
+{
+    switch (tileType)
+    {
       case BRICK:
       case PLAT1:
       case ROOF2:
-        Serial.print(tileX);
+        /*Serial.print(tileX);
         Serial.print(" ");
         Serial.print(tileY1);
-        Serial.println(", brick or edge to left of Y1.");
+        Serial.println(", brick or edge to left of Y1.");*/
+        return true;
+      default:
         return false;
-
-      default: break;
-
     }
+}
 
-    if (tileY2 != NO_TILE) {
-
-      switch (pgm_read_byte(&levelMap[(tileY2 * LEVEL_WIDTH) + tileX])) {
-
-        case BRICK:
-        case PLAT1:
-        case ROOF2:
-          Serial.print(tileX);
-          Serial.print(" ");
-          Serial.print(tileY2);
-          Serial.println(", brick or edge to left of Y2.");
-          return false;
-
-        default: break;
-
-      }
-
-    }
-
+bool canMoveLeft()
+{
+  const uint8_t * levelMap = levelMaps[level.number];
+  uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay();
+  uint16_t playerYPosition = player.getYDisplay() - level.getYOffsetDisplay();
+ 
+  // We are not yet at the left hand edge of tile so movement is possible
+  if (playerXPosition % TILE_SIZE != 0)
     return true;
+	
+  // Only test if we can move if we are already at the left hand side of a tile 
+  uint8_t tileX = (playerXPosition / 8) - 1;
+  uint8_t tileY1 = (playerYPosition / 8);
 
-  }
-  else {
+  // Retrieve the tile from the level defintion for x, y1
+  uint8_t tile1 = pgm_read_byte(&levelMap[(tileY1 * LEVEL_WIDTH) + tileX]);
+  if(isTileSolid(tile1))
+    return false;
 
-    // We are not yet at the left hand edge of tile so movement is possible ..
-
-    return true;
-
+  // Are we are actually straddling two tiles vertically
+  if (player.getYDisplay() % TILE_SIZE != 0)
+  {
+    uint8_t tileY2 = (playerYPosition / 8) + 1;
+    uint8_t tile2 = pgm_read_byte(&levelMap[(tileY2 * LEVEL_WIDTH) + tileX]);
+    if(isTileSolid(tile2))
+      return false;
   }
 
+  return true;
 }
 
 
-bool canMoveRight() {
-
-  uint8_t tileX  = NO_TILE;
-  uint8_t tileY1 = NO_TILE;
-  uint8_t tileY2 = NO_TILE;
-
-  const uint8_t *levelMap = levelMaps[level.number];
+bool canMoveRight()
+{
+  const uint8_t * levelMap = levelMaps[level.number];
   uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay() + PLAYER_WIDTH;
+  uint16_t playerYPosition = player.getYDisplay() - level.getYOffsetDisplay();
 
+  // We are not yet at the right hand edge of tile so movement is possible
+  if (playerXPosition % TILE_SIZE != TILE_SIZE - 1)
+	return true;
+  
+  // Only test if we can move if we are already at the right hand side of a tile
+  uint8_t tileX = (playerXPosition / 8) + 1;
+  uint8_t tileY1 = (playerYPosition / 8);
 
-  // Only test if we can move if we are already at the right hand side of a tile ..
+  // Retrieve the tile from the level defintion for x, y1
+  uint8_t tile1 = pgm_read_byte(&levelMap[(tileY1 * LEVEL_WIDTH) + tileX]);
+  if(isTileSolid(tile1))
+    return false;
 
-  if (playerXPosition % TILE_SIZE == TILE_SIZE - 1) {
-
-    tileX = (playerXPosition / 8) + 1;
-    tileY1 = (player.getYDisplay() / 8);
-
-
-    // Are we are actually straddling two tiles vertically ..
-    
-    if (player.getYDisplay() % TILE_SIZE != 0) {
-      tileY2 = (player.getYDisplay() / 8) + 1;
-    }
-
-
-    // Retrieve the tile from the level defintion for x, y1 ..
-
-    switch (pgm_read_byte(&levelMap[(tileY1 * LEVEL_WIDTH) + tileX])) { 
-
-      case BRICK:
-      case PLAT1:
-      case ROOF2:
-        Serial.print(tileX);
-        Serial.print(" ");
-        Serial.print(tileY1);
-        Serial.println(", brick or Edge to right of Y1.");
-        return false;
-
-      default: break;
-
-    }
-
-    if (tileY2 != NO_TILE) {
-
-      switch (pgm_read_byte(&levelMap[(tileY2 * LEVEL_WIDTH) + tileX])) {
-
-        case BRICK:
-        case PLAT1:
-        case ROOF2:
-          Serial.print(tileX);
-          Serial.print(" ");
-          Serial.print(tileY2);
-          Serial.println(", brick or edge to right of Y2.");
-          return false;
-
-        default: break;
-
-      }
-
-    }
-
-    return true;
-
-  }
-  else {
-
-    // We are not yet at the right hand edge of tile so movement is possible ..
-
-    return true;
-
+  // Are we are actually straddling two tiles vertically
+  if (player.getYDisplay() % TILE_SIZE != 0)
+   {
+    uint8_t tileY2 = (playerYPosition / 8) + 1;
+    uint8_t tile2 = pgm_read_byte(&levelMap[(tileY2 * LEVEL_WIDTH) + tileX]);
+    if(isTileSolid(tile2))
+      return false;
   }
 
+  return true;
 }
 
 
-bool canMoveUp() {
-
-  uint8_t tileX1 = NO_TILE;
-  uint8_t tileX2 = NO_TILE;
-  uint8_t tileX3 = NO_TILE;
-  uint8_t tileY  = NO_TILE;
-
-  const uint8_t *levelMap = levelMaps[level.number];
+bool canMoveUp()
+{
+  const uint8_t * levelMap = levelMaps[level.number];
   uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay();
-
-
-  // Only test if we can move if we are already at the top of a tile ..
-  
-  if (player.getYDisplay() % TILE_SIZE == 0) {
-
-    tileY = (player.getYDisplay() / 8) - 1;
-    tileX1 = (playerXPosition / 8);
-    tileX2 = (playerXPosition / 8) + 1;
-    tileX3 = (playerXPosition / 8) + 2;
-
-
-    // Retrieve the tile from the level defintion for x, y1 ..
-
-    switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX1])) { 
-
-      case BRICK:
-      case PLAT1:
-      case ROOF2:
-        Serial.print(tileX1);
-        Serial.print(" ");
-        Serial.print(tileY);
-        Serial.println(", brick or edge to top of X1.");
-        return false;
-
-      default: break;
-
-    }
-
-    switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX2])) {
-
-      case BRICK:
-      case PLAT1:
-      case ROOF2:
-        Serial.print(tileX2);
-        Serial.print(" ");
-        Serial.print(tileY);
-        Serial.println(", brick or edge to top of X2.");
-        return false;
-
-      default: break;
-
-    }
-
-    switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX3])) {
-
-      case BRICK:
-      case PLAT1:
-      case ROOF2:
-        Serial.print(tileX3);
-        Serial.print(" ");
-        Serial.print(tileY);
-        Serial.println(", brick or edge to top of X3.");
-        return false;
-
-      default: break;
-
-    }
-
+  uint16_t playerYPosition = player.getYDisplay() - level.getYOffsetDisplay();
+ 
+  // We are not yet at the top edge of tile so movement is possible
+  if (playerYPosition % TILE_SIZE != 0)
     return true;
+	
+  // Only test if we can move if we are already at the top side of a tile 
+  uint8_t tileY = (playerYPosition / 8) - 1;
+  uint8_t tileX1 = (playerXPosition / 8);
+  uint8_t tileX2 = (playerXPosition / 8) + 1;
+  uint8_t tileX3 = (playerXPosition / 8) + 2;
 
-  }
-  else {
+  // Retrieve the tile from the level defintion for x, y1
+  uint8_t tile1 = pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX1]);
+  if(isTileSolid(tile1))
+    return false;
+	
+  uint8_t tile2 = pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX2]);
+  if(isTileSolid(tile2))
+    return false;
+	
+  uint8_t tile3 = pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX3]);
+  if(isTileSolid(tile3))
+    return false;
 
-    // We are not yet at the top of the tile so movement is possible ..
-
-    return true;
-
-  }
-
+  return true;
 }
 
 
-bool canMoveDown() {
-
-  uint8_t tileX1 = NO_TILE;
-  uint8_t tileX2 = NO_TILE;
-  uint8_t tileX3 = NO_TILE;
-  uint8_t tileY  = NO_TILE;
-
-  const uint8_t *levelMap = levelMaps[level.number];
+bool canMoveDown()
+{
+  const uint8_t * levelMap = levelMaps[level.number];
   uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay();
-  uint16_t playerYPosition = player.getYDisplay() + PLAYER_HEIGHT;
+  uint16_t playerYPosition = player.getYDisplay() - level.getYOffsetDisplay() + PLAYER_HEIGHT;
 
-
-  // Only test if we can move if we are already at the top of a tile ..
+  // We are not yet at the bottom edge of tile so movement is possible
+  if (playerYPosition % TILE_SIZE != 0)
+	return true;
   
-//  if (playerYPosition % TILE_SIZE == TILE_SIZE - 1) {
-  if (playerYPosition % TILE_SIZE == 0) {
+  // Only test if we can move if we are already at the right hand side of a tile
+  uint8_t tileY = (playerYPosition / 8);
+  uint8_t tileX1 = (playerXPosition / 8);
+  uint8_t tileX2 = (playerXPosition / 8) + 1;
+  uint8_t tileX3 = (playerXPosition / 8) + 2;
 
-    tileY = (playerYPosition / 8);
-    tileX1 = (playerXPosition / 8);
-    tileX2 = (playerXPosition / 8) + 1;
-    tileX3 = (playerXPosition / 8) + 2;
+  // Retrieve the tile from the level defintion for x, y1
+  uint8_t tile1 = pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX1]);
+  if(isTileSolid(tile1))
+    return false;
+	
+  uint8_t tile2 = pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX2]);
+  if(isTileSolid(tile2))
+    return false;
+	
+  uint8_t tile3 = pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX3]);
+  if(isTileSolid(tile3))
+    return false;
 
-
-    // Retrieve the tile from the level defintion for x, y1 ..
-
-    switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX1])) { 
-
-      case BRICK:
-      case PLAT1:
-      case ROOF2:
-        Serial.print(tileX1);
-        Serial.print(" ");
-        Serial.print(tileY);
-        Serial.println(", brick or edge to bottom of X1.");
-        return false;
-
-      default: break;
-
-    }
-
-    switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX2])) {
-
-      case BRICK:
-      case PLAT1:
-      case ROOF2:
-        Serial.print(tileX2);
-        Serial.print(" ");
-        Serial.print(tileY);
-        Serial.println(", brick or edge to bottom of X2.");
-        return false;
-
-      default: break;
-
-    }
-
-    switch (pgm_read_byte(&levelMap[(tileY * LEVEL_WIDTH) + tileX3])) {
-
-      case BRICK:
-      case PLAT1:
-      case ROOF2:
-        Serial.print(tileX3);
-        Serial.print(" ");
-        Serial.print(tileY);
-        Serial.println(", brick or edge to bottom of X3.");
-        return false;
-
-      default: break;
-
-    }
-
-    return true;
-
-  }
-  else {
-
-    // We are not yet at the top of the tile so movement is possible ..
-
-    return true;
-
-  }
-
+  return true;
 }
 
 
