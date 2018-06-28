@@ -90,7 +90,7 @@ void handleInput()
 void updateTime() {
 
   if (arduboy.everyXFrames(60)) {
-    if (gameTime >= 1)    --gameTime;
+    //SJH if (gameTime >= 1)    --gameTime;
     if (gameTime == 0 )   state = GameState::GameOver;
   }
 
@@ -114,11 +114,8 @@ bool isTileSolid(uint8_t tileType) {
       case BRICK:
       case PLAT1:
       case ROOF2:
-        /*Serial.print(tileX);
-        Serial.print(" ");
-        Serial.print(tileY1);
-        Serial.println(", brick or edge to left of Y1.");*/
         return true;
+
       default:
         return false;
     }
@@ -223,7 +220,11 @@ bool canMoveDown() {
   const uint8_t * levelMap = levelMaps[level.getLevelNumber()];
   uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay();
   uint16_t playerYPosition = player.getYDisplay() - level.getYOffsetDisplay() + PLAYER_HEIGHT;
-
+Serial.print(player.getYDisplay());
+Serial.print(" ");
+Serial.print(level.getYOffsetDisplay());
+Serial.print(" ");
+Serial.println(playerYPosition);
   // We are not yet at the bottom edge of tile so movement is possible
   if (playerYPosition % TILE_SIZE != 0)
 	  return true;
@@ -345,7 +346,6 @@ void moveCab() {
   if (player.yDelta > 0) { 
     
     if (canMoveDown()) {
-
       if (player.y < playerYCentre) {
         if (player.y + playerYDeltaVal < playerYCentre) {
           player.y = player.y + playerYDeltaVal;
@@ -374,7 +374,7 @@ void moveCab() {
           }
         }
         else {
-          if (player.y + playerYDeltaVal - PLAYER_HEIGHT < 55) {
+          if (player.y + playerYDeltaVal - PLAYER_WIDTH < 55) {
             player.y = player.y + playerYDeltaVal;
           }
           else {

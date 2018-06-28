@@ -85,6 +85,7 @@ void initLevel(uint8_t levelNumber, Player *player, Level *level) {
 
   player->x = static_cast<SQ15x16>(levelInit[(levelNumber * 6) + 4]);
   player->y = static_cast<SQ15x16>(levelInit[(levelNumber * 6) + 5]);
+
   player->frame = 1;
   
   level->setLevelNumber(levelNumber);

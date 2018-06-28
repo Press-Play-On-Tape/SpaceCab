@@ -65,7 +65,7 @@ const unsigned char PROGMEM level1Map[LEVEL_1_HEIGHT * LEVEL_1_WIDTH] = {
 };
 
 const uint8_t PROGMEM level1StartingPositions[10] = {
-1, 5,    13, 2,    6, 6,    17, 5,    32, 2, 
+1, 9,    13, 6,    6, 10,    17, 9,    32, 6, 
 };
 
 

@@ -23,6 +23,9 @@
 #define TILE_SIZE 8
 #define NO_TILE 255
 
+
+#define ARROW_FLASH 40
+
 enum class GameState : uint8_t {
 
   VSBoot,

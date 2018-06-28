@@ -65,6 +65,8 @@ void playerDisplay() {
   Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay(), SpaceTaxi, SpaceTaxiMask, player.frame, player.frame);
 }
 
+
+uint8_t arrowCount = 0;
 void customerDisplay() {
 
   int16_t customerXVal = customer.x + level.xOffset.getInteger();
@@ -78,58 +80,63 @@ void customerDisplay() {
       customer.incFrame();
     }
 
+    arrowCount = 0;
+
   }
-  else { // Render arrows.
+  else { 
+    
+    // Render arrows.
 
-    if (customerXVal < -CUSTOMER_WIDTH && customerXVal) {
+    arrowCount++;
+    arrowCount = arrowCount % ARROW_FLASH;
+    if (arrowCount < (ARROW_FLASH / 2)) { 
 
-      SQ15x16 grad = static_cast<SQ15x16>(customerYVal) - static_cast<SQ15x16>(player.getYDisplay()) / static_cast<SQ15x16>(customerXVal) - static_cast<SQ15x16>(player.getXDisplay());
-Serial.print((float)(static_cast<SQ15x16>(customerYVal) - static_cast<SQ15x16>(player.getYDisplay())));
-Serial.print(" - ");
-Serial.print((float)(static_cast<SQ15x16>(customerXVal) - static_cast<SQ15x16>(player.getXDisplay())));
-Serial.print(" - ");
-Serial.print((float)grad);
-Serial.print(" - ");
-      if (grad > 50) {
-        Serial.println("UP");
-      }
-      else if (grad > 32) {
-        Serial.println("UP LEFT");
-      }
-      else if (grad > 32) {
-        Serial.println("LEFT");
-      }
-      else if (grad > -32) {
-        Serial.println("DOWN LEFT");
-      }
+      if (customer.x < player.x) {
+
+        SQ15x16 dY = static_cast<SQ15x16>(customerYVal) - static_cast<SQ15x16>(player.getYDisplay());
+        SQ15x16 dX = static_cast<SQ15x16>(customerXVal) - static_cast<SQ15x16>(player.getXDisplay());
+        
+        SQ15x16 grad = dY / dX;
+    
+        if (dX == 0.00) {
+
+          if (dY > 0)             { Sprites::drawExternalMask(59, 47, ArrowD, ArrowD_Mask, 0, 0); }
+          if (dY < 0)             { Sprites::drawExternalMask(59, 0, ArrowU, ArrowU_Mask, 0, 0); }
+
+        }
+        else {
+
+          if (grad > 2.0)         { Sprites::drawExternalMask(59, 0, ArrowU, ArrowU_Mask, 0, 0); }
+          else if (grad > 0.12)   { Sprites::drawExternalMask(0, 0, ArrowUL, ArrowUL_Mask, 0, 0); }
+          else if (grad > -0.12)  { Sprites::drawExternalMask(0, 28, ArrowL, ArrowL_Mask, 0, 0); }
+          else if (grad > -2.0)   { Sprites::drawExternalMask(0, 47, ArrowDL, ArrowDL_Mask, 0, 0); }
+          else                    { Sprites::drawExternalMask(59, 47, ArrowD, ArrowD_Mask, 0, 0); }
+
+        }
+
+      } 
       else {
-        Serial.println("DOWN");
-      }
 
-    } 
-    else {
+        SQ15x16 dY = static_cast<SQ15x16>(customerYVal) - static_cast<SQ15x16>(player.getYDisplay());
+        SQ15x16 dX = static_cast<SQ15x16>(customerXVal) - static_cast<SQ15x16>(player.getXDisplay());
+        SQ15x16 grad = dY / dX;
 
-      SQ15x16 grad = static_cast<SQ15x16>(customerYVal) - static_cast<SQ15x16>(player.getYDisplay()) / static_cast<SQ15x16>(customerXVal) - static_cast<SQ15x16>(player.getXDisplay());
-Serial.print((float)(static_cast<SQ15x16>(customerYVal) - static_cast<SQ15x16>(player.getYDisplay())));
-Serial.print(" = ");
-Serial.print((float)(static_cast<SQ15x16>(customerXVal) - static_cast<SQ15x16>(player.getXDisplay())));
-Serial.print(" = ");
-Serial.print((float)grad);
-Serial.print(" = ");
-      if (grad > 50) {
-        Serial.println("UP");
-      }
-      else if (grad > 32) {
-        Serial.println("UP RIGHT");
-      }
-      else if (grad > 32) {
-        Serial.println("RIGHT");
-      }
-      else if (grad > -32) {
-        Serial.println("DOWN RIGHT");
-      }
-      else {
-        Serial.println("DOWN");
+        if (dX == 0.00) {
+
+          if (dY > 0)             { Sprites::drawExternalMask(59, 47, ArrowD, ArrowD_Mask, 0, 0); }
+          if (dY < 0)             { Sprites::drawExternalMask(59, 0, ArrowU, ArrowU_Mask, 0, 0); }
+
+        }
+        else {
+
+          if (grad > 2.0)         { Sprites::drawExternalMask(59, 47, ArrowD, ArrowD_Mask, 0, 0); }
+          else if (grad > 0.12)   { Sprites::drawExternalMask(120, 47, ArrowDR, ArrowDR_Mask, 0, 0); }
+          else if (grad > -0.12)  { Sprites::drawExternalMask(120, 28, ArrowR, ArrowR_Mask, 0, 0); }
+          else if (grad > -2.0)   { Sprites::drawExternalMask(120, 0, ArrowUR, ArrowUR_Mask, 0, 0); }
+          else                    { Sprites::drawExternalMask(59, 0, ArrowU, ArrowU_Mask, 0, 0); }
+
+        }
+
       }
 
     }
