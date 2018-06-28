@@ -20,6 +20,14 @@
 #define SHADE 7
 #define ROOF2 8
 #define BRICK 9
+#define GRASS 10
+#define ROCK1 11
+#define ROCK2 12
+#define ROCK3 13
+#define ROCK4 14
+#define ROCK5 15
+#define ROCK6 16
+#define ROCK7 17
 #define TILE_SIZE 8
 #define NO_TILE 255
 
