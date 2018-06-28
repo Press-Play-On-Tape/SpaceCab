@@ -90,7 +90,7 @@ void handleInput()
 void updateTime() {
 
   if (arduboy.everyXFrames(60)) {
-    //SJH if (gameTime >= 1)    --gameTime;
+    if (gameTime >= 1)    --gameTime;
     if (gameTime == 0 )   state = GameState::GameOver;
   }
 
