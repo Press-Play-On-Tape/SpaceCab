@@ -2,25 +2,28 @@
 
 void drawLevel() {
 
-  const uint8_t *levelMap = levelMaps[level.number];
+  const uint8_t *levelMap = levelMaps[level.getLevelNumber()];
+  
+  for (uint8_t y = 0; y < level.getHeightInTiles(); y++) {
 
-  for (int y = 0; y < LEVEL_HEIGHT; y++)
-  {
-    for (int x = 0; x < LEVEL_WIDTH; x++)
-    {
-      const int tileX = (x * TILE_SIZE);
-      const int tileY = (y * TILE_SIZE);
-      const auto bitmapX = tileX + level.getXOffsetDisplay();
-      const auto bitmapY = tileY + level.getYOffsetDisplay();
+    for (uint8_t x = 0; x < level.getWidthInTiles(); x++) {
+
+      const int16_t tileX = (x * TILE_SIZE);
+      const int16_t tileY = (y * TILE_SIZE);
+      const int16_t bitmapX = tileX + level.getXOffsetDisplay();
+      const int16_t bitmapY = tileY + level.getYOffsetDisplay();
       
       // Do we really need to render the tile?
-      if (bitmapX < -8 || bitmapX > 128 || bitmapY < -8 || bitmapY > 128)
+      if (bitmapX < -8 || bitmapX >= WIDTH || bitmapY < -8 || bitmapY >= HEIGHT)
         continue;
 
-      uint8_t tile = pgm_read_byte(&levelMap[(y * LEVEL_WIDTH) + x]);
+      uint8_t tile = pgm_read_byte(&levelMap[(y * level.getWidthInTiles()) + x]);
       arduboy.drawBitmap(bitmapX, bitmapY, tiles[tile], TILE_SIZE, TILE_SIZE, WHITE);
+
     }
+
   }
+
 }
 
 void drawHUD()
@@ -46,7 +49,7 @@ void scrollingBackground()
   arduboy.drawBitmap(backdropx, backdropy, checkeredBG, 128, 64, WHITE);
   arduboy.drawBitmap(backdropx + 128, backdropy, checkeredBG, 128, 64, WHITE);
 
-  if(arduboy.everyXFrames(2))
+  if (arduboy.everyXFrames(2))
   { // when running at 60fps
 
     --backdropx;
@@ -65,13 +68,70 @@ void playerDisplay() {
 void customerDisplay() {
 
   int16_t customerXVal = customer.x + level.xOffset.getInteger();
+  int16_t customerYVal = customer.y + level.yOffset.getInteger();
 
-  if (customerXVal >= -CUSTOMER_WIDTH && customerXVal < 128) {
+  if (customerXVal >= -CUSTOMER_WIDTH && customerXVal < WIDTH && customerYVal >= -CUSTOMER_HEIGHT && customerYVal < 55) {
 
-    Sprites::drawExternalMask(customerXVal, customer.y, Customer_Img, Customer_Img_Mask, customer.frame, customer.frame);
+    Sprites::drawExternalMask(customerXVal, customerYVal, Customer_Img, Customer_Img_Mask, customer.frame, customer.frame);
 
-    if(arduboy.everyXFrames(15)) {
+    if (arduboy.everyXFrames(15)) {
       customer.incFrame();
+    }
+
+  }
+  else { // Render arrows.
+
+    if (customerXVal < -CUSTOMER_WIDTH && customerXVal) {
+
+      SQ15x16 grad = static_cast<SQ15x16>(customerYVal) - static_cast<SQ15x16>(player.getYDisplay()) / static_cast<SQ15x16>(customerXVal) - static_cast<SQ15x16>(player.getXDisplay());
+Serial.print((float)(static_cast<SQ15x16>(customerYVal) - static_cast<SQ15x16>(player.getYDisplay())));
+Serial.print(" - ");
+Serial.print((float)(static_cast<SQ15x16>(customerXVal) - static_cast<SQ15x16>(player.getXDisplay())));
+Serial.print(" - ");
+Serial.print((float)grad);
+Serial.print(" - ");
+      if (grad > 50) {
+        Serial.println("UP");
+      }
+      else if (grad > 32) {
+        Serial.println("UP LEFT");
+      }
+      else if (grad > 32) {
+        Serial.println("LEFT");
+      }
+      else if (grad > -32) {
+        Serial.println("DOWN LEFT");
+      }
+      else {
+        Serial.println("DOWN");
+      }
+
+    } 
+    else {
+
+      SQ15x16 grad = static_cast<SQ15x16>(customerYVal) - static_cast<SQ15x16>(player.getYDisplay()) / static_cast<SQ15x16>(customerXVal) - static_cast<SQ15x16>(player.getXDisplay());
+Serial.print((float)(static_cast<SQ15x16>(customerYVal) - static_cast<SQ15x16>(player.getYDisplay())));
+Serial.print(" = ");
+Serial.print((float)(static_cast<SQ15x16>(customerXVal) - static_cast<SQ15x16>(player.getXDisplay())));
+Serial.print(" = ");
+Serial.print((float)grad);
+Serial.print(" = ");
+      if (grad > 50) {
+        Serial.println("UP");
+      }
+      else if (grad > 32) {
+        Serial.println("UP RIGHT");
+      }
+      else if (grad > 32) {
+        Serial.println("RIGHT");
+      }
+      else if (grad > -32) {
+        Serial.println("DOWN RIGHT");
+      }
+      else {
+        Serial.println("DOWN");
+      }
+
     }
 
   }

@@ -47,7 +47,7 @@ bool fadeIn()
     arduboy.drawFastHLine((WIDTH - fadeWidth), (i * 2) + 1, fadeWidth, BLACK);
   }
 
-  if(fadeWidth > 0)
+  if (fadeWidth > 0)
   {
     fadeWidth = fadeWidth - 4;
     return false;
@@ -63,7 +63,7 @@ bool fadeOut()
     arduboy.drawFastHLine(0, (i * 2), fadeWidth, BLACK);
     arduboy.drawFastHLine((WIDTH - fadeWidth), (i * 2) + 1, fadeWidth, BLACK);
   }
-  if(fadeWidth < WIDTH)
+  if (fadeWidth < WIDTH)
   {
     ++fadeWidth;
     return false;
@@ -73,3 +73,24 @@ bool fadeOut()
   }
   
 // -----------------------------------------------------------------------------
+
+
+void initLevel(uint8_t levelNumber, Player *player, Level *level) {
+
+  uint8_t width = levelInit[levelNumber * 6];
+  uint8_t height = levelInit[(levelNumber * 6) + 1];
+
+  level->xOffset = static_cast<SQ15x16>(levelInit[(levelNumber * 6) + 2]);
+  level->yOffset = static_cast<SQ15x16>(levelInit[(levelNumber * 6) + 3]);
+
+  player->x = static_cast<SQ15x16>(levelInit[(levelNumber * 6) + 4]);
+  player->y = static_cast<SQ15x16>(levelInit[(levelNumber * 6) + 5]);
+  player->frame = 1;
+  
+  level->setLevelNumber(levelNumber);
+  level->setHeight(height * TILE_SIZE);
+  level->setWidth(width * TILE_SIZE);
+  level->setHeightInTiles(height);
+  level->setWidthInTiles(width);
+
+}

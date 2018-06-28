@@ -1,3 +1,5 @@
+#include <Arduboy2.h>
+
 void gameoverScreen()
 {
   uint8_t digits[5];
@@ -17,8 +19,7 @@ void gameoverScreen()
   for(uint8_t i = 5; i > 0; --i)
   arduboy.print(digits[i - 1]);
   
-  if (arduboy.justPressed(B_BUTTON))
-  {
-    state = 1;
+  if (arduboy.justPressed(B_BUTTON)) {
+    state = GameState::SplashScreen_Init;
   }
 }
