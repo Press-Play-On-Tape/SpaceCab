@@ -14,58 +14,21 @@ void vsBoot()
 
 void titleScreen()
 {
-  Rect playerRect = {player.getXDisplay(), player.getYDisplay(), 17, 8};
-  Rect customerRect = {97, 48, 7, 8};
-  arduboy.drawBitmap(0, 0, SpaceCabSplash, 128, 64, WHITE);
-  Sprites::drawExternalMask(97, 48, Customer_Img, Customer_Img_Mask, customer.frame, customer.frame);
-  if (arduboy.everyXFrames(15))
-  {
-    customer.incFrame();
-  }
-  Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay(), SpaceTaxi, SpaceTaxiMask, player.frame, player.frame);
-
-  if (arduboy.everyXFrames(4)) {
-
-    if (arduboy.pressed(LEFT_BUTTON)) {
-      player.decXDelta();
-      player.frame = 1;
-    }
-    if (arduboy.pressed(RIGHT_BUTTON)) {
-      player.incXDelta();
-      player.frame = 0;
-    }
-    if (arduboy.pressed(A_BUTTON)) {
-      if (player.frame == 0) {
-        Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay() + 8, thrusterRight, thrusterRightMask, thrusterFrame, thrusterFrame);
-      }
-      if (player.frame == 1) {
-        Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay() + 8, thrusterLeft, thrusterLeftMask, thrusterFrame, thrusterFrame);
-      }
-      if (arduboy.everyXFrames(5)) {
-        ++thrusterFrame;
-        thrusterFrame %=2;
-      }
-      player.decYDelta();
-      sound.tone(NOTE_C1, 50, NOTE_C2, 50, NOTE_C1, 50);
-    }
-
-    if (arduboy.everyXFrames(8)) {
-
-      if (arduboy.notPressed(A_BUTTON)){
-        player.incYDelta();
-      }
-      if (arduboy.notPressed(LEFT_BUTTON) && arduboy.notPressed(RIGHT_BUTTON)){
-        if (player.xDelta > 0) {
-          player.decXDelta();
-        }
-        if (player.xDelta < 0) {
-          player.incXDelta();
-        }
-      }
-
-    }
-  }
-
+  int16_t customerXVal = customer.x + level.xOffset.getInteger();
+  int16_t customerYVal = customer.y + level.yOffset.getInteger();
+  int16_t logoXVal = 0 + level.xOffset.getInteger();
+  int16_t logoYVal = 6 + level.yOffset.getInteger();  
+  
+  launchCustomer();
+  Rect playerRect = {player.getXDisplay(), player.getYDisplay(), PLAYER_WIDTH, PLAYER_HEIGHT};
+  Rect customerRect = {customerXVal, customerYVal, CUSTOMER_WIDTH, CUSTOMER_HEIGHT};
+  handleInput();
+  drawLevel();
+  Sprites::drawExternalMask(logoXVal, logoYVal, SpaceCabSplash, SpaceCabSplashMask, 0, 0);
+  
+  playerDisplay();
+  customerDisplay();
+  
   if (arduboy.collide(playerRect, customerRect))
   {
     arduboy.initRandomSeed();
@@ -73,5 +36,3 @@ void titleScreen()
     state = GameState::PlayGame_Init;
   }
 }
-
-

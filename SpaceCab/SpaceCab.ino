@@ -254,7 +254,7 @@ Serial.println(playerYPosition);
 
 void checkCollision() {
 
-  Rect playerRect = { player.getXDisplay(), player.getYDisplay(), 17, 8 };
+  Rect playerRect = { player.getXDisplay(), player.getYDisplay(), PLAYER_WIDTH, PLAYER_HEIGHT };
 
 
   // Check customer collision only if they are on screen ..
