@@ -3,7 +3,7 @@
 void vsBoot()
 {
   // Vsoft logo display
-    arduboy.drawBitmap(0, 0, bootlogo, 128, 64, WHITE);
+    Sprites::drawOverwrite(46, 14, bootlogo, 0);
     if (fadeOut())
     {
       resetFade();
@@ -24,7 +24,7 @@ void titleScreen()
   Rect customerRect = {customerXVal, customerYVal, CUSTOMER_WIDTH, CUSTOMER_HEIGHT};
   handleInput();
   drawLevel();
-//  Sprites::drawExternalMask(logoXVal, logoYVal, SpaceCabSplash, SpaceCabSplashMask, 0, 0);
+  Sprites::drawExternalMask(logoXVal, logoYVal, SpaceCabSplash, SpaceCabSplashMask, 0, 0);
   
   playerDisplay();
   customerDisplay();
