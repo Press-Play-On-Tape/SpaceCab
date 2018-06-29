@@ -72,7 +72,7 @@ void customerDisplay() {
   int16_t customerXVal = customer.x + level.xOffset.getInteger();
   int16_t customerYVal = customer.y + level.yOffset.getInteger();
 
-  if (customerXVal >= -CUSTOMER_WIDTH && customerXVal < WIDTH && customerYVal >= -CUSTOMER_HEIGHT && customerYVal < 55) {
+  if (customerXVal >= -CUSTOMER_WIDTH && customerXVal < WIDTH && customerYVal >= -CUSTOMER_HEIGHT && customerYVal < HEIGHT) {
 
     Sprites::drawExternalMask(customerXVal, customerYVal, Customer_Img, Customer_Img_Mask, customer.frame, customer.frame);
 

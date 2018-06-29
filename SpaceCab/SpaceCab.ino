@@ -220,11 +220,11 @@ bool canMoveDown() {
   const uint8_t * levelMap = levelMaps[level.getLevelNumber()];
   uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay();
   uint16_t playerYPosition = player.getYDisplay() - level.getYOffsetDisplay() + PLAYER_HEIGHT;
-Serial.print(player.getYDisplay());
-Serial.print(" ");
-Serial.print(level.getYOffsetDisplay());
-Serial.print(" ");
-Serial.println(playerYPosition);
+// Serial.print(player.getYDisplay());
+// Serial.print(" ");
+// Serial.print(level.getYOffsetDisplay());
+// Serial.print(" ");
+// Serial.println(playerYPosition);
   // We are not yet at the bottom edge of tile so movement is possible
   if (playerYPosition % TILE_SIZE != 0)
 	  return true;
@@ -262,7 +262,7 @@ void checkCollision() {
   int16_t customerXVal = customer.x + level.xOffset.getInteger();
   int16_t customerYVal = customer.y + level.yOffset.getInteger();
 
-  if (customerXVal >= -CUSTOMER_WIDTH && customerXVal < WIDTH && customerYVal >= -CUSTOMER_HEIGHT && customerYVal < 55) {
+  if (customerXVal >= -CUSTOMER_WIDTH && customerXVal < WIDTH && customerYVal >= -CUSTOMER_HEIGHT && customerYVal < HEIGHT) {
   
     Rect customerRect = { customerXVal, customerYVal, CUSTOMER_WIDTH, CUSTOMER_HEIGHT };
 
@@ -346,7 +346,7 @@ void moveCab() {
   if (player.yDelta > 0) { 
     
     if (canMoveDown()) {
-      if (player.y < playerYCentre) {
+      if (player.y < playerYCentre) {                         
         if (player.y + playerYDeltaVal < playerYCentre) {
           player.y = player.y + playerYDeltaVal;
         }
@@ -356,31 +356,36 @@ void moveCab() {
         }
       }
       else if (player.y == playerYCentre) {                            
-        if (level.yOffset - playerYDeltaVal > -level.getHeight() + 55) {
+        if (level.yOffset - playerYDeltaVal > -level.getHeight() + HEIGHT) {
           level.yOffset = level.yOffset - playerYDeltaVal;
         }
         else {
-          player.y = player.y + ((level.getHeight() - 55) + level.yOffset) + playerYDeltaVal;
-          level.yOffset = -level.getHeight() + 55;
+          player.y = player.y + ((level.getHeight() - HEIGHT) + level.yOffset) + playerYDeltaVal;
+          level.yOffset = -level.getHeight() + HEIGHT;
         }
       }
       else if (player.y > playerYCentre) {
-        if (level.yOffset == -level.getHeight() + 55) {
-          if (player.y + playerYDeltaVal + PLAYER_WIDTH < 55) {
+        // Player is below the half way line ..     
+//      if (level.yOffset == -level.getHeight() + HEIGHT) {
+          // If the player can still move downwards on the screen then do it.      
+          if (player.y + playerYDeltaVal + PLAYER_HEIGHT < HEIGHT) {
             player.y = player.y + playerYDeltaVal;
           }
           else {
-            player.y = 55 - PLAYER_WIDTH;
+            // Otherwise, cap the Y value at the maximum height ..
+            player.y = HEIGHT - PLAYER_HEIGHT;
           }
-        }
-        else {
-          if (player.y + playerYDeltaVal - PLAYER_WIDTH < 55) {
-            player.y = player.y + playerYDeltaVal;
-          }
-          else {
-            player.y = 55 - PLAYER_WIDTH;          
-          }
-        }
+//         }
+//         else {
+//           // If the player can still move downwards on the screen then do it.      
+//           if (player.y + playerYDeltaVal - PLAYER_HEIGHT < HEIGHT) {
+//             player.y = player.y + playerYDeltaVal;
+//           }
+//           else {
+//             // Otherwise, cap the Y value at the maximum height ..
+//             player.y = HEIGHT - PLAYER_HEIGHT;          
+//           }
+//         }
       }
 
     }
@@ -465,22 +470,22 @@ void moveCab() {
         }
       }
       else if (player.x > playerXCentre) {
-        if (level.xOffset == -level.getWidth() + WIDTH) {
+//        if (level.xOffset == -level.getWidth() + WIDTH) {
           if (player.x + playerXDeltaVal + PLAYER_WIDTH < WIDTH) {
             player.x = player.x + playerXDeltaVal;
           }
           else {
             player.x = WIDTH - PLAYER_WIDTH;
           }
-        }
-        else {
-          if (player.x + playerXDeltaVal - PLAYER_WIDTH < (WIDTH * TILE_SIZE)) {
-            player.x = player.x + playerXDeltaVal;
-          }
-          else {
-            player.x = (WIDTH * TILE_SIZE) - PLAYER_WIDTH;          
-          }
-        }
+        // }
+        // else {
+        //   if (player.x + playerXDeltaVal - PLAYER_WIDTH < (WIDTH * TILE_SIZE)) {
+        //     player.x = player.x + playerXDeltaVal;
+        //   }
+        //   else {
+        //     player.x = (WIDTH * TILE_SIZE) - PLAYER_WIDTH;          
+        //   }
+        // }
       }
 
     }
@@ -559,8 +564,8 @@ void loop() {
 
   }
 
-
   arduboy.display();
   moveCab();
+
 }
 

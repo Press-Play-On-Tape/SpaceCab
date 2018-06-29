@@ -14,10 +14,10 @@ struct Level {
 
   private:
     uint8_t _number;
-    uint16_t _height = LEVEL_HEIGHT * 8;
-    uint16_t _width = LEVEL_WIDTH * 8;
-    uint16_t _heightInTiles = LEVEL_HEIGHT;
-    uint16_t _widthInTiles = LEVEL_WIDTH;
+    uint16_t _height = 0;
+    uint16_t _width = 0;
+    uint16_t _heightInTiles = 0;
+    uint16_t _widthInTiles = 0;
 
   public:
     int16_t getXOffsetDisplay()           const { return xOffset.getInteger(); }

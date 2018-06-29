@@ -8,8 +8,6 @@
 #define CUSTOMER_WIDTH 7
 #define CUSTOMER_HEIGHT 8
 
-#define LEVEL_WIDTH 34
-#define LEVEL_HEIGHT 15
 #define PLAT1 0
 #define EMPTY 1
 #define EDGE1 2
