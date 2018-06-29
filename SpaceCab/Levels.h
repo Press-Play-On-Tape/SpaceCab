@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Arduboy2.h>
 #include "Constants.h"
 
 const unsigned char PROGMEM tiles[18][8] =
