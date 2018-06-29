@@ -14,8 +14,8 @@ struct Player {
   int8_t xDelta = 0;
   int8_t yDelta = 0;
 
-  uint8_t getXDisplay() { return x.getInteger(); }
-  uint8_t getYDisplay() { return y.getInteger(); }
+  uint16_t getXDisplay() { return x.getInteger(); }
+  uint16_t getYDisplay() { return y.getInteger(); }
 
   uint8_t getXCentre() { return (64 - PLAYER_WIDTH_HALF); }
   uint8_t getYCentre() { return (32 - PLAYER_HEIGHT_HALF); }

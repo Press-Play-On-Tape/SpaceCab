@@ -148,18 +148,23 @@ void customerDisplay() {
     arrowCount = arrowCount % ARROW_FLASH;
     if (arrowCount < (ARROW_FLASH / 2)) { 
 Serial.print("Cust: ");
-Serial.print((float)customer.x);
-Serial.print(", Player: ");
+Serial.print(customer.x);
+Serial.print(",");
+Serial.print(customer.y);
+Serial.print(" Player: ");
 Serial.print((float)player.x);
-      SQ15x16 dY = static_cast<SQ15x16>(customerYVal) - static_cast<SQ15x16>(player.getYDisplay());
-      SQ15x16 dX = static_cast<SQ15x16>(customerXVal) - static_cast<SQ15x16>(player.getXDisplay());
+Serial.print(",");
+Serial.print((float)player.x);
+      SQ15x16 dY = customer.y - static_cast<SQ15x16>(player.y);
+      SQ15x16 dX = customer.x - static_cast<SQ15x16>(player.x);
       SQ15x16 grad = dY / dX;
-Serial.print(", dX: ");
+Serial.print(" dX: ");
 Serial.print((float)dX);
-Serial.print(", dY: ");
+Serial.print(" dY: ");
 Serial.print((float)dY);
-Serial.print(", Grad: ");
+Serial.print(" Grad: ");
 Serial.print((float)grad);
+Serial.print(" -  ");
 
       if (customer.x < player.x) {
     

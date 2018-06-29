@@ -254,7 +254,7 @@ bool canMoveDown() {
 
 void checkCollision() {
 
-  Rect playerRect = { player.getXDisplay(), player.getYDisplay(), PLAYER_WIDTH, PLAYER_HEIGHT };
+  Rect playerRect = { static_cast<int16_t>(player.getXDisplay()), static_cast<int16_t>(player.getYDisplay()), PLAYER_WIDTH, PLAYER_HEIGHT };
 
 
   // Check customer collision only if they are on screen ..
