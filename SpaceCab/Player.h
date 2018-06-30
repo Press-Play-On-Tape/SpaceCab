@@ -5,6 +5,9 @@
 #include "FixedPoints.h"
 #include "FixedPointsCommon.h"
 
+#define PLAYER_X_CENTRE 56
+#define PLAYER_Y_CENTRE 28
+
 struct Player {
 
   SQ15x16 x;
@@ -16,9 +19,6 @@ struct Player {
 
   uint16_t getXDisplay() { return x.getInteger(); }
   uint16_t getYDisplay() { return y.getInteger(); }
-
-  uint8_t getXCentre() { return (64 - PLAYER_WIDTH_HALF); }
-  uint8_t getYCentre() { return (32 - PLAYER_HEIGHT_HALF); }
 
   SQ15x16 getXDeltaVal() { return (static_cast<SQ15x16>(xDelta) / 8.00); }
   SQ15x16 getYDeltaVal() { return (static_cast<SQ15x16>(yDelta) / 8.00); }
