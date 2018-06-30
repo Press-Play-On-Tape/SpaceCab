@@ -1,34 +1,50 @@
 #include <Arduboy2.h>
 
+
+// ----------------------------------------------------------------------------------------------------------
+//  Can the player move left ?
+// ----------------------------------------------------------------------------------------------------------
+
 bool canMoveLeft() {
 
   const uint8_t * levelMap = levelMaps[level.getLevelNumber()];
   uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay();
   uint16_t playerYPosition = player.getYDisplay() - level.getYOffsetDisplay();
  
-  // We are not yet at the left hand edge of tile so movement is possible
+
+  // We are not yet at the left hand edge of tile so movement is possible ..
+
   if (playerXPosition % TILE_SIZE != 0) return true;
 	
-  // Only test if we can move if we are already at the left hand side of a tile 
+
+  // Retrieve the tile from the level defintion for x, y1 ..
+
   uint8_t tileX = (playerXPosition / 8) - 1;
   uint8_t tileY1 = (playerYPosition / 8);
-
-  // Retrieve the tile from the level defintion for x, y1
   uint8_t tile1 = pgm_read_byte(&levelMap[(tileY1 * level.getWidthInTiles()) + tileX]);
-  if (isTileSolid(tile1))
-    return false;
 
-  // Are we are actually straddling two tiles vertically
+  if (isTileSolid(tile1)) return false;
+
+
+  // Are we are actually straddling two tiles vertically?  If so test the second tile ..
+
   if (playerYPosition % TILE_SIZE != 0) {
+
     uint8_t tileY2 = (playerYPosition / 8) + 1;
     uint8_t tile2 = pgm_read_byte(&levelMap[(tileY2 * level.getWidthInTiles()) + tileX]);
-    if (isTileSolid(tile2))
-      return false;
+
+    if (isTileSolid(tile2)) return false;
+
   }
 
   return true;
+
 }
 
+
+// ----------------------------------------------------------------------------------------------------------
+//  Can the player move right ?
+// ----------------------------------------------------------------------------------------------------------
 
 bool canMoveRight() {
 
@@ -36,61 +52,81 @@ bool canMoveRight() {
   uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay() + PLAYER_WIDTH;
   uint16_t playerYPosition = player.getYDisplay() - level.getYOffsetDisplay();
 
-  // We are not yet at the right hand edge of tile so movement is possible
-  if (playerXPosition % TILE_SIZE != TILE_SIZE - 1) 
-	  return true;
+
+  // We are not yet at the right hand edge of tile so movement is possible..
+
+  if (playerXPosition % TILE_SIZE != TILE_SIZE - 1) return true;
+
+
+  // Retrieve the tile from the level defintion for x, y1 ..
   
-  // Only test if we can move if we are already at the right hand side of a tile
   uint8_t tileX = (playerXPosition / 8) + 1;
   uint8_t tileY1 = (playerYPosition / 8);
-
-  // Retrieve the tile from the level defintion for x, y1
   uint8_t tile1 = pgm_read_byte(&levelMap[(tileY1 * level.getWidthInTiles()) + tileX]);
+
   if (isTileSolid(tile1)) return false;
 
-  // Are we are actually straddling two tiles vertically
+
+  // Are we are actually straddling two tiles vertically?  If so test the second tile ..
+
   if (playerYPosition % TILE_SIZE != 0) {
+
     uint8_t tileY2 = (playerYPosition / 8) + 1;
     uint8_t tile2 = pgm_read_byte(&levelMap[(tileY2 * level.getWidthInTiles()) + tileX]);
+
     if (isTileSolid(tile2)) return false;
+
   }
 
   return true;
+  
 }
 
+
+// ----------------------------------------------------------------------------------------------------------
+//  Can the player move up ?
+// ----------------------------------------------------------------------------------------------------------
 
 bool canMoveUp() {
 
   const uint8_t * levelMap = levelMaps[level.getLevelNumber()];
   uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay();
   uint16_t playerYPosition = player.getYDisplay() - level.getYOffsetDisplay();
- 
-  // We are not yet at the top edge of tile so movement is possible
-  if (playerYPosition % TILE_SIZE != 0)
-    return true;
-	
-  // Only test if we can move if we are already at the top side of a tile 
+
+
+  // We are not yet at the top edge of tile so movement is possible ..
+
+  if (playerYPosition % TILE_SIZE != 0) return true;
+
+
+  // The player is 17 pixels wide so always straddles 3 tiles .. 
+
   uint8_t tileY = (playerYPosition / 8) - 1;
   uint8_t tileX1 = (playerXPosition / 8);
   uint8_t tileX2 = (playerXPosition / 8) + 1;
   uint8_t tileX3 = (playerXPosition / 8) + 2;
 
-  // Retrieve the tile from the level defintion for x, y1
+
+  // Retrieve the the three tiles and test them in order ..
+
   uint8_t tile1 = pgm_read_byte(&levelMap[(tileY * level.getWidthInTiles()) + tileX1]);
-  if (isTileSolid(tile1))
-    return false;
+  if (isTileSolid(tile1)) return false;
 	
   uint8_t tile2 = pgm_read_byte(&levelMap[(tileY * level.getWidthInTiles()) + tileX2]);
-  if (isTileSolid(tile2))
-    return false;
+  if (isTileSolid(tile2)) return false;
 	
   uint8_t tile3 = pgm_read_byte(&levelMap[(tileY * level.getWidthInTiles()) + tileX3]);
-  if (isTileSolid(tile3))
-    return false;
+  if (isTileSolid(tile3)) return false;
 
   return true;
+
 }
 
+
+
+// ----------------------------------------------------------------------------------------------------------
+//  Can the player move down ?
+// ----------------------------------------------------------------------------------------------------------
 
 bool canMoveDown() {
 
@@ -98,30 +134,33 @@ bool canMoveDown() {
   uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay();
   uint16_t playerYPosition = player.getYDisplay() - level.getYOffsetDisplay() + PLAYER_HEIGHT;
 
-  // We are not yet at the bottom edge of tile so movement is possible
-  if (playerYPosition % TILE_SIZE != 0)
-	  return true;
-  
-  // Only test if we can move if we are already at the right hand side of a tile
+
+  // We are not yet at the bottom edge of tile so movement is possible ,,
+
+  if (playerYPosition % TILE_SIZE != 0) return true;
+
+
+  // The player is 17 pixels wide so always straddles 3 tiles .. 
+
   uint8_t tileY = (playerYPosition / 8);
   uint8_t tileX1 = (playerXPosition / 8);
   uint8_t tileX2 = (playerXPosition / 8) + 1;
   uint8_t tileX3 = (playerXPosition / 8) + 2;
 
-  // Retrieve the tile from the level defintion for x, y1
+
+  // Retrieve the the three tiles and test them in order ..
+
   uint8_t tile1 = pgm_read_byte(&levelMap[(tileY * level.getWidthInTiles()) + tileX1]);
-  if (isTileSolid(tile1))
-    return false;
+  if (isTileSolid(tile1)) return false;
 	
   uint8_t tile2 = pgm_read_byte(&levelMap[(tileY * level.getWidthInTiles()) + tileX2]);
-  if (isTileSolid(tile2))
-    return false;
+  if (isTileSolid(tile2)) return false;
 	
   uint8_t tile3 = pgm_read_byte(&levelMap[(tileY * level.getWidthInTiles()) + tileX3]);
-  if (isTileSolid(tile3))
-    return false;
+  if (isTileSolid(tile3)) return false;
 
   return true;
+
 }
 
 
@@ -148,7 +187,7 @@ void moveCab() {
           }
         }
         else if (player.y == PLAYER_Y_CENTRE) {
-          if (level.yOffset < PLAYER_Y_CENTRE) {
+          if (level.yOffset < PLAYER_Y_CENTRE && (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8)) {
             level.yOffset = level.yOffset - playerYDeltaVal;
           }
           else {
@@ -198,7 +237,7 @@ void moveCab() {
         }
       }
       else if (player.y == PLAYER_Y_CENTRE) {                            
-        if (level.yOffset - playerYDeltaVal > -level.getHeight() + HEIGHT) {
+        if (level.yOffset - playerYDeltaVal > -level.getHeight() + HEIGHT && (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8)) {
           level.yOffset = level.yOffset - playerYDeltaVal;
         }
         else {
@@ -241,7 +280,7 @@ void moveCab() {
           }
         }
         else if (player.x == PLAYER_X_CENTRE) {
-          if (level.xOffset < playerXDeltaVal) {
+          if (level.xOffset < playerXDeltaVal && (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8)) {
             level.xOffset = level.xOffset - playerXDeltaVal;
           }
           else {
@@ -292,7 +331,7 @@ void moveCab() {
         }
       }
       else if (player.x == PLAYER_X_CENTRE) {                            
-        if (level.xOffset - playerXDeltaVal > -level.getWidth() + WIDTH) {
+        if (level.xOffset - playerXDeltaVal > -level.getWidth() + WIDTH && (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8)) {
           level.xOffset = level.xOffset - playerXDeltaVal;
         }
         else {
@@ -314,6 +353,5 @@ void moveCab() {
     }
 
   }
-
 
 }
