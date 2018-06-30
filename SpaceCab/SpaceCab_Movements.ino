@@ -164,13 +164,25 @@ bool canMoveDown() {
 }
 
 
+// ----------------------------------------------------------------------------------------------------------
+//  Move the cab ..
+// ----------------------------------------------------------------------------------------------------------
+
 void moveCab() {
+
+// Serial.print((float)player.x);
+// Serial.print(",");
+// Serial.print((float)player.y);
+// Serial.print(" ");
+// Serial.print((float)level.xOffset);
+// Serial.print(",");
+// Serial.println((float)level.yOffset);
 
   SQ15x16 playerYDeltaVal = player.getYDeltaVal();
   SQ15x16 playerXDeltaVal = player.getXDeltaVal();
 
 
-  // --  Moving up --------------------------------------------------------------------------------------------
+  // --  Moving up -----------------------------------------------------------------------------------------
 
   if (player.yDelta < 0) { 
 
@@ -232,7 +244,9 @@ void moveCab() {
           player.y = player.y + playerYDeltaVal;
         }
         else {
-          level.yOffset = PLAYER_Y_CENTRE - player.y - playerYDeltaVal;
+          if (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8) {
+            level.yOffset = PLAYER_Y_CENTRE - player.y - playerYDeltaVal;
+          }
           player.y = PLAYER_Y_CENTRE;
         }
       }
@@ -242,17 +256,16 @@ void moveCab() {
         }
         else {
           player.y = player.y + ((level.getHeight() - HEIGHT) + level.yOffset) + playerYDeltaVal;
-          level.yOffset = -level.getHeight() + HEIGHT;
+          if (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8) {
+            level.yOffset = -level.getHeight() + HEIGHT;
+          }
         }
       }
       else if (player.y > PLAYER_Y_CENTRE) {
-        // Player is below the half way line ..     
-        // If the player can still move downwards on the screen then do it.      
         if (player.y + playerYDeltaVal + PLAYER_HEIGHT < HEIGHT) {
           player.y = player.y + playerYDeltaVal;
         }
         else {
-          // Otherwise, cap the Y value at the maximum height ..
           player.y = HEIGHT - PLAYER_HEIGHT;
         }
 
@@ -326,7 +339,9 @@ void moveCab() {
           player.x = player.x + playerXDeltaVal;
         }
         else {
-          level.xOffset = PLAYER_X_CENTRE - player.x - playerXDeltaVal;
+          if (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8) {
+            level.xOffset = PLAYER_X_CENTRE - player.x - playerXDeltaVal;
+          }
           player.x = PLAYER_X_CENTRE;
         }
       }
@@ -336,7 +351,9 @@ void moveCab() {
         }
         else {
           player.x = player.x + ((level.getWidth() - WIDTH) + level.xOffset) + playerXDeltaVal;
-          level.xOffset = -level.getWidth() + WIDTH;
+          if (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8) {
+            level.xOffset = -level.getWidth() + WIDTH;
+          }
         }
       }
       else if (player.x > PLAYER_X_CENTRE) {

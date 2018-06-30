@@ -4,6 +4,7 @@ Arduboy2Base arduboy;
 
 uint8_t fadeWidth;
 
+
 // Extract individual digits of a uint8_t -------------------------------------
 
 template< size_t size > void extractDigits(uint8_t (&buffer)[size], uint8_t value)
@@ -85,7 +86,8 @@ void initLevel(uint8_t levelNumber, Player *player, Level *level) {
 
   player->x = static_cast<SQ15x16>(levelInit[(levelNumber * 6) + 4]);
   player->y = static_cast<SQ15x16>(levelInit[(levelNumber * 6) + 5]);
-
+  player->xDelta = 0;
+  player->yDelta = 0;
   player->frame = 1;
   
   level->setLevelNumber(levelNumber);

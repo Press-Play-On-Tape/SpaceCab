@@ -191,6 +191,7 @@ void loop() {
 
   case GameState::SplashScreen_Init:
     initLevel(0, &player, &level);
+    launchCustomer();
     state = GameState::SplashScreen;
     // break;  -- Fall through intentional.
 

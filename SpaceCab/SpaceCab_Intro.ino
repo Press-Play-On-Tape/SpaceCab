@@ -19,7 +19,6 @@ void titleScreen()
   int16_t logoXVal = 0 + level.xOffset.getInteger();
   int16_t logoYVal = 6 + level.yOffset.getInteger();  
   
-  launchCustomer();
   Rect playerRect = {static_cast<int16_t>(player.getXDisplay()), static_cast<int16_t>(player.getYDisplay()), PLAYER_WIDTH, PLAYER_HEIGHT};
   Rect customerRect = {customerXVal, customerYVal, CUSTOMER_WIDTH, CUSTOMER_HEIGHT};
   handleInput();
