@@ -85,102 +85,46 @@ void customerDisplay() {
   }
   else { 
     
-    // // Render arrows.
-
-    // arrowCount++;
-    // arrowCount = arrowCount % ARROW_FLASH;
-    // if (arrowCount < (ARROW_FLASH / 2)) { 
-
-    //   if (customer.x < player.x) {
-
-    //     SQ15x16 dY = static_cast<SQ15x16>(customerYVal) - static_cast<SQ15x16>(player.getYDisplay());
-    //     SQ15x16 dX = static_cast<SQ15x16>(customerXVal) - static_cast<SQ15x16>(player.getXDisplay());
-        
-    //     SQ15x16 grad = dY / dX;
-    
-    //     if (dX == 0.00) {
-
-    //       if (dY > 0)             { Sprites::drawExternalMask(59, 47, ArrowD, ArrowD_Mask, 0, 0); }
-    //       if (dY < 0)             { Sprites::drawExternalMask(59, 0, ArrowU, ArrowU_Mask, 0, 0); }
-
-    //     }
-    //     else {
-
-    //       if (grad > 2.0)         { Sprites::drawExternalMask(59, 0, ArrowU, ArrowU_Mask, 0, 0); }
-    //       else if (grad > 0.12)   { Sprites::drawExternalMask(0, 0, ArrowUL, ArrowUL_Mask, 0, 0); }
-    //       else if (grad > -0.12)  { Sprites::drawExternalMask(0, 28, ArrowL, ArrowL_Mask, 0, 0); }
-    //       else if (grad > -2.0)   { Sprites::drawExternalMask(0, 47, ArrowDL, ArrowDL_Mask, 0, 0); }
-    //       else                    { Sprites::drawExternalMask(59, 47, ArrowD, ArrowD_Mask, 0, 0); }
-
-    //     }
-
-    //   } 
-    //   else {
-
-    //     SQ15x16 dY = static_cast<SQ15x16>(customerYVal) - static_cast<SQ15x16>(player.getYDisplay());
-    //     SQ15x16 dX = static_cast<SQ15x16>(customerXVal) - static_cast<SQ15x16>(player.getXDisplay());
-    //     SQ15x16 grad = dY / dX;
-
-    //     if (dX == 0.00) {
-
-    //       if (dY > 0)             { Sprites::drawExternalMask(59, 47, ArrowD, ArrowD_Mask, 0, 0); }
-    //       if (dY < 0)             { Sprites::drawExternalMask(59, 0, ArrowU, ArrowU_Mask, 0, 0); }
-
-    //     }
-    //     else {
-
-    //       if (grad > 2.0)         { Sprites::drawExternalMask(59, 47, ArrowD, ArrowD_Mask, 0, 0); }
-    //       else if (grad > 0.12)   { Sprites::drawExternalMask(120, 47, ArrowDR, ArrowDR_Mask, 0, 0); }
-    //       else if (grad > -0.12)  { Sprites::drawExternalMask(120, 28, ArrowR, ArrowR_Mask, 0, 0); }
-    //       else if (grad > -2.0)   { Sprites::drawExternalMask(120, 0, ArrowUR, ArrowUR_Mask, 0, 0); }
-    //       else                    { Sprites::drawExternalMask(59, 0, ArrowU, ArrowU_Mask, 0, 0); }
-
-    //     }
-
-    //   }
-
-    // }
-
 
     // Render arrows.
 
     arrowCount++;
     arrowCount = arrowCount % ARROW_FLASH;
     if (arrowCount < (ARROW_FLASH / 2)) { 
-Serial.print("Cust: ");
-Serial.print(customer.x);
-Serial.print(",");
-Serial.print(customer.y);
-Serial.print(" Player: ");
-Serial.print((float)player.x);
-Serial.print(",");
-Serial.print((float)player.x);
-      SQ15x16 dY = customer.y - static_cast<SQ15x16>(player.y);
-      SQ15x16 dX = customer.x - static_cast<SQ15x16>(player.x);
+// Serial.print("Cust: ");
+// Serial.print(customer.x);
+// Serial.print(",");
+// Serial.print(customer.y);
+// Serial.print(" Player: ");
+// Serial.print((float)(player.x - level.xOffset));
+// Serial.print(",");
+// Serial.print((float)(player.y - level.yOffset));
+      SQ15x16 dX = static_cast<SQ15x16>(customer.x) - (player.x - level.xOffset);
+      SQ15x16 dY = static_cast<SQ15x16>(customer.y) - (player.y - level.yOffset);
       SQ15x16 grad = dY / dX;
-Serial.print(" dX: ");
-Serial.print((float)dX);
-Serial.print(" dY: ");
-Serial.print((float)dY);
-Serial.print(" Grad: ");
-Serial.print((float)grad);
-Serial.print(" -  ");
+// Serial.print(" dX: ");
+// Serial.print((float)dX);
+// Serial.print(" dY: ");
+// Serial.print((float)dY);
+// Serial.print(" Grad: ");
+// Serial.print((float)grad);
+// Serial.print(" -  ");
 
-      if (customer.x < player.x) {
+      if (customer.x < (player.x - level.xOffset)) {
     
         if (absT(dX) <= 0.02) {
 
-          if (dY > 0)             { Serial.println("1.1"); Sprites::drawExternalMask(59, 47, ArrowD, ArrowD_Mask, 0, 0); }
-          if (dY < 0)             { Serial.println("1.2"); Sprites::drawExternalMask(59, 0, ArrowU, ArrowU_Mask, 0, 0); }
+          if (dY > 0)             { Sprites::drawExternalMask(59, 47, ArrowD, ArrowD_Mask, 0, 0); }
+          if (dY < 0)             { Sprites::drawExternalMask(59, 0, ArrowU, ArrowU_Mask, 0, 0); }
 
         }
         else {
 
-          if (grad > 2.0)         { Serial.println("1.3"); Sprites::drawExternalMask(59, 0, ArrowU, ArrowU_Mask, 0, 0); }
-          else if (grad > 0.12)   { Serial.println("1.4"); Sprites::drawExternalMask(0, 0, ArrowUL, ArrowUL_Mask, 0, 0); }
-          else if (grad > -0.12)  { Serial.println("1.5"); Sprites::drawExternalMask(0, 28, ArrowL, ArrowL_Mask, 0, 0); }
-          else if (grad > -2.0)   { Serial.println("1.6"); Sprites::drawExternalMask(0, 47, ArrowDL, ArrowDL_Mask, 0, 0); }
-          else                    { Serial.println("1.7"); Sprites::drawExternalMask(59, 47, ArrowD, ArrowD_Mask, 0, 0); }
+          if (grad > 2.0)         { Sprites::drawExternalMask(59, 0, ArrowU, ArrowU_Mask, 0, 0); }
+          else if (grad > 0.14)   { Sprites::drawExternalMask(0, 0, ArrowUL, ArrowUL_Mask, 0, 0); }
+          else if (grad > -0.14)  { Sprites::drawExternalMask(0, 28, ArrowL, ArrowL_Mask, 0, 0); }
+          else if (grad > -2.0)   { Sprites::drawExternalMask(0, 47, ArrowDL, ArrowDL_Mask, 0, 0); }
+          else                    { Sprites::drawExternalMask(59, 47, ArrowD, ArrowD_Mask, 0, 0); }
 
         }
 
@@ -189,17 +133,17 @@ Serial.print(" -  ");
 
         if (absT(dX) <= 0.02) {
 
-          if (dY > 0)             { Serial.println("2.1"); Sprites::drawExternalMask(59, 47, ArrowD, ArrowD_Mask, 0, 0); }
-          if (dY < 0)             { Serial.println("2.2"); Sprites::drawExternalMask(59, 0, ArrowU, ArrowU_Mask, 0, 0); }
+          if (dY > 0)             { Sprites::drawExternalMask(59, 47, ArrowD, ArrowD_Mask, 0, 0); }
+          if (dY < 0)             { Sprites::drawExternalMask(59, 0, ArrowU, ArrowU_Mask, 0, 0); }
 
         }
         else {
 
-          if (grad > 2.0)         { Serial.println("2.3"); Sprites::drawExternalMask(59, 47, ArrowD, ArrowD_Mask, 0, 0); }
-          else if (grad > 0.12)   { Serial.println("2.4"); Sprites::drawExternalMask(120, 47, ArrowDR, ArrowDR_Mask, 0, 0); }
-          else if (grad > -0.12)  { Serial.println("2.5"); Sprites::drawExternalMask(120, 28, ArrowR, ArrowR_Mask, 0, 0); }
-          else if (grad > -2.0)   { Serial.println("2.6"); Sprites::drawExternalMask(120, 0, ArrowUR, ArrowUR_Mask, 0, 0); }
-          else                    { Serial.println("2.7"); Sprites::drawExternalMask(59, 0, ArrowU, ArrowU_Mask, 0, 0); }
+          if (grad > 2.0)         { Sprites::drawExternalMask(59, 47, ArrowD, ArrowD_Mask, 0, 0); }
+          else if (grad > 0.14)   { Sprites::drawExternalMask(120, 47, ArrowDR, ArrowDR_Mask, 0, 0); }
+          else if (grad > -0.14)  { Sprites::drawExternalMask(120, 28, ArrowR, ArrowR_Mask, 0, 0); }
+          else if (grad > -2.0)   { Sprites::drawExternalMask(120, 0, ArrowUR, ArrowUR_Mask, 0, 0); }
+          else                    { Sprites::drawExternalMask(59, 0, ArrowU, ArrowU_Mask, 0, 0); }
 
         }
 
