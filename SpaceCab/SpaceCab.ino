@@ -34,69 +34,91 @@ int16_t backdropy = 0;
 //------------------------------------------------------------------------------
 
 
-void handleInput()
-{
-  if (arduboy.everyXFrames(4)) {
-    if (arduboy.pressed(LEFT_BUTTON))
-    {
+void handleInput() {
 
+  if (arduboy.everyXFrames(4)) {
+
+    if (arduboy.pressed(LEFT_BUTTON)) {
       player.decXDelta();
       player.frame = 1;
     }
-    if (arduboy.pressed(RIGHT_BUTTON))
-    {
+
+    else if (arduboy.pressed(RIGHT_BUTTON)) {
       player.incXDelta();
       player.frame = 0;
     }
-    if (arduboy.pressed(A_BUTTON))
-    {
-      if (player.frame == 0)
-      {
-        Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay() + 8, thrusterRight, thrusterRightMask, thrusterFrame, thrusterFrame);
+
+    else if (arduboy.pressed(DOWN_BUTTON)) {
+      player.incYDelta(); 
+    }
+
+    else if (arduboy.pressed(A_BUTTON)) {
+
+      switch (player.frame) {
+
+        case 0: 
+          Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay() + 8, thrusterRight, thrusterRightMask, thrusterFrame, thrusterFrame);
+          break;
+
+        case 1:
+          Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay() + 8, thrusterLeft, thrusterLeftMask, thrusterFrame, thrusterFrame);
+          break;
+
       }
-      if (player.frame == 1)
-      {
-        Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay() + 8, thrusterLeft, thrusterLeftMask, thrusterFrame, thrusterFrame);
-      }
-      if (arduboy.everyXFrames(5))
-      {
+
+
+      // Alternate thruster frame every 5 frames ..
+
+      if (arduboy.everyXFrames(5)) {
         ++thrusterFrame;
         thrusterFrame %=2;
       }
-      player.decYDelta(); // going up
+
+      player.decYDelta();
       sound.tone(NOTE_C1, 50, NOTE_C2, 50, NOTE_C1, 50);
+
     }
 
-    if (arduboy.everyXFrames(8))
-    {
-      if (arduboy.notPressed(A_BUTTON))
-      {
-        player.incYDelta(); // start falling.
+    else if (arduboy.everyXFrames(8)) {
+
+      // If the A Button is not being pressed, then we should start falling ..
+
+      if (arduboy.notPressed(A_BUTTON)) {
+        player.incYDelta(); 
       }
 
-      if (arduboy.notPressed(LEFT_BUTTON) && arduboy.notPressed(RIGHT_BUTTON))
-      { // slow down
-        if (player.xDelta > 0)
-        {
-         player. decXDelta();
-        }
-        if (player.xDelta < 0)
-        {
-          player.incXDelta();
-        }
+
+      // If the player is not pressing the elft or right button then start slowing down ..
+
+      if (arduboy.notPressed(LEFT_BUTTON) && arduboy.notPressed(RIGHT_BUTTON)) {
+
+        if (player.xDelta > 0)  player. decXDelta();
+        if (player.xDelta < 0)  player.incXDelta();
+
       }
+
     }
+
   }
+
 }
+
 
 void updateTime() {
 
   if (arduboy.everyXFrames(60)) {
-//SJH    if (gameTime >= 1)    --gameTime;
+    if (gameTime >= 1)    --gameTime;
     if (gameTime == 0 )   state = GameState::GameOver;
   }
 
 }
+
+
+//------------------------------------------------------------------------------
+//  Launch a new customer.
+//
+//  Valid launching positions are derived from the level design.
+//------------------------------------------------------------------------------
 
 void launchCustomer() {
 
@@ -110,20 +132,10 @@ void launchCustomer() {
 
 }
 
-bool isTileSolid(uint8_t tileType) {
 
-    switch (tileType) {
-      case BRICK:
-      case PLAT1:
-      case ROOF2:
-        return true;
-
-      default:
-        return false;
-    }
-}
-
-
+//------------------------------------------------------------------------------
+//  Has the player collided with the customer ?
+//------------------------------------------------------------------------------
 
 void checkCollision() {
 
@@ -150,8 +162,12 @@ void checkCollision() {
 }
 
 
-void inGame()
-{
+//------------------------------------------------------------------------------
+//  Play the game! 
+//------------------------------------------------------------------------------
+
+void inGame() {
+
   updateTime();
   handleInput();
   checkCollision();
@@ -159,8 +175,12 @@ void inGame()
   playerDisplay();
   customerDisplay();
   drawHUD();
+
 }
 
+
+//------------------------------------------------------------------------------
+//  Setup 
 //------------------------------------------------------------------------------
 
 void setup() {
@@ -176,48 +196,47 @@ void setup() {
 }
 
 void loop() {
-  if (!(arduboy.nextFrame()))
-    return;
+  
+  if (!(arduboy.nextFrame())) return;
 
   arduboy.pollButtons();
   arduboy.clear();
 
-  switch (state)
-  {
+  switch (state) {
 
-  case GameState::VSBoot:
-    vsBoot();
-    break;
+    case GameState::VSBoot:
+      vsBoot();
+      break;
 
-  case GameState::SplashScreen_Init:
-    initLevel(0, &player, &level);
-    launchCustomer();
-    state = GameState::SplashScreen;
-    // break;  -- Fall through intentional.
+    case GameState::SplashScreen_Init:
+      initLevel(0, &player, &level);
+      launchCustomer();
+      state = GameState::SplashScreen;
+      // break;  -- Fall through intentional.
 
-  case GameState::SplashScreen:
-    titleScreen();
-    break;
+    case GameState::SplashScreen:
+      titleScreen();
+      break;
 
-  case GameState::PlayGame_Init:
-    thrusterFrame = 0;
-    gameTime = 60;
-    currentScore = 0;
-    levelNumber = 1;
+    case GameState::PlayGame_Init:
+      thrusterFrame = 0;
+      gameTime = 60;
+      currentScore = 0;
+      levelNumber = 1;
 
-    initLevel(levelNumber, &player, &level);
-    launchCustomer();
+      initLevel(levelNumber, &player, &level);
+      launchCustomer();
 
-    state = GameState::PlayGame;
-    // break;  -- Fall through intentional.
-      
-  case GameState::PlayGame:
-    inGame();
-    break;
+      state = GameState::PlayGame;
+      // break;  -- Fall through intentional.
+        
+    case GameState::PlayGame:
+      inGame();
+      break;
 
-  case GameState::GameOver:
-    gameoverScreen();
-    break;
+    case GameState::GameOver:
+      gameoverScreen();
+      break;
 
   }
 
