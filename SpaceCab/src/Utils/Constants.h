@@ -29,8 +29,10 @@
 #define TILE_SIZE 8
 #define NO_TILE 255
 
-
-#define ARROW_FLASH 40
+static const uint8_t MAX_NUMBER_OF_SCORES         = 5;
+static const uint8_t DO_NOT_EDIT_SLOT             = 255;
+static const uint8_t GAME_TIME_MAX                = 10;
+static const uint8_t ARROW_FLASH                  = 40;
 
 enum class GameState : uint8_t {
 
@@ -39,7 +41,9 @@ enum class GameState : uint8_t {
   SplashScreen,
   PlayGame_Init,
   PlayGame,
-  GameOver
+  GameOver,
+  SaveScore,
+  HighScore
 
 };
 

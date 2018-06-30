@@ -1,7 +1,7 @@
 #include <Arduboy2.h>
 
-void gameoverScreen()
-{
+void gameoverScreen() {
+
   uint8_t digits[5];
   scrollingBackground();
   arduboy.fillRect(0, 16, 128, 31, BLACK);
@@ -19,7 +19,8 @@ void gameoverScreen()
   for(uint8_t i = 5; i > 0; --i)
   font4x6.print(digits[i - 1]);
   
-  if (arduboy.justPressed(B_BUTTON)) {
-    state = GameState::SplashScreen_Init;
+  if (arduboy.justPressed(A_BUTTON) || arduboy.justPressed(B_BUTTON)) {
+    state = GameState::SaveScore;
   }
+  
 }

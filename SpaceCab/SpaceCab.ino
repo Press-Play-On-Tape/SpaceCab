@@ -1,15 +1,14 @@
 #include <Arduboy2.h>
 #include <ArduboyTones.h>
-#include "Images.h"
-#include "Levels.h"
-#include "Level.h"
-#include "Player.h"
-#include "Customer.h"
-#include "Utils.h"
-#include "Constants.h"
-#include "FixedPoints.h"
-#include "FixedPointsCommon.h"
-#include "Font4x6.h"
+#include "src/Images/Images.h"
+#include "src/Entities/Entities.h"
+#include "src/Utils/Utils.h"
+#include "src/Utils/Constants.h"
+#include "src/Utils/EEPROM_Utils.h"
+#include "src/Utils/FadeEffects.h"
+#include <FixedPoints.h>
+#include <FixedPointsCommon.h>
+#include "src/Fonts/Font4x6.h"
 
 ArduboyTones sound(arduboy.audio.enabled);
 Sprites sprite;
@@ -19,6 +18,10 @@ Customer customer;
 Level level;
 Font4x6 font4x6 = Font4x6(0);
 
+FadeOutEffect fadeOutEffect;
+FadeInEffect fadeInEffect;
+HighScore highScore;
+
 
 // Global Variables now --------------------------------------------------------
 
@@ -26,10 +29,11 @@ GameState state = GameState::VSBoot;
 
 uint8_t levelNumber = 0;
 uint8_t thrusterFrame = 0;
-uint8_t gameTime = 60;
+uint8_t gameTime = GAME_TIME_MAX;
 uint16_t currentScore = 0;
 int16_t backdropx = 0;
 int16_t backdropy = 0;
+uint8_t alternate = 0;
 
 //------------------------------------------------------------------------------
 
@@ -48,11 +52,7 @@ void handleInput() {
       player.frame = 0;
     }
 
-    else if (arduboy.pressed(DOWN_BUTTON)) {
-      player.incYDelta(); 
-    }
-
-    else if (arduboy.pressed(A_BUTTON)) {
+    if (arduboy.pressed(A_BUTTON)) {
 
       switch (player.frame) {
 
@@ -79,7 +79,7 @@ void handleInput() {
 
     }
 
-    else if (arduboy.everyXFrames(8)) {
+    if (arduboy.everyXFrames(8)) {
 
       // If the A Button is not being pressed, then we should start falling ..
 
@@ -193,6 +193,9 @@ void setup() {
   arduboy.clear();
   arduboy.setFrameRate(60);
 
+  EEPROM_Utils::initEEPROM(false);
+  
+  fadeOutEffect.reset(0, HEIGHT, 1);
 }
 
 void loop() {
@@ -212,6 +215,7 @@ void loop() {
       initLevel(0, &player, &level);
       launchCustomer();
       state = GameState::SplashScreen;
+      fadeInEffect.reset(0, HEIGHT, 1);
       // break;  -- Fall through intentional.
 
     case GameState::SplashScreen:
@@ -220,7 +224,7 @@ void loop() {
 
     case GameState::PlayGame_Init:
       thrusterFrame = 0;
-      gameTime = 60;
+      gameTime = GAME_TIME_MAX;
       currentScore = 0;
       levelNumber = 1;
 
@@ -236,6 +240,17 @@ void loop() {
 
     case GameState::GameOver:
       gameoverScreen();
+      break;
+
+    case GameState::SaveScore:
+      highScore.reset();
+      highScore.setSlotNumber(EEPROM_Utils::saveScore(currentScore));
+      state = GameState::HighScore;
+      fadeInEffect.reset(0, HEIGHT, 1);
+      // break; Fall-through intentional.
+
+    case GameState::HighScore:
+      HighScore();
       break;
 
   }

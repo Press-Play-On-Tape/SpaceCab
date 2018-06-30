@@ -2,6 +2,7 @@
 
 #include <Arduino.h>
 #include <Print.h>
+#include "Fonts.h"
 
 class Font4x6 : public Print {
     
