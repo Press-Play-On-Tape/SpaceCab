@@ -92,7 +92,7 @@ void handleInput() {
 
       if (arduboy.notPressed(LEFT_BUTTON) && arduboy.notPressed(RIGHT_BUTTON)) {
 
-        if (player.xDelta > 0)  player. decXDelta();
+        if (player.xDelta > 0)  player.decXDelta();
         if (player.xDelta < 0)  player.incXDelta();
 
       }
