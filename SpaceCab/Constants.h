@@ -14,7 +14,7 @@
 #define WATER 3
 #define SIGN1 4
 #define GATE1 5
-#define ROCK2 6
+#define METAL 6
 #define SHADE 7
 #define ROOF2 8
 #define BRICK 9
@@ -42,3 +42,4 @@ enum class GameState : uint8_t {
   GameOver
 
 };
+
