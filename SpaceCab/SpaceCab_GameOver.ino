@@ -10,14 +10,14 @@ void gameoverScreen()
   arduboy.drawLine(0, 48, 128, 48, BLACK);
   arduboy.drawLine(0, 50, 128, 50, BLACK);
 
-  arduboy.setCursor(37, 22);
-  arduboy.print(F("GAME OVER"));
+  font4x6.setCursor(37, 22);
+  font4x6.print(F("GAME OVER"));
 
-  arduboy.setCursor(31, 34);
-  arduboy.print(F("SCORE:"));
+  font4x6.setCursor(31, 34);
+  font4x6.print(F("SCORE:"));
   extractDigits(digits, currentScore);
   for(uint8_t i = 5; i > 0; --i)
-  arduboy.print(digits[i - 1]);
+  font4x6.print(digits[i - 1]);
   
   if (arduboy.justPressed(B_BUTTON)) {
     state = GameState::SplashScreen_Init;

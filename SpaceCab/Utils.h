@@ -1,6 +1,6 @@
 #pragma once
 #include <Arduboy2.h>
-Arduboy2 arduboy;
+Arduboy2Base arduboy;
 
 uint8_t fadeWidth;
 

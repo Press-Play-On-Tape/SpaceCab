@@ -9,6 +9,7 @@
 #include "Constants.h"
 #include "FixedPoints.h"
 #include "FixedPointsCommon.h"
+#include "Font4x6.h"
 
 ArduboyTones sound(arduboy.audio.enabled);
 Sprites sprite;
@@ -16,6 +17,7 @@ Sprites sprite;
 Player player;
 Customer customer;
 Level level;
+Font4x6 font4x6 = Font4x6(0);
 
 
 // Global Variables now --------------------------------------------------------
@@ -484,10 +486,10 @@ Serial.print("Move Right ");
       }
 
     }
-    else {
-      Serial.print("cannot");
-    }
-  Serial.println("");  
+//     else {
+//       Serial.print("cannot");
+//     }
+//   Serial.println("");  
   }
 
 
@@ -499,9 +501,9 @@ void inGame()
   handleInput();
   checkCollision();
   drawLevel();
-  drawHUD();
   playerDisplay();
   customerDisplay();
+  drawHUD();
 }
 
 //------------------------------------------------------------------------------
