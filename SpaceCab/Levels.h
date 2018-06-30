@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Arduboy2.h>
 #include "Constants.h"
 
 const unsigned char PROGMEM tiles[18][8] =
@@ -123,7 +124,7 @@ const int8_t levelInit[] = {
 
 // Level width   Level Height,   Level     Level     Player  Player
 //                               X Offset  Y Offset  X Pos   Y Pos
-  LEVEL_0_WIDTH, LEVEL_0_HEIGHT,       0,        0,     17,     47, 
-  LEVEL_1_WIDTH, LEVEL_1_HEIGHT,     -56,      -56,     40,     47,
-  LEVEL_2_WIDTH, LEVEL_2_HEIGHT,     -32,      -32,     56,     47 
+  LEVEL_0_WIDTH, LEVEL_0_HEIGHT,       0,        0,     17,     48, 
+  LEVEL_1_WIDTH, LEVEL_1_HEIGHT,     -56,      -56,     40,     48,
+  LEVEL_2_WIDTH, LEVEL_2_HEIGHT,     -32,      -32,     56,     48 
 };

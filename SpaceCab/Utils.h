@@ -95,3 +95,13 @@ void initLevel(uint8_t levelNumber, Player *player, Level *level) {
   level->setWidthInTiles(width);
 
 }
+
+
+// ----------------------------------------------------------------------------
+//  A better absolute as it uses less memory than the standard one .. 
+//
+template<typename T> T absT(const T & v) {
+  
+  return (v < 0) ? -v : v;
+
+}

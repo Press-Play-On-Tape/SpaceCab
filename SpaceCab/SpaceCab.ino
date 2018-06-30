@@ -90,7 +90,7 @@ void handleInput()
 void updateTime() {
 
   if (arduboy.everyXFrames(60)) {
-    if (gameTime >= 1)    --gameTime;
+//SJH    if (gameTime >= 1)    --gameTime;
     if (gameTime == 0 )   state = GameState::GameOver;
   }
 
@@ -140,7 +140,7 @@ bool canMoveLeft() {
     return false;
 
   // Are we are actually straddling two tiles vertically
-  if (player.getYDisplay() % TILE_SIZE != 0) {
+  if (playerYPosition % TILE_SIZE != 0) {
     uint8_t tileY2 = (playerYPosition / 8) + 1;
     uint8_t tile2 = pgm_read_byte(&levelMap[(tileY2 * level.getWidthInTiles()) + tileX]);
     if (isTileSolid(tile2))
@@ -167,15 +167,13 @@ bool canMoveRight() {
 
   // Retrieve the tile from the level defintion for x, y1
   uint8_t tile1 = pgm_read_byte(&levelMap[(tileY1 * level.getWidthInTiles()) + tileX]);
-  if (isTileSolid(tile1))
-    return false;
+  if (isTileSolid(tile1)) return false;
 
   // Are we are actually straddling two tiles vertically
-  if (player.getYDisplay() % TILE_SIZE != 0) {
+  if (playerYPosition % TILE_SIZE != 0) {
     uint8_t tileY2 = (playerYPosition / 8) + 1;
     uint8_t tile2 = pgm_read_byte(&levelMap[(tileY2 * level.getWidthInTiles()) + tileX]);
-    if (isTileSolid(tile2))
-      return false;
+    if (isTileSolid(tile2)) return false;
   }
 
   return true;
@@ -220,11 +218,7 @@ bool canMoveDown() {
   const uint8_t * levelMap = levelMaps[level.getLevelNumber()];
   uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay();
   uint16_t playerYPosition = player.getYDisplay() - level.getYOffsetDisplay() + PLAYER_HEIGHT;
-// Serial.print(player.getYDisplay());
-// Serial.print(" ");
-// Serial.print(level.getYOffsetDisplay());
-// Serial.print(" ");
-// Serial.println(playerYPosition);
+
   // We are not yet at the bottom edge of tile so movement is possible
   if (playerYPosition % TILE_SIZE != 0)
 	  return true;
@@ -254,7 +248,7 @@ bool canMoveDown() {
 
 void checkCollision() {
 
-  Rect playerRect = { player.getXDisplay(), player.getYDisplay(), PLAYER_WIDTH, PLAYER_HEIGHT };
+  Rect playerRect = { static_cast<int16_t>(player.getXDisplay()), static_cast<int16_t>(player.getYDisplay()), PLAYER_WIDTH, PLAYER_HEIGHT };
 
 
   // Check customer collision only if they are on screen ..
@@ -448,8 +442,9 @@ void moveCab() {
   // --  Moving Right -------------------------------------------------------------------------------------------
 
   if (player.xDelta > 0) {
-
+Serial.print("Move Right ");
     if (canMoveRight()) {
+      Serial.print("can");
 
       if (player.x < playerXCentre) {
         if (player.x + playerXDeltaVal < playerXCentre) {
@@ -489,8 +484,12 @@ void moveCab() {
       }
 
     }
-  
+    else {
+      Serial.print("cannot");
+    }
+  Serial.println("");  
   }
+
 
 }
 
