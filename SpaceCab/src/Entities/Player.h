@@ -13,9 +13,13 @@ struct Player {
   SQ15x16 x;
   SQ15x16 y;
   uint8_t frame = 0;
+  uint8_t numberOfLives = 0;
+  PlayerStatus status;
+  bool carryingCustomer = false;
 
   int8_t xDelta = 0;
   int8_t yDelta = 0;
+  uint16_t fuel = 0;
 
   uint16_t getXDisplay() { return x.getInteger(); }
   uint16_t getYDisplay() { return y.getInteger(); }

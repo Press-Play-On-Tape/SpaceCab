@@ -48,40 +48,90 @@ void drawHUD() {
   for(uint8_t i = 2; i > 0; --i)
     font4x6.print(digitsTime[i - 1]);
   //Sprites::drawExternalMask(64, 57, livesLeft, livesLeftMask, 0, 0);
+
+Serial.print("Fare : ");
+Serial.print(customer.getFare());
+Serial.print(", Fuel : ");
+Serial.print(player.fuel);
+Serial.print(", Destination : ");
+Serial.println(customer.getStartingPosition());
+
 }
 
-void scrollingBackground()
-{
+void scrollingBackground() {
 
   arduboy.drawBitmap(backdropx, backdropy, checkeredBG, 128, 64, WHITE);
   arduboy.drawBitmap(backdropx + 128, backdropy, checkeredBG, 128, 64, WHITE);
 
-  if (arduboy.everyXFrames(2))
-  { // when running at 60fps
+  if (arduboy.everyXFrames(2)) { // when running at 60fps
 
     --backdropx;
-    if (backdropx < -128)
-    {
+    if (backdropx < -128) {
       backdropx = 0;
     }
   
   }
+
 }
 
 void playerDisplay() {
-  Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay(), SpaceTaxi, SpaceTaxiMask, player.frame, player.frame);
+
+  uint8_t const *imageName = nullptr;
+  uint8_t const *maskName = nullptr;
+  int8_t xOffset = 0;
+  int8_t yOffset = 0;
+
+  switch (player.status) {
+
+    case PlayerStatus::OutOfFuel_Img1_Start ... PlayerStatus::OutOfFuel_Img1_End:
+      imageName = SpaceTaxi_OutOfFuel_1;
+      maskName = SpaceTaxi_OutOfFuel_1_Mask;
+      xOffset = -5;
+      yOffset = -5;
+      break;
+
+    case PlayerStatus::OutOfFuel_Img2_Start ... PlayerStatus::OutOfFuel_Img2_End:
+      imageName = SpaceTaxi_OutOfFuel_2;
+      maskName = SpaceTaxi_OutOfFuel_2_Mask;
+      xOffset = -5;
+      yOffset = -5;
+      break;
+
+    case PlayerStatus::OutOfFuel_Img3_Start ... PlayerStatus::OutOfFuel_Img3_End:
+      imageName = SpaceTaxi_OutOfFuel_3;
+      maskName = SpaceTaxi_OutOfFuel_3_Mask;
+      xOffset = -5;
+      yOffset = -5;
+      break;
+
+    case PlayerStatus::OutOfFuel_Img4_Start ... PlayerStatus::OutOfFuel_Img4_End:
+      imageName = SpaceTaxi_OutOfFuel_4;
+      maskName = SpaceTaxi_OutOfFuel_4_Mask;
+      xOffset = -5;
+      yOffset = -5;
+      break;
+
+    default:
+      imageName = SpaceTaxi;
+      maskName = SpaceTaxiMask;
+      break;
+
+  }
+
+  Sprites::drawExternalMask(player.getXDisplay() + xOffset, player.getYDisplay() + yOffset, imageName, maskName, player.frame, player.frame);
+
 }
 
 
 uint8_t arrowCount = 0;
 void customerDisplay() {
 
-  int16_t customerXVal = customer.x + level.xOffset.getInteger();
-  int16_t customerYVal = customer.y + level.yOffset.getInteger();
+  int16_t customerXVal = customer.getX() + level.xOffset.getInteger();
+  int16_t customerYVal = customer.getY() + level.yOffset.getInteger();
 
   if (customerXVal >= -CUSTOMER_WIDTH && customerXVal < WIDTH && customerYVal >= -CUSTOMER_HEIGHT && customerYVal < HEIGHT) {
 
-    Sprites::drawExternalMask(customerXVal, customerYVal, Customer_Img, Customer_Img_Mask, customer.frame, customer.frame);
+    Sprites::drawExternalMask(customerXVal, customerYVal, Customer_Img, Customer_Img_Mask, customer.getFrame(), customer.getFrame());
 
     if (arduboy.everyXFrames(15)) {
       customer.incFrame();
@@ -99,11 +149,11 @@ void customerDisplay() {
     arrowCount = arrowCount % ARROW_FLASH;
     if (arrowCount < (ARROW_FLASH / 2)) { 
 
-      SQ15x16 dX = static_cast<SQ15x16>(customer.x) - (player.x - level.xOffset);
-      SQ15x16 dY = static_cast<SQ15x16>(customer.y) - (player.y - level.yOffset);
+      SQ15x16 dX = static_cast<SQ15x16>(customer.getX()) - (player.x - level.xOffset);
+      SQ15x16 dY = static_cast<SQ15x16>(customer.getY()) - (player.y - level.yOffset);
       SQ15x16 grad = dY / dX;
 
-      if (customer.x < (player.x - level.xOffset)) {
+      if (customer.getX() < (player.x - level.xOffset)) {
     
         if (absT(dX) <= 0.02) {
 

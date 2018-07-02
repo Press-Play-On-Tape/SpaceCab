@@ -17,8 +17,8 @@ void vsBoot() {
 
 void titleScreen()
 {
-  int16_t customerXVal = customer.x + level.xOffset.getInteger();
-  int16_t customerYVal = customer.y + level.yOffset.getInteger();
+  int16_t customerXVal = customer.getX() + level.xOffset.getInteger();
+  int16_t customerYVal = customer.getY() + level.yOffset.getInteger();
   int16_t logoXVal = 0 + level.xOffset.getInteger();
   int16_t logoYVal = 6 + level.yOffset.getInteger();  
   

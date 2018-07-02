@@ -89,6 +89,8 @@ void initLevel(uint8_t levelNumber, Player *player, Level *level) {
   player->xDelta = 0;
   player->yDelta = 0;
   player->frame = 1;
+  player->fuel = PLAYER_FUEL_MAX;
+  player->carryingCustomer = false;
   
   level->setLevelNumber(levelNumber);
   level->setHeight(height * TILE_SIZE);
