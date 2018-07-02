@@ -150,8 +150,16 @@ void customerDisplay() {
   }
   else if (state == GameState::PlayGame)  { 
     
+    uint8_t const *imageName = nullptr;
+    uint8_t const *maskName = nullptr;
+    uint8_t xPos = 0;
+    uint8_t yPos = 0;
+
     uint16_t customerX = 0;
     uint16_t customerY = 0;
+
+    //uint8_t const *images[] = { ArrowU, ArrowUR, ArrowR, ArrowDR, ArrowD, ArrowDL, ArrowL, ArrowUL };
+    //uint8_t const *masks[] = { ArrowU_Mask, ArrowUR_Mask, ArrowR_Mask, ArrowDR_Mask, ArrowD_Mask, ArrowDL_Mask, ArrowL_Mask, ArrowUL_Mask };
 
     // Render arrows.
 
@@ -180,17 +188,17 @@ void customerDisplay() {
     
         if (absT(dX) <= 0.02) {
 
-          if (dY > 0)             { Sprites::drawExternalMask(59, 56, ArrowD, ArrowD_Mask, 0, 0); }
-          if (dY < 0)             { Sprites::drawExternalMask(59, 0, ArrowU, ArrowU_Mask, 0, 0); }
+          if (dY > 0)             { imageName = ArrowD;   maskName = ArrowD_Mask;   xPos = 59;  yPos = 56; }
+          if (dY < 0)             { imageName = ArrowU;   maskName = ArrowU_Mask;   xPos = 59;  yPos = 0; }
 
         }
         else {
 
-          if (grad > 2.0)         { Sprites::drawExternalMask(59, 0, ArrowU, ArrowU_Mask, 0, 0); }
-          else if (grad > 0.14)   { Sprites::drawExternalMask(0, 0, ArrowUL, ArrowUL_Mask, 0, 0); }
-          else if (grad > -0.14)  { Sprites::drawExternalMask(0, 28, ArrowL, ArrowL_Mask, 0, 0); }
-          else if (grad > -2.0)   { Sprites::drawExternalMask(0, 56, ArrowDL, ArrowDL_Mask, 0, 0); }
-          else                    { Sprites::drawExternalMask(59, 56, ArrowD, ArrowD_Mask, 0, 0); }
+          if (grad > 2.0)         { imageName = ArrowU;   maskName = ArrowU_Mask;   xPos = 59;  yPos = 0; }
+          else if (grad > 0.14)   { imageName = ArrowUL;  maskName = ArrowUL_Mask;  xPos = 0;   yPos = 0; }
+          else if (grad > -0.14)  { imageName = ArrowL;   maskName = ArrowL_Mask;   xPos = 0;   yPos = 28; }
+          else if (grad > -2.0)   { imageName = ArrowDL;  maskName = ArrowDL_Mask;  xPos = 0;   yPos = 56; }
+          else                    { imageName = ArrowD;   maskName = ArrowD_Mask;   xPos = 59;  yPos = 56; }
 
         }
 
@@ -199,19 +207,25 @@ void customerDisplay() {
 
         if (absT(dX) <= 0.02) {
 
-          if (dY > 0)             { Sprites::drawExternalMask(59, 56, ArrowD, ArrowD_Mask, 0, 0); }
-          if (dY < 0)             { Sprites::drawExternalMask(59, 0, ArrowU, ArrowU_Mask, 0, 0); }
+          if (dY > 0)             { imageName = ArrowD;   maskName = ArrowD_Mask;   xPos = 59;  yPos = 56; }
+          if (dY < 0)             { imageName = ArrowU;   maskName = ArrowU_Mask;   xPos = 59;  yPos = 0; }
 
         }
         else {
 
-          if (grad > 2.0)         { Sprites::drawExternalMask(59, 56, ArrowD, ArrowD_Mask, 0, 0); }
-          else if (grad > 0.14)   { Sprites::drawExternalMask(120, 56, ArrowDR, ArrowDR_Mask, 0, 0); }
-          else if (grad > -0.14)  { Sprites::drawExternalMask(120, 28, ArrowR, ArrowR_Mask, 0, 0); }
-          else if (grad > -2.0)   { Sprites::drawExternalMask(120, 0, ArrowUR, ArrowUR_Mask, 0, 0); }
-          else                    { Sprites::drawExternalMask(59, 0, ArrowU, ArrowU_Mask, 0, 0); }
+          if (grad > 2.0)         { imageName = ArrowD;   maskName = ArrowD_Mask;   xPos = 59;  yPos = 56; }
+          else if (grad > 0.14)   { imageName = ArrowDR;  maskName = ArrowDR_Mask;  xPos = 120; yPos = 56; }
+          else if (grad > -0.14)  { imageName = ArrowR;   maskName = ArrowR_Mask;   xPos = 120; yPos = 28; }
+          else if (grad > -2.0)   { imageName = ArrowUR;  maskName = ArrowUR_Mask;  xPos = 120; yPos = 0; }
+          else                    { imageName = ArrowU;   maskName = ArrowU_Mask;   xPos = 59;  yPos = 0; }
 
         }
+
+      }
+
+      if (imageName != nullptr) {
+
+        Sprites::drawExternalMask(xPos, yPos, imageName, maskName, 0, 0);
 
       }
 
