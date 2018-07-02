@@ -69,7 +69,7 @@ void handleInput() {
 void updateTime() {
 
   if (arduboy.everyXFrames(60)) {
-    if (gameTime >= 1)    --gameTime;
+//    if (gameTime >= 1)    --gameTime;
     if (gameTime == 0 )   state = GameState::GameOver;
   }
 
@@ -91,14 +91,14 @@ void launchCustomer() {
 
   // Ensure new customer is not placed in the location the last customer was dropped at ..
 
-  while (customerStartingPos == customer.getStartingPosition()) {
+  while (numberOfStartingPositions != 1 && customerStartingPos == customer.getStartingPosition()) {
       customerStartingPos = random(numberOfStartingPositions);
   }
 
 
   // Make sure the staryting point and destination are different!
 
-  while (customerStartingPos == customerDestination) {
+  while (numberOfStartingPositions != 1 && customerStartingPos == customerDestination) {
     customerDestination = random(numberOfStartingPositions);
   }
 
@@ -108,11 +108,12 @@ void launchCustomer() {
 
   customer.setXDestinationTile(pgm_read_byte(&levelStartingPosition[customerDestination * 2]));
   customer.setYDestinationTile(pgm_read_byte(&levelStartingPosition[(customerDestination * 2) + 1]));
+  customer.setDestinationPosition(customerDestination);
 
   customer.setStartingPosition(customerStartingPos);
   customer.setFrame(0);
   customer.setFare(random(10, 20));
-  
+
 }
 
 
@@ -121,6 +122,8 @@ void launchCustomer() {
 //------------------------------------------------------------------------------
 
 void checkCollisionWithCustomer() {
+
+  if (player.carryingCustomer) return;
 
   Rect playerRect = { static_cast<int16_t>(player.getXDisplay()), static_cast<int16_t>(player.getYDisplay()), PLAYER_WIDTH, PLAYER_HEIGHT };
 
@@ -135,7 +138,6 @@ void checkCollisionWithCustomer() {
     Rect customerRect = { customerXVal, customerYVal, CUSTOMER_WIDTH, CUSTOMER_HEIGHT };
 
     if (arduboy.collide(playerRect, customerRect)) {
-      currentScore = currentScore + customer.getFare();
       player.carryingCustomer = true;
       sound.tone(NOTE_E6, 50, NOTE_E3, 50, NOTE_E2, 50);
     }
@@ -213,13 +215,15 @@ void checkCollisionWithLevelElements_TestElement(uint8_t x, uint8_t y, uint8_t e
   switch (element) {
 
     case FUEL1:
-      player.fuel = PLAYER_FUEL_MAX;
+      if (player.fuel < PLAYER_FUEL_MAX) player.fuel++;
       break;
 
     case SIGN1:
-      if (player.carryingCustomer && customer.getXTile() == x && customer.getYTile() == y) {
-
+      if (player.carryingCustomer && absT(customer.getXDestinationTile() - x) < 2 && customer.getYDestinationTile() == y) {
+        player.carryingCustomer = false;
+        player.currentScore = player.currentScore + customer.getFare();
         launchCustomer();
+        dollarsCount = DOLLARS_COUNT_MAX;
       }
       break;
 
@@ -229,9 +233,11 @@ void checkCollisionWithLevelElements_TestElement(uint8_t x, uint8_t y, uint8_t e
 
 void updateStatus() {
 
+
   // Burn fuel ..
 
-  if (arduboy.everyXFrames(15)) {
+  if (player.status == PlayerStatus::Active && arduboy.everyXFrames(15)) {
+
     --player.fuel;
 
     if (player.fuel == 0) {
@@ -254,6 +260,7 @@ void updateStatus() {
       break;
 
     case PlayerStatus::OutOfFuel_End:
+      player.status = PlayerStatus::Inactive;
       player.numberOfLives--;
 
       if (player.numberOfLives > 0) {
@@ -273,13 +280,18 @@ void updateStatus() {
   // Update fare if carrying a paasenger ..
 
   if (player.carryingCustomer) {
+
     if (arduboy.everyXFrames(FARE_X_FRAMES)) {
+
       fareCount++;
+
       if (fareCount > FARE_COUNT) {
         fareCount = 0;
         if (customer.getFare() > 0) customer.setFare(customer.getFare() - 1);
       }
+
     }
+
   }
 
 }
@@ -305,6 +317,11 @@ void inGame() {
   playerDisplay();
   customerDisplay();
   drawHUD();
+  drawDollars();
+
+  if (state == GameState::EndOfLevel) {
+    drawLevelStart();
+  }
   
   updateStatus();
 

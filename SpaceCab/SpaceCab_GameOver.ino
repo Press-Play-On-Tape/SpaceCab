@@ -15,7 +15,7 @@ void gameoverScreen() {
 
   font4x6.setCursor(31, 34);
   font4x6.print(F("SCORE:"));
-  extractDigits(digits, currentScore);
+  extractDigits(digits, player.currentScore);
   for(uint8_t i = 5; i > 0; --i)
   font4x6.print(digits[i - 1]);
   

@@ -30,11 +30,11 @@ GameState state = GameState::VSBoot;
 uint8_t levelNumber = 0;
 uint8_t thrusterFrame = 0;
 uint8_t gameTime = GAME_TIME_MAX;
-uint16_t currentScore = 0;
 int16_t backdropx = 0;
 int16_t backdropy = 0;
 uint8_t alternate = 0;
 uint8_t fareCount = 0;
+uint8_t dollarsCount = 0;
 
 //------------------------------------------------------------------------------
 
@@ -73,25 +73,28 @@ void loop() {
       break;
 
     case GameState::SplashScreen_Init:
-      initLevel(0, &player, &level);
+      initLevel(0, &player, &level, &customer);
       launchCustomer();
       state = GameState::SplashScreen;
       fadeInEffect.reset(0, HEIGHT, 1);
+      
       // break;  -- Fall through intentional.
 
     case GameState::SplashScreen:
       titleScreen();
       break;
 
-    case GameState::PlayGame_Init:
+    case GameState::PlayGame_InitGame:
+      levelNumber = 1;
+      initGame(&player, &level, &customer);
+      state = GameState::PlayGame_InitLevel;
+      // break;  -- Fall through intentional.
+
+    case GameState::PlayGame_InitLevel:
       thrusterFrame = 0;
       gameTime = GAME_TIME_MAX;
-      currentScore = 0;
-      levelNumber = 1;
-
-      initLevel(levelNumber, &player, &level);
+      initLevel(levelNumber, &player, &level, &customer);
       launchCustomer();
-
       state = GameState::PlayGame;
       // break;  -- Fall through intentional.
         
@@ -100,7 +103,7 @@ void loop() {
       break;
 
     case GameState::EndOfLevel:
-//      gameoverScreen();
+      inGame();
       break;
 
     case GameState::GameOver:
@@ -109,7 +112,7 @@ void loop() {
 
     case GameState::SaveScore:
       highScore.reset();
-      highScore.setSlotNumber(EEPROM_Utils::saveScore(currentScore));
+      highScore.setSlotNumber(EEPROM_Utils::saveScore(player.currentScore));
       state = GameState::HighScore;
       fadeInEffect.reset(0, HEIGHT, 1);
       // break; Fall-through intentional.

@@ -16,6 +16,7 @@ struct Player {
   uint8_t numberOfLives = 0;
   PlayerStatus status;
   bool carryingCustomer = false;
+  uint16_t currentScore = 0;
 
   int8_t xDelta = 0;
   int8_t yDelta = 0;

@@ -1,6 +1,6 @@
 {
     "board": "arduino:avr:leonardo",
-    "port": "COM3",
+    "port": "/dev/cu.usbmodem1411",
     "sketch": "SpaceCab.ino",
     "output": "../../build"
 }

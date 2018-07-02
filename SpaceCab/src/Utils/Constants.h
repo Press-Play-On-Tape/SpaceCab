@@ -32,14 +32,21 @@
 #define TILE_SIZE 8
 #define NO_TILE 255
 
+#define DOLLARS_COUNT_MULT 8
+#define DOLLARS_COUNT_MAX (DOLLARS_COUNT_MULT * 5) - 1 
+
 static const uint8_t MAX_NUMBER_OF_SCORES         = 5;
 static const uint8_t DO_NOT_EDIT_SLOT             = 255;
 static const uint8_t GAME_TIME_MAX                = 10;
 static const uint8_t ARROW_FLASH                  = 40;
 
-static const uint16_t PLAYER_FUEL_MAX             = 1000;
+static const uint16_t PLAYER_FUEL_MAX             = 100;
+static const uint8_t PLAYER_NUMBER_OF_LIVES_MAX   = 3;
+
 static const uint16_t FARE_X_FRAMES               = 15;
 static const uint16_t FARE_COUNT                  = 10;
+
+static const uint8_t CUSTOMER_NO_STARTING_POS     = 255;
 
 
 enum class GameState : uint8_t {
@@ -47,7 +54,8 @@ enum class GameState : uint8_t {
   VSBoot,
   SplashScreen_Init,
   SplashScreen,
-  PlayGame_Init,
+  PlayGame_InitGame,
+  PlayGame_InitLevel,
   PlayGame,
   EndOfLevel,
   GameOver,
@@ -59,8 +67,29 @@ enum class GameState : uint8_t {
 enum class PlayerStatus : uint16_t {
 
   Active,
+  Inactive,
   OutOfFuel_End,
   OutOfFuel_Min,
+  OutOfFuel_Blank_01,
+  OutOfFuel_Blank_02,
+  OutOfFuel_Blank_03,
+  OutOfFuel_Blank_04,
+  OutOfFuel_Blank_05,
+  OutOfFuel_Blank_06,
+  OutOfFuel_Blank_07,
+  OutOfFuel_Blank_08,
+  OutOfFuel_Blank_09,
+  OutOfFuel_Blank_10,
+  OutOfFuel_Blank_11,
+  OutOfFuel_Blank_12,
+  OutOfFuel_Blank_13,
+  OutOfFuel_Blank_14,
+  OutOfFuel_Blank_15,
+  OutOfFuel_Blank_16,
+  OutOfFuel_Blank_17,
+  OutOfFuel_Blank_18,
+  OutOfFuel_Blank_19,
+  OutOfFuel_Blank_20,
   OutOfFuel_Img1_Start,
   OutOfFuel_Img1_1,
   OutOfFuel_Img1_2,

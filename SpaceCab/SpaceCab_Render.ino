@@ -31,13 +31,12 @@ void drawLevel() {
 
 void drawHUD() {
 
-
   uint8_t digits[5];
   uint8_t digitsTime[2];
 
   Sprites::drawExternalMask(10, 55, SpaceCabHUD, SpaceCabHUDMask, 0, 0);
   font4x6.setCursor(23, 57);
-  extractDigits(digits, currentScore);
+  extractDigits(digits, player.currentScore);
   for(uint8_t i = 5; i > 0; --i) 
     font4x6.print(digits[i - 1]);
 
@@ -49,13 +48,18 @@ void drawHUD() {
     font4x6.print(digitsTime[i - 1]);
   //Sprites::drawExternalMask(64, 57, livesLeft, livesLeftMask, 0, 0);
 
-Serial.print("Fare : ");
+Serial.print("Lives : ");
+Serial.print(player.numberOfLives);
+Serial.print(", Fare : ");
 Serial.print(customer.getFare());
 Serial.print(", Fuel : ");
 Serial.print(player.fuel);
-Serial.print(", Destination : ");
-Serial.println(customer.getStartingPosition());
-
+Serial.print(", Start : ");
+Serial.print(customer.getStartingPosition());
+Serial.print(", Dest : ");
+Serial.print(customer.getDestinationPosition());
+Serial.print(", Carrying : ");
+Serial.println( (player.carryingCustomer ? "Y" : "N") );
 }
 
 void scrollingBackground() {
@@ -111,14 +115,18 @@ void playerDisplay() {
       yOffset = -5;
       break;
 
-    default:
+    case PlayerStatus::Active:
       imageName = SpaceTaxi;
       maskName = SpaceTaxiMask;
       break;
 
+    default: break;
+
   }
 
-  Sprites::drawExternalMask(player.getXDisplay() + xOffset, player.getYDisplay() + yOffset, imageName, maskName, player.frame, player.frame);
+  if (imageName != nullptr) {
+    Sprites::drawExternalMask(player.getXDisplay() + xOffset, player.getYDisplay() + yOffset, imageName, maskName, player.frame, player.frame);
+  }
 
 }
 
@@ -129,7 +137,7 @@ void customerDisplay() {
   int16_t customerXVal = customer.getX() + level.xOffset.getInteger();
   int16_t customerYVal = customer.getY() + level.yOffset.getInteger();
 
-  if (customerXVal >= -CUSTOMER_WIDTH && customerXVal < WIDTH && customerYVal >= -CUSTOMER_HEIGHT && customerYVal < HEIGHT) {
+  if (!player.carryingCustomer && customerXVal >= -CUSTOMER_WIDTH && customerXVal < WIDTH && customerYVal >= -CUSTOMER_HEIGHT && customerYVal < HEIGHT) {
 
     Sprites::drawExternalMask(customerXVal, customerYVal, Customer_Img, Customer_Img_Mask, customer.getFrame(), customer.getFrame());
 
@@ -140,8 +148,10 @@ void customerDisplay() {
     arrowCount = 0;
 
   }
-  else { 
+  else if (state == GameState::PlayGame)  { 
     
+    uint16_t customerX = 0;
+    uint16_t customerY = 0;
 
     // Render arrows.
 
@@ -149,11 +159,24 @@ void customerDisplay() {
     arrowCount = arrowCount % ARROW_FLASH;
     if (arrowCount < (ARROW_FLASH / 2)) { 
 
-      SQ15x16 dX = static_cast<SQ15x16>(customer.getX()) - (player.x - level.xOffset);
-      SQ15x16 dY = static_cast<SQ15x16>(customer.getY()) - (player.y - level.yOffset);
+      if (!player.carryingCustomer) {
+
+        customerX = customer.getX();
+        customerY = customer.getY();
+
+      }
+      else {
+
+        customerX = customer.getXDestinationTile() * TILE_SIZE;
+        customerY = customer.getYDestinationTile() * TILE_SIZE;
+
+      }
+
+      SQ15x16 dX = static_cast<SQ15x16>(customerX) - (player.x - level.xOffset);
+      SQ15x16 dY = static_cast<SQ15x16>(customerY) - (player.y - level.yOffset);
       SQ15x16 grad = dY / dX;
 
-      if (customer.getX() < (player.x - level.xOffset)) {
+      if (customerX < (player.x - level.xOffset)) {
     
         if (absT(dX) <= 0.02) {
 
@@ -194,6 +217,39 @@ void customerDisplay() {
 
     }
 
+  }
+
+}
+
+void drawLevelStart() {
+
+  arduboy.fillRect(18, 24, 94, 16, BLACK);
+  arduboy.drawFastHLine(19, 25, 92, WHITE);
+  arduboy.drawFastHLine(19, 39, 92, WHITE);
+
+  font4x6.setCursor(22, 29);
+  font4x6.print(F("Level "));
+  font4x6.print(levelNumber);
+  font4x6.print(F(" Lives "));
+  font4x6.print(player.numberOfLives);
+
+  if (arduboy.justPressed(A_BUTTON)) { 
+    
+    state = GameState::PlayGame_InitLevel; 
+    
+  }
+
+}
+
+void drawDollars() {
+
+  if (dollarsCount > 0) {
+
+    uint8_t idx = (DOLLARS_COUNT_MAX - dollarsCount) / DOLLARS_COUNT_MULT;
+
+    Sprites::drawExternalMask(player.getXDisplay() - 5, player.getYDisplay() - 10, dollars, dollars_Mask, idx, idx);
+    dollarsCount--;
+  
   }
 
 }
