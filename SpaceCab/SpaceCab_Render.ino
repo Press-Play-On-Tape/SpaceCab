@@ -229,6 +229,82 @@ void customerDisplay() {
 
       }
 
+/* Adds 98 bytes..
+
+    uint8_t idx = 0;
+
+    uint16_t customerX = 0;
+    uint16_t customerY = 0;
+
+    uint8_t const *images[] = { ArrowU, ArrowUR, ArrowR, ArrowDR, ArrowD, ArrowDL, ArrowL, ArrowUL };
+    uint8_t const *masks[] = { ArrowU_Mask, ArrowUR_Mask, ArrowR_Mask, ArrowDR_Mask, ArrowD_Mask, ArrowDL_Mask, ArrowL_Mask, ArrowUL_Mask };
+    uint8_t const xPos[] = { 59, 120, 120, 120, 59, 0, 0, 0 };
+    uint8_t const yPos[] = { 0, 0, 28, 56, 56, 56, 28, 0 };
+    
+    // Render arrows.
+
+    arrowCount++;
+    arrowCount = arrowCount % ARROW_FLASH;
+    if (arrowCount < (ARROW_FLASH / 2)) { 
+
+      if (!player.carryingCustomer) {
+
+        customerX = customer.getX();
+        customerY = customer.getY();
+
+      }
+      else {
+
+        customerX = customer.getXDestinationTile() * TILE_SIZE;
+        customerY = customer.getYDestinationTile() * TILE_SIZE;
+
+      }
+
+      SQ15x16 dX = static_cast<SQ15x16>(customerX) - (player.x - level.xOffset);
+      SQ15x16 dY = static_cast<SQ15x16>(customerY) - (player.y - level.yOffset);
+      SQ15x16 grad = dY / dX;
+
+      if (customerX < (player.x - level.xOffset)) {
+    
+        if (absT(dX) <= 0.02) {
+
+          if (dY > 0)             { idx = 4; }
+          if (dY < 0)             { idx = 0; }
+
+        }
+        else {
+
+          if (grad > 2.0)         { idx = 0; }
+          else if (grad > 0.14)   { idx = 7; }
+          else if (grad > -0.14)  { idx = 6; }
+          else if (grad > -2.0)   { idx = 5; }
+          else                    { idx = 4; }
+
+        }
+
+      } 
+      else {
+
+        if (absT(dX) <= 0.02) {
+
+          if (dY > 0)             { idx = 4; }
+          if (dY < 0)             { idx = 0; }
+
+        }
+        else {
+
+          if (grad > 2.0)         { idx = 4; }
+          else if (grad > 0.14)   { idx = 3; }
+          else if (grad > -0.14)  { idx = 2; }
+          else if (grad > -2.0)   { idx = 1; }
+          else                    { idx = 0; }
+
+        }
+
+      }
+
+      Sprites::drawExternalMask(xPos[idx], yPos[idx], images[idx], masks[idx], 0, 0);
+      */
     }
 
   }
