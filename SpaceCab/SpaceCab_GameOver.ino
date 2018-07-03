@@ -3,7 +3,7 @@
 void gameoverScreen() {
 
   uint8_t digits[5];
-  scrollingBackground(false);
+  scrollingBackground(true);
   arduboy.fillRect(0, 16, 128, 31, BLACK);
   arduboy.drawLine(0, 17, 128, 17, WHITE);
   arduboy.drawLine(0, 45, 128, 45, WHITE);
