@@ -32,29 +32,31 @@ void drawLevel() {
 void drawHUD() {
 
   uint8_t digits[5];
-  uint8_t digitsTime[2];
+  uint8_t digitsFare[2];
+  uint8_t digitsFuel[3];
+  uint8_t digitsLives[1];
 
-  Sprites::drawExternalMask(10, 55, SpaceCabHUD, SpaceCabHUDMask, 0, 0);
-  font4x6.setCursor(23, 57);
+  Sprites::drawOverwrite(0, 56, SpaceCabHUD, 0);
+  font4x6.setCursor(13, 57);
   extractDigits(digits, player.currentScore);
   for(uint8_t i = 5; i > 0; --i) 
-    font4x6.print(digits[i - 1]);
+  font4x6.print(digits[i - 1]);
 
+  font4x6.setCursor(56, 57);
+  extractDigits(digitsFuel, player.fuel);
+  for(uint8_t i = 3; i > 0; --i) 
+  font4x6.print(digitsFuel[i - 1]);
 
-  Sprites::drawExternalMask(92, 55, SpaceCabHUD_Time, SpaceCabHUD_Time_Mask, 0, 0);
-  font4x6.setCursor(105, 57);
-  extractDigits(digitsTime, gameTime);
+  font4x6.setCursor(92, 57);
+  extractDigits(digitsLives, player.numberOfLives);
+  for(uint8_t i = 1; i > 0; --i) 
+  font4x6.print(digitsLives[i - 1]);
+
+  font4x6.setCursor(112, 57);
+  extractDigits(digitsFare, customer.getFare());
   for(uint8_t i = 2; i > 0; --i)
-    font4x6.print(digitsTime[i - 1]);
-  //Sprites::drawExternalMask(64, 57, livesLeft, livesLeftMask, 0, 0);
+  font4x6.print(digitsFare[i - 1]);
 
-Serial.print("Lives : ");
-Serial.print(player.numberOfLives);
-Serial.print(", Fare : ");
-Serial.print(customer.getFare());
-Serial.print(", Fuel : ");
-Serial.print(player.fuel);
-Serial.print(", Start : ");
 Serial.print(customer.getStartingPosition());
 Serial.print(", Dest : ");
 Serial.print(customer.getDestinationPosition());
@@ -415,15 +417,16 @@ void customerDisplay() {
 
 void drawLevelStart() {
 
-  arduboy.fillRect(18, 24, 94, 16, BLACK);
+  arduboy.fillRect(18, 24, 67, 20, BLACK);
   arduboy.drawFastHLine(19, 25, 92, WHITE);
-  arduboy.drawFastHLine(19, 39, 92, WHITE);
+  arduboy.drawFastHLine(19, 38, 92, WHITE);
+  arduboy.drawFastHLine(19, 39, 92, BLACK);
 
-  font4x6.setCursor(22, 29);
+
+  font4x6.setCursor(22, 28);
   font4x6.print(F("Level "));
   font4x6.print(levelNumber);
-  font4x6.print(F(" Lives "));
-  font4x6.print(player.numberOfLives);
+  font4x6.print(F(" GOOD LUCK! "));
 
   if (arduboy.justPressed(A_BUTTON)) { 
     

@@ -50,7 +50,7 @@ void handleInput() {
       }
 
 
-      // If the player is not pressing the elft or right button then start slowing down ..
+      // If the player is not pressing the left or right button then start slowing down ..
 
       if (arduboy.notPressed(LEFT_BUTTON) && arduboy.notPressed(RIGHT_BUTTON)) {
 
@@ -278,7 +278,7 @@ void updateStatus() {
   }
 
 
-  // Update fare if carrying a paasenger ..
+  // Update fare if carrying a passenger ..
 
   if (player.carryingCustomer) {
 
@@ -316,9 +316,9 @@ void inGame() {
 
   drawLevel();
   playerDisplay();
+  drawDollars();
   drawHUD();
   customerDisplay();
-  drawDollars();
 
   if (state == GameState::EndOfLevel) {
     drawLevelStart();

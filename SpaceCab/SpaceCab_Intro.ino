@@ -26,8 +26,8 @@ void titleScreen() {
   Rect customerRect = {customerXVal, customerYVal, CUSTOMER_WIDTH, CUSTOMER_HEIGHT};
 
   handleInput();
+  Sprites::drawOverwrite(logoXVal, logoYVal, SpaceCabSplash, 0);
   drawLevel();
-  Sprites::drawExternalMask(logoXVal, logoYVal, SpaceCabSplash, SpaceCabSplashMask, 0, 0);
 
   playerDisplay();
   customerDisplay();

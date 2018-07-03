@@ -74,6 +74,7 @@ void loop() {
     case GameState::SplashScreen_Init:
       initLevel(0, &player, &level, &customer);
       launchCustomer();
+      player.frame = 0;
       state = GameState::SplashScreen;
       fadeInEffect.reset(0, HEIGHT, 1);
       

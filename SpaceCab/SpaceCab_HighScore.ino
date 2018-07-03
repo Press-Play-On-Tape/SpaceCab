@@ -12,10 +12,9 @@ void HighScore() {
   uint8_t xOffset = 33;
   uint8_t yOffset = 22;
 
-  scrollingBackground(false);
+  //scrollingBackground(false);
 
-  Sprites::drawExternalMask(16, 2, highScoreImg, highScore_Mask, 0, 0);
-  arduboy.fillRect(21, 19, 86, 41, BLACK);
+  arduboy.fillRect(0, 19, 128, 41, BLACK);
   arduboy.drawFastVLine(22, 19, 43, WHITE);
   arduboy.drawFastVLine(105, 19, 43, WHITE);
   
