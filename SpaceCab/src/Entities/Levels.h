@@ -85,7 +85,7 @@ const uint8_t PROGMEM level1StartingPositions[10] = {
 };
 
 const uint8_t PROGMEM level1EndingPositions[10] = {
-2, 12,    11, 9,    7, 13,    18, 3,    33, 9,    
+2, 12,    11, 9,    7, 13,    15, 3,    33, 9,    
 };
 
 

@@ -91,14 +91,14 @@ void launchCustomer() {
 
   // Ensure new customer is not placed in the location the last customer was dropped at ..
 
-  while (numberOfPositions != 1 && customerStartingPos == customer.getStartingPosition()) {
+  while (numberOfPositions != 1 && (customerStartingPos == customer.getStartingPosition() || customerStartingPos == customer.getDestinationPosition())) {
       customerStartingPos = random(numberOfPositions);
   }
 
 
   // Make sure the staryting point and destination are different!
 
-  while (numberOfPositions != 1 && customer.getStartingPosition() == customerDestination) {
+  while (numberOfPositions != 1 && customerStartingPos == customerDestination) {
     customerDestination = random(numberOfPositions);
   }
 
