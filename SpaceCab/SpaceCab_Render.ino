@@ -48,18 +48,18 @@ void drawHUD() {
     font4x6.print(digitsTime[i - 1]);
   //Sprites::drawExternalMask(64, 57, livesLeft, livesLeftMask, 0, 0);
 
-Serial.print("Lives : ");
-Serial.print(player.numberOfLives);
-Serial.print(", Fare : ");
-Serial.print(customer.getFare());
-Serial.print(", Fuel : ");
-Serial.print(player.fuel);
-Serial.print(", Start : ");
-Serial.print(customer.getStartingPosition());
-Serial.print(", Dest : ");
-Serial.print(customer.getDestinationPosition());
-Serial.print(", Carrying : ");
-Serial.println( (player.carryingCustomer ? "Y" : "N") );
+// Serial.print("Lives : ");
+// Serial.print(player.numberOfLives);
+// Serial.print(", Fare : ");
+// Serial.print(customer.getFare());
+// Serial.print(", Fuel : ");
+// Serial.print(player.fuel);
+// Serial.print(", Start : ");
+// Serial.print(customer.getStartingPosition());
+// Serial.print(", Dest : ");
+// Serial.print(customer.getDestinationPosition());
+// Serial.print(", Carrying : ");
+// Serial.println( (player.carryingCustomer ? "Y" : "N") );
 }
 
 void scrollingBackground() {
@@ -149,7 +149,9 @@ void customerDisplay() {
 
   }
   else if (state == GameState::PlayGame)  { 
-    
+
+#ifdef ARROWS_FP
+
     uint8_t const *imageName = nullptr;
     uint8_t const *maskName = nullptr;
     uint8_t xPos = 0;
@@ -305,7 +307,77 @@ void customerDisplay() {
 
       Sprites::drawExternalMask(xPos[idx], yPos[idx], images[idx], masks[idx], 0, 0);
       */
+
     }
+#endif
+#ifndef ARROWS_FP
+
+    uint16_t customerX = 0;
+    uint16_t customerY = 0;
+    uint8_t arrowX = 0;
+    uint8_t arrowY = 0;
+    uint8_t playerX = player.getXDisplay();
+    uint8_t playerY = player.getYDisplay();
+
+    Direction direction = Direction::Up;
+
+    // Render arrows.
+
+    arrowCount++;
+    arrowCount = arrowCount % ARROW_FLASH;
+
+    if (arrowCount < (ARROW_FLASH / 2)) { 
+
+      if (!player.carryingCustomer) {
+
+        customerX = customer.getX();
+        customerY = customer.getY();
+
+      }
+      else {
+
+        customerX = customer.getXDestinationTile() * TILE_SIZE;
+        customerY = customer.getYDestinationTile() * TILE_SIZE;
+
+      }
+
+      int16_t dX = customerX - (player.x - level.xOffset).getInteger();
+      int16_t dY = customerY - (player.y - level.yOffset).getInteger();
+Serial.print(dX);
+Serial.print(",");
+Serial.print(dY);
+Serial.print(" ");
+Serial.print(playerX);
+Serial.print(",");
+Serial.print(playerY);
+Serial.print(" ");
+      if (dX < -playerX) {
+
+        if (dY < -playerY) { direction = Direction::UpLeft; arrowX = 0; arrowY = 0; Serial.print(arrowX); Serial.print(" "); Serial.print(arrowY); Serial.println(" a"); }
+        if (dY >= -playerY && dY < -playerY + 64) { direction = Direction::Left; arrowX = 0; arrowY = playerY + dY; Serial.print(arrowX); Serial.print(" "); Serial.print(arrowY); Serial.println(" b"); }
+        if (dY >= -playerY + 64) { direction = Direction::DownLeft; arrowX = 0; arrowY = 56; Serial.print(arrowX); Serial.print(" "); Serial.print(arrowY); Serial.println(" c"); }
+
+      }
+
+      if (dX >= -playerX && dX < playerX + WIDTH) {
+
+        if (dY < 0) { direction = Direction::Up; arrowX = playerX + dX; arrowY = 0; Serial.print(arrowX); Serial.print(" "); Serial.print(arrowY); Serial.println(" d"); }
+        if (dY > 0) { direction = Direction::Down; arrowX = playerX + dY; arrowY = 56; Serial.print(arrowX); Serial.print(" "); Serial.print(arrowY); Serial.println(" e"); }
+
+      }
+
+      if (dX > -playerX + WIDTH) {
+
+        if (dY < -playerY) { direction = Direction::UpRight; arrowX = 120; arrowY = 0; Serial.print(arrowX); Serial.print(" "); Serial.print(arrowY); Serial.println(" f"); }
+        if (dY >= -playerY && dY < -playerY + 64) { direction = Direction::Right; arrowX = 120; arrowY = playerY + dY; Serial.print(arrowX); Serial.print(" "); Serial.print(arrowY); Serial.println(" g"); }
+        if (dY >= -playerY + 64) { direction = Direction::DownRight; arrowX = 120; arrowY = 56; Serial.print(arrowX); Serial.print(" "); Serial.print(arrowY); Serial.println(" h"); }
+
+      }
+
+      Sprites::drawExternalMask(arrowX, arrowY, ArrowImgs, ArrowMasks, static_cast<uint8_t>(direction), static_cast<uint8_t>(direction));
+
+    }
+#endif
 
   }
 

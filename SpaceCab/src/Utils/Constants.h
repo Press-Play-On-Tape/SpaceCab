@@ -1,5 +1,11 @@
 #pragma once
 
+// --------------------------------------------------------------------------
+
+#define _ARROWS_FP
+
+// --------------------------------------------------------------------------
+
 #define PLAYER_WIDTH 17
 #define PLAYER_WIDTH_HALF PLAYER_WIDTH / 2
 #define PLAYER_HEIGHT 8
@@ -122,6 +128,18 @@ enum class PlayerStatus : uint16_t {
 
 };
 
+enum class Direction : uint8_t {
+
+  Up,
+  UpRight,
+  Right,
+  DownRight,
+  Down,
+  DownLeft,
+  Left,
+  UpLeft
+
+};
 
 inline PlayerStatus operator++( PlayerStatus & c ) {
 
@@ -152,3 +170,4 @@ inline PlayerStatus operator--( PlayerStatus & c, int ) {
   return result;
 
 }
+
