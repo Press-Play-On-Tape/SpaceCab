@@ -62,16 +62,41 @@ void drawHUD() {
 // Serial.println( (player.carryingCustomer ? "Y" : "N") );
 }
 
-void scrollingBackground() {
+void scrollingBackground(bool scrollLeft) {
 
-  arduboy.drawBitmap(backdropx, backdropy, checkeredBG, 128, 64, WHITE);
-  arduboy.drawBitmap(backdropx + 128, backdropy, checkeredBG, 128, 64, WHITE);
+  uint8_t xCount = 0;
+
+  arduboy.drawFastHLine(0, 0, WIDTH, WHITE);
+
+  for (int16_t x = backdropx; x < 128; x = x + 8) {
+
+    for (uint8_t y = 0; y < 7; ++y) {
+
+      if ((xCount % 2 == 0 && y % 2 == 0) || (xCount % 2 == 1 && y % 2 == 1)) {
+        Sprites::drawOverwrite(x, 4 + (y * 8), checkeredBG_White, 0);
+      }
+
+    }
+
+    ++xCount;
+
+  }
+
+  arduboy.drawFastHLine(0, HEIGHT - 1, WIDTH, WHITE);
 
   if (arduboy.everyXFrames(2)) { // when running at 60fps
 
-    --backdropx;
-    if (backdropx < -128) {
-      backdropx = 0;
+    if (scrollLeft) {
+      --backdropx;
+      if (backdropx <= -WIDTH) {
+        backdropx = 0;
+      }
+    }
+    else {
+      ++backdropx;
+      if (backdropx >= 0) {
+        backdropx = -WIDTH;
+      }
     }
   
   }

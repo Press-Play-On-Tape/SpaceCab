@@ -46,7 +46,7 @@ static const uint8_t DO_NOT_EDIT_SLOT             = 255;
 static const uint8_t GAME_TIME_MAX                = 10;
 static const uint8_t ARROW_FLASH                  = 40;
 
-static const uint16_t PLAYER_FUEL_MAX             = 100;
+static const uint16_t PLAYER_FUEL_MAX             = 10; //SJH 1000;
 static const uint8_t PLAYER_NUMBER_OF_LIVES_MAX   = 3;
 
 static const uint16_t FARE_X_FRAMES               = 15;

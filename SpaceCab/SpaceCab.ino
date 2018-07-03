@@ -31,7 +31,6 @@ uint8_t levelNumber = 0;
 uint8_t thrusterFrame = 0;
 uint8_t gameTime = GAME_TIME_MAX;
 int16_t backdropx = 0;
-int16_t backdropy = 0;
 uint8_t alternate = 0;
 uint8_t fareCount = 0;
 uint8_t dollarsCount = 0;
