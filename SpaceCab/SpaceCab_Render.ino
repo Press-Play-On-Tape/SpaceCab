@@ -48,18 +48,18 @@ void drawHUD() {
     font4x6.print(digitsTime[i - 1]);
   //Sprites::drawExternalMask(64, 57, livesLeft, livesLeftMask, 0, 0);
 
-// Serial.print("Lives : ");
-// Serial.print(player.numberOfLives);
-// Serial.print(", Fare : ");
-// Serial.print(customer.getFare());
-// Serial.print(", Fuel : ");
-// Serial.print(player.fuel);
-// Serial.print(", Start : ");
-// Serial.print(customer.getStartingPosition());
-// Serial.print(", Dest : ");
-// Serial.print(customer.getDestinationPosition());
-// Serial.print(", Carrying : ");
-// Serial.println( (player.carryingCustomer ? "Y" : "N") );
+Serial.print("Lives : ");
+Serial.print(player.numberOfLives);
+Serial.print(", Fare : ");
+Serial.print(customer.getFare());
+Serial.print(", Fuel : ");
+Serial.print(player.fuel);
+Serial.print(", Start : ");
+Serial.print(customer.getStartingPosition());
+Serial.print(", Dest : ");
+Serial.print(customer.getDestinationPosition());
+Serial.print(", Carrying : ");
+Serial.println( (player.carryingCustomer ? "Y" : "N") );
 }
 
 void scrollingBackground(bool scrollLeft) {
