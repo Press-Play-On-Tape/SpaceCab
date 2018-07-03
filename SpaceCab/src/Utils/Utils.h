@@ -33,7 +33,7 @@ template< size_t size > void extractDigits(uint8_t (&buffer)[size], uint16_t val
 
 void initGame(Player *player, Level *level, Customer *customer) {
 
-  player->numberOfLives = 1; //SJHPLAYER_NUMBER_OF_LIVES_MAX;
+  player->numberOfLives = PLAYER_NUMBER_OF_LIVES_MAX;
   player->currentScore = 0;
 
 }
