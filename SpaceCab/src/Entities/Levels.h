@@ -80,6 +80,10 @@ const uint8_t PROGMEM level1StartingPositions[10] = {
 1, 12,    10, 9,    8, 13,    16, 3,    32, 9,    
 };
 
+const uint8_t PROGMEM level1EndingPositions[10] = {
+2, 12,    11, 9,    7, 13,    18, 3,    33, 9,    
+};
+
 
 //-------------------------------------------------------------------------------------
 // Level 2 ..
@@ -113,6 +117,10 @@ const unsigned char PROGMEM level2Map[LEVEL_2_HEIGHT * LEVEL_2_WIDTH] = {
 };
 
 const uint8_t PROGMEM level2StartingPositions[8] = {
+1, 2,    4, 5,    6, 6,    14,8, 
+};
+
+const uint8_t PROGMEM level2EndingPositions[8] = {
 1, 2,    4, 5,    6, 6,    14,8, 
 };
 
@@ -152,18 +160,23 @@ const uint8_t PROGMEM level3StartingPositions[8] = {
 1, 2,    4, 5,    6, 6,    14,8, 
 };
 
+const uint8_t PROGMEM level3EndingPositions[8] = {
+1, 2,    4, 5,    6, 6,    14,8, 
+};
+
 
 
 const uint8_t *levelMaps[] =                    { level0Map, level1Map, level2Map, level3Map };
 const uint8_t *levelStartingPositions[] =       { level0StartingPositions, level1StartingPositions, level2StartingPositions, level3StartingPositions };
-const uint8_t levelStartingPositionsCount[] =   { 1, 5, 4 }; 
+const uint8_t *levelEndingPositions[] =         { level0EndingPositions, level1EndingPositions, level2EndingPositions, level3EndingPositions };
+const uint8_t levelPositionsCount[] =           { 1, 5, 4 }; 
 
 const int8_t levelInit[] = { 
 
 // Level width   Level Height,   Level     Level     Player  Player
 //                               X Offset  Y Offset  X Pos   Y Pos
   LEVEL_0_WIDTH, LEVEL_0_HEIGHT,       0,        0,     17,     48, 
-  LEVEL_1_WIDTH, LEVEL_1_HEIGHT,     -56,      -56,     40,     48,
+  LEVEL_1_WIDTH, LEVEL_1_HEIGHT,     -54,      -56,     56,     48,
   LEVEL_2_WIDTH, LEVEL_2_HEIGHT,     -32,      -32,     56,     48, 
   LEVEL_3_WIDTH, LEVEL_3_HEIGHT,     -32,      -32,     56,     48 
 };

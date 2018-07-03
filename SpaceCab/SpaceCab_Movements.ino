@@ -198,7 +198,7 @@ void moveCab() {
 // Serial.print(" ");
 // Serial.print((float)level.xOffset);
 // Serial.print(",");
-// Serial.println((float)level.yOffset);
+// Serial.print((float)level.yOffset);
 
   SQ15x16 playerYDeltaVal = player.getYDeltaVal();
   SQ15x16 playerXDeltaVal = player.getXDeltaVal();
@@ -209,7 +209,7 @@ void moveCab() {
   if (player.yDelta < 0) { 
 
     if (canMoveUp()) {
-
+// Serial.print(" move up");
       if (level.yOffset < 0) {
 
         if (player.y < PLAYER_Y_CENTRE) {
@@ -355,6 +355,7 @@ void moveCab() {
   if (player.xDelta > 0) {
 
     if (canMoveRight()) {
+// Serial.print(" move right");
 
       if (player.x < PLAYER_X_CENTRE) {
         if (player.x + playerXDeltaVal < PLAYER_X_CENTRE) {

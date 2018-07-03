@@ -366,36 +366,41 @@ void customerDisplay() {
 
       }
 
+
+      // If the customer location is on screen then do not render ..
+      {
+        int16_t customerXDisplay = customerX + level.getXOffsetDisplay();
+        int16_t customerYDisplay = customerY + level.getYOffsetDisplay();
+
+        if (customerXDisplay >= -CUSTOMER_WIDTH && customerXDisplay < WIDTH && customerYDisplay >= -CUSTOMER_HEIGHT && customerYDisplay < HEIGHT) {
+          return;
+        } 
+
+      }
+
       int16_t dX = customerX - (player.x - level.xOffset).getInteger();
       int16_t dY = customerY - (player.y - level.yOffset).getInteger();
-Serial.print(dX);
-Serial.print(",");
-Serial.print(dY);
-Serial.print(" ");
-Serial.print(playerX);
-Serial.print(",");
-Serial.print(playerY);
-Serial.print(" ");
+
       if (dX < -playerX) {
 
-        if (dY < -playerY) { direction = Direction::UpLeft; arrowX = 0; arrowY = 0; Serial.print(arrowX); Serial.print(" "); Serial.print(arrowY); Serial.println(" a"); }
-        if (dY >= -playerY && dY < -playerY + 64) { direction = Direction::Left; arrowX = 0; arrowY = playerY + dY; Serial.print(arrowX); Serial.print(" "); Serial.print(arrowY); Serial.println(" b"); }
-        if (dY >= -playerY + 64) { direction = Direction::DownLeft; arrowX = 0; arrowY = 56; Serial.print(arrowX); Serial.print(" "); Serial.print(arrowY); Serial.println(" c"); }
+        if (dY < -playerY)                            { direction = Direction::UpLeft; arrowX = 0; arrowY = 0; }
+        if (dY >= -playerY && dY < -playerY + 64)     { direction = Direction::Left; arrowX = 0; arrowY = playerY + dY - 4; }
+        if (dY >= -playerY + 64)                      { direction = Direction::DownLeft; arrowX = 0; arrowY = 56; }
 
       }
 
-      if (dX >= -playerX && dX < playerX + WIDTH) {
+      if (dX >= -playerX && dX < -playerX + WIDTH) {
 
-        if (dY < 0) { direction = Direction::Up; arrowX = playerX + dX; arrowY = 0; Serial.print(arrowX); Serial.print(" "); Serial.print(arrowY); Serial.println(" d"); }
-        if (dY > 0) { direction = Direction::Down; arrowX = playerX + dY; arrowY = 56; Serial.print(arrowX); Serial.print(" "); Serial.print(arrowY); Serial.println(" e"); }
+        if (dY < 0)                                   { direction = Direction::Up; arrowX = playerX + dX; arrowY = 0; }
+        if (dY > 0)                                   { direction = Direction::Down; arrowX = playerX + dX; arrowY = 56; }
 
       }
 
-      if (dX > -playerX + WIDTH) {
+      if (dX >= -playerX + WIDTH) {
 
-        if (dY < -playerY) { direction = Direction::UpRight; arrowX = 120; arrowY = 0; Serial.print(arrowX); Serial.print(" "); Serial.print(arrowY); Serial.println(" f"); }
-        if (dY >= -playerY && dY < -playerY + 64) { direction = Direction::Right; arrowX = 120; arrowY = playerY + dY; Serial.print(arrowX); Serial.print(" "); Serial.print(arrowY); Serial.println(" g"); }
-        if (dY >= -playerY + 64) { direction = Direction::DownRight; arrowX = 120; arrowY = 56; Serial.print(arrowX); Serial.print(" "); Serial.print(arrowY); Serial.println(" h"); }
+        if (dY < -playerY)                            { direction = Direction::UpRight; arrowX = 120; arrowY = 0; }
+        if (dY >= -playerY && dY < -playerY + 64)     { direction = Direction::Right; arrowX = 120; arrowY = playerY + dY - 4; }
+        if (dY >= -playerY + 64)                      { direction = Direction::DownRight; arrowX = 120; arrowY = 56; }
 
       }
 

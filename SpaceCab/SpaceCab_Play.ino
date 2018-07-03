@@ -84,33 +84,34 @@ void updateTime() {
 
 void launchCustomer() {
 
-  uint8_t numberOfStartingPositions = levelStartingPositionsCount[level.getLevelNumber()];
-  uint8_t customerStartingPos = random(numberOfStartingPositions);
-  uint8_t customerDestination = random(numberOfStartingPositions);
+  uint8_t numberOfPositions = levelPositionsCount[level.getLevelNumber()];
+  uint8_t customerStartingPos = random(numberOfPositions);
+  uint8_t customerDestination = random(numberOfPositions);
 
 
   // Ensure new customer is not placed in the location the last customer was dropped at ..
 
-  while (numberOfStartingPositions != 1 && customerStartingPos == customer.getStartingPosition()) {
-      customerStartingPos = random(numberOfStartingPositions);
+  while (numberOfPositions != 1 && customerStartingPos == customer.getStartingPosition()) {
+      customerStartingPos = random(numberOfPositions);
   }
 
 
   // Make sure the staryting point and destination are different!
 
-  while (numberOfStartingPositions != 1 && customerStartingPos == customerDestination) {
-    customerDestination = random(numberOfStartingPositions);
+  while (numberOfPositions != 1 && customer.getStartingPosition() == customerDestination) {
+    customerDestination = random(numberOfPositions);
   }
 
   const uint8_t *levelStartingPosition = levelStartingPositions[level.getLevelNumber()];
   customer.setXTile(pgm_read_byte(&levelStartingPosition[customerStartingPos * 2]));
   customer.setYTile(pgm_read_byte(&levelStartingPosition[(customerStartingPos * 2) + 1]));
+  customer.setStartingPosition(customerStartingPos);
 
-  customer.setXDestinationTile(pgm_read_byte(&levelStartingPosition[customerDestination * 2]));
-  customer.setYDestinationTile(pgm_read_byte(&levelStartingPosition[(customerDestination * 2) + 1]));
+  const uint8_t *levelEndingPosition = levelEndingPositions[level.getLevelNumber()];
+  customer.setXDestinationTile(pgm_read_byte(&levelEndingPosition[customerDestination * 2]));
+  customer.setYDestinationTile(pgm_read_byte(&levelEndingPosition[(customerDestination * 2) + 1]));
   customer.setDestinationPosition(customerDestination);
 
-  customer.setStartingPosition(customerStartingPos);
   customer.setFrame(0);
   customer.setFare(random(10, 20));
 
@@ -315,8 +316,8 @@ void inGame() {
 
   drawLevel();
   playerDisplay();
-  customerDisplay();
   drawHUD();
+  customerDisplay();
   drawDollars();
 
   if (state == GameState::EndOfLevel) {
