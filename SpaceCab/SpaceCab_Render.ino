@@ -359,7 +359,7 @@ void customerDisplay() {
 
 void drawLevelStart() {
 
-  arduboy.fillRect(18, 24, 67, 20, BLACK);
+  arduboy.fillRect(17, 23, 94, 16, BLACK);
   arduboy.drawFastHLine(19, 25, 92, WHITE);
   arduboy.drawFastHLine(19, 38, 92, WHITE);
   arduboy.drawFastHLine(19, 39, 92, BLACK);
@@ -396,7 +396,7 @@ void drawGoto() {
 
   if (gotoCounter > 0 && flashingCounter < (FLASH_MAX / 2)) {
 
-    Sprites::drawExternalMask(45, 20, Hail, Hail_Mask, 0, 0);
+    Sprites::drawExternalMask(44, 20, Hail, Hail_Mask, 0, 0);
     Sprites::drawOverwrite(71, 25, font4x6_Full, customer.getDestinationPosition() + 53);
 
   }
