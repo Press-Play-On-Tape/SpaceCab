@@ -11,7 +11,7 @@ bool isTileSolid(uint8_t tileType) {
     
     case BRICK:
     case PLAT1:
-    case ROOF2:
+    case ROCKS:
     case METAL:
     case SAND1:
       return true;
