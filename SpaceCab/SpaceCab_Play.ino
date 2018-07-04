@@ -220,6 +220,14 @@ void checkCollisionWithLevelElements_TestElement(uint8_t x, uint8_t y, uint8_t e
       if (player.fuel < PLAYER_FUEL_MAX) player.fuel++;
       break;
 
+    case SPIKU:
+      player.status = PlayerStatus::OutOfFuel_Max;
+      break;
+
+    case SPIKD:
+      player.status = PlayerStatus::OutOfFuel_Max;
+      break;
+
     case SIGN1:
       if (player.carryingCustomer && absT(customer.getXDestinationTile() - x) < 2 && customer.getYDestinationTile() == y) {
         player.carryingCustomer = false;
@@ -228,6 +236,7 @@ void checkCollisionWithLevelElements_TestElement(uint8_t x, uint8_t y, uint8_t e
         dollarsCount = DOLLARS_COUNT_MAX;
       }
       break;
+    
 
   }
 
