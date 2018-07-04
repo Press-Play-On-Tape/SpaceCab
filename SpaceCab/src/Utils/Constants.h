@@ -22,7 +22,7 @@
 #define GATE1 5
 #define METAL 6
 #define SHADE 7
-#define ROOF2 8
+#define ROCKS 8
 #define BRICK 9
 #define GRASS 10
 #define FUEL1 11
@@ -30,7 +30,7 @@
 #define SPIKU 13
 #define SPIKD 14
 
-#define TILE_COUNT 19
+#define TILE_COUNT 15
 #define TILE_SIZE 8
 #define NO_TILE 255
 
