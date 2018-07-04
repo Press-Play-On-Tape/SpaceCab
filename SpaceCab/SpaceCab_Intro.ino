@@ -2,7 +2,7 @@
 
 void vsBoot() {
   // Vsoft logo display
-  Sprites::drawOverwrite(46, 14, bootlogo, 0);
+  Sprites::drawOverwrite(29, 17, bootlogo, 0);
 
   if (!fadeOutEffect.isComplete()) {
 
