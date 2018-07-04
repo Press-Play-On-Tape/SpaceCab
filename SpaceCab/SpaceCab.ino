@@ -10,6 +10,7 @@
 #include <FixedPointsCommon.h>
 #include "src/Fonts/Font4x6.h"
 
+Arduboy2Base arduboy;
 ArduboyTones sound(arduboy.audio.enabled);
 Sprites sprite;
 
@@ -30,153 +31,12 @@ GameState state = GameState::VSBoot;
 uint8_t levelNumber = 0;
 uint8_t thrusterFrame = 0;
 uint8_t gameTime = GAME_TIME_MAX;
-uint16_t currentScore = 0;
 int16_t backdropx = 0;
-int16_t backdropy = 0;
 uint8_t alternate = 0;
-
-//------------------------------------------------------------------------------
-
-
-void handleInput() {
-
-  if (arduboy.everyXFrames(4)) {
-
-    if (arduboy.pressed(LEFT_BUTTON)) {
-      player.decXDelta();
-      player.frame = 1;
-    }
-
-    else if (arduboy.pressed(RIGHT_BUTTON)) {
-      player.incXDelta();
-      player.frame = 0;
-    }
-
-    if (arduboy.pressed(A_BUTTON)) {
-
-      switch (player.frame) {
-
-        case 0: 
-          Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay() + 8, thrusterRight, thrusterRightMask, thrusterFrame, thrusterFrame);
-          break;
-
-        case 1:
-          Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay() + 8, thrusterLeft, thrusterLeftMask, thrusterFrame, thrusterFrame);
-          break;
-
-      }
-
-
-      // Alternate thruster frame every 5 frames ..
-
-      if (arduboy.everyXFrames(5)) {
-        ++thrusterFrame;
-        thrusterFrame %=2;
-      }
-
-      player.decYDelta();
-      sound.tone(NOTE_C1, 50, NOTE_C2, 50, NOTE_C1, 50);
-
-    }
-
-    if (arduboy.everyXFrames(8)) {
-
-      // If the A Button is not being pressed, then we should start falling ..
-
-      if (arduboy.notPressed(A_BUTTON)) {
-        player.incYDelta(); 
-      }
-
-
-      // If the player is not pressing the elft or right button then start slowing down ..
-
-      if (arduboy.notPressed(LEFT_BUTTON) && arduboy.notPressed(RIGHT_BUTTON)) {
-
-        if (player.xDelta > 0)  player.decXDelta();
-        if (player.xDelta < 0)  player.incXDelta();
-
-      }
-
-    }
-
-  }
-
-}
-
-
-void updateTime() {
-
-  if (arduboy.everyXFrames(60)) {
-    if (gameTime >= 1)    --gameTime;
-    if (gameTime == 0 )   state = GameState::GameOver;
-  }
-
-}
-
-
-//------------------------------------------------------------------------------
-//  Launch a new customer.
-//
-//  Valid launching positions are derived from the level design.
-//------------------------------------------------------------------------------
-
-void launchCustomer() {
-
-  uint8_t numberOfStartingPositions = levelStartingPositionsCount[level.getLevelNumber()];
-  uint8_t customerNewPos = random(numberOfStartingPositions);
-
-  const uint8_t *levelStartingPosition = levelStartingPositions[level.getLevelNumber()];
-  customer.x = pgm_read_byte(&levelStartingPosition[customerNewPos * 2]) * TILE_SIZE;
-  customer.y = pgm_read_byte(&levelStartingPosition[(customerNewPos * 2) + 1]) * TILE_SIZE;
-  customer.frame = 0;
-
-}
-
-
-//------------------------------------------------------------------------------
-//  Has the player collided with the customer ?
-//------------------------------------------------------------------------------
-
-void checkCollision() {
-
-  Rect playerRect = { static_cast<int16_t>(player.getXDisplay()), static_cast<int16_t>(player.getYDisplay()), PLAYER_WIDTH, PLAYER_HEIGHT };
-
-
-  // Check customer collision only if they are on screen ..
-
-  int16_t customerXVal = customer.x + level.xOffset.getInteger();
-  int16_t customerYVal = customer.y + level.yOffset.getInteger();
-
-  if (customerXVal >= -CUSTOMER_WIDTH && customerXVal < WIDTH && customerYVal >= -CUSTOMER_HEIGHT && customerYVal < HEIGHT) {
-  
-    Rect customerRect = { customerXVal, customerYVal, CUSTOMER_WIDTH, CUSTOMER_HEIGHT };
-
-    if (arduboy.collide(playerRect, customerRect)) {
-      currentScore = currentScore + 2;
-      launchCustomer();
-      sound.tone(NOTE_E6, 50, NOTE_E3, 50, NOTE_E2, 50);
-    }
-
-  }
-
-}
-
-
-//------------------------------------------------------------------------------
-//  Play the game! 
-//------------------------------------------------------------------------------
-
-void inGame() {
-
-  updateTime();
-  handleInput();
-  checkCollision();
-  drawLevel();
-  playerDisplay();
-  customerDisplay();
-  drawHUD();
-
-}
+uint8_t fareCount = 0;
+uint8_t dollarsCount = 0;
+uint8_t flashingCounter = 0;
+uint8_t gotoCounter = 0;
 
 
 //------------------------------------------------------------------------------
@@ -212,29 +72,37 @@ void loop() {
       break;
 
     case GameState::SplashScreen_Init:
-      initLevel(0, &player, &level);
+      initLevel(0, &player, &level, &customer);
       launchCustomer();
+      player.frame = 0;
       state = GameState::SplashScreen;
       fadeInEffect.reset(0, HEIGHT, 1);
+      
       // break;  -- Fall through intentional.
 
     case GameState::SplashScreen:
       titleScreen();
       break;
 
-    case GameState::PlayGame_Init:
+    case GameState::PlayGame_InitGame:
+      levelNumber = 1;
+      initGame(&player, &level, &customer);
+      state = GameState::PlayGame_InitLevel;
+      // break;  -- Fall through intentional.
+
+    case GameState::PlayGame_InitLevel:
       thrusterFrame = 0;
       gameTime = GAME_TIME_MAX;
-      currentScore = 0;
-      levelNumber = 1;
-
-      initLevel(levelNumber, &player, &level);
+      initLevel(levelNumber, &player, &level, &customer);
       launchCustomer();
-
       state = GameState::PlayGame;
       // break;  -- Fall through intentional.
         
     case GameState::PlayGame:
+      inGame();
+      break;
+
+    case GameState::EndOfLevel:
       inGame();
       break;
 
@@ -244,7 +112,7 @@ void loop() {
 
     case GameState::SaveScore:
       highScore.reset();
-      highScore.setSlotNumber(EEPROM_Utils::saveScore(currentScore));
+      highScore.setSlotNumber(EEPROM_Utils::saveScore(player.currentScore));
       state = GameState::HighScore;
       fadeInEffect.reset(0, HEIGHT, 1);
       // break; Fall-through intentional.

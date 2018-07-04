@@ -1,6 +1,7 @@
 #pragma once
+
 #include <Arduboy2.h>
-Arduboy2Base arduboy;
+#include "Constants.h"
 
 uint8_t fadeWidth;
 
@@ -26,57 +27,16 @@ template< size_t size > void extractDigits(uint8_t (&buffer)[size], uint16_t val
   }
 }
 
-// //------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-// // Fade effect functions -------------------------------------------------------
+void initGame(Player *player, Level *level, Customer *customer) {
 
-// void resetFade()
-// {
-//   fadeWidth = 0;
-// }
+  player->numberOfLives = PLAYER_NUMBER_OF_LIVES_MAX;
+  player->currentScore = 0;
 
-// void resetFadeIn()
-// {
-//   fadeWidth = WIDTH;
-// }
+}
 
-// bool fadeIn()
-// {
-//   for(uint8_t i = 0; i < (HEIGHT / 2); ++i)
-//   {
-//     arduboy.drawFastHLine(0, (i * 2), fadeWidth, BLACK);
-//     arduboy.drawFastHLine((WIDTH - fadeWidth), (i * 2) + 1, fadeWidth, BLACK);
-//   }
-
-//   if (fadeWidth > 0)
-//   {
-//     fadeWidth = fadeWidth - 4;
-//     return false;
-//   }
-//   else
-//     return true;
-// }
-
-// bool fadeOut()
-// {
-//   for(uint8_t i = 0; i < (HEIGHT / 2); ++i)
-//   {
-//     arduboy.drawFastHLine(0, (i * 2), fadeWidth, BLACK);
-//     arduboy.drawFastHLine((WIDTH - fadeWidth), (i * 2) + 1, fadeWidth, BLACK);
-//   }
-//   if (fadeWidth < WIDTH)
-//   {
-//     ++fadeWidth;
-//     return false;
-//   }
-//   else
-//     return true;
-//   }
-  
-// -----------------------------------------------------------------------------
-
-
-void initLevel(uint8_t levelNumber, Player *player, Level *level) {
+void initLevel(uint8_t levelNumber, Player *player, Level *level, Customer *customer) {
 
   uint8_t width = levelInit[levelNumber * 6];
   uint8_t height = levelInit[(levelNumber * 6) + 1];
@@ -89,12 +49,17 @@ void initLevel(uint8_t levelNumber, Player *player, Level *level) {
   player->xDelta = 0;
   player->yDelta = 0;
   player->frame = 1;
+  player->fuel = PLAYER_FUEL_MAX;
+  player->carryingCustomer = false;
+  player->status = PlayerStatus::Active;
   
   level->setLevelNumber(levelNumber);
   level->setHeight(height * TILE_SIZE);
   level->setWidth(width * TILE_SIZE);
   level->setHeightInTiles(height);
   level->setWidthInTiles(width);
+
+  customer->setStartingPosition(CUSTOMER_NO_STARTING_POS);
 
 }
 

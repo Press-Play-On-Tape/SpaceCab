@@ -15,26 +15,27 @@ void vsBoot() {
 
 }
 
-void titleScreen()
-{
-  int16_t customerXVal = customer.x + level.xOffset.getInteger();
-  int16_t customerYVal = customer.y + level.yOffset.getInteger();
+void titleScreen() {
+
+  int16_t customerXVal = customer.getX() + level.xOffset.getInteger();
+  int16_t customerYVal = customer.getY() + level.yOffset.getInteger();
   int16_t logoXVal = 0 + level.xOffset.getInteger();
   int16_t logoYVal = 6 + level.yOffset.getInteger();  
   
   Rect playerRect = {static_cast<int16_t>(player.getXDisplay()), static_cast<int16_t>(player.getYDisplay()), PLAYER_WIDTH, PLAYER_HEIGHT};
   Rect customerRect = {customerXVal, customerYVal, CUSTOMER_WIDTH, CUSTOMER_HEIGHT};
+
   handleInput();
+  Sprites::drawOverwrite(logoXVal, logoYVal, SpaceCabSplash, 0);
   drawLevel();
-  Sprites::drawExternalMask(logoXVal, logoYVal, SpaceCabSplash, SpaceCabSplashMask, 0, 0);
-  
+
   playerDisplay();
   customerDisplay();
   
-  if (arduboy.collide(playerRect, customerRect))
-  {
+  if (arduboy.collide(playerRect, customerRect)){
     arduboy.initRandomSeed();
     sound.tone(NOTE_C5,50, NOTE_D4,50, NOTE_E3,50);
-    state = GameState::PlayGame_Init;
+    state = GameState::PlayGame_InitGame;
   }
+  
 }
