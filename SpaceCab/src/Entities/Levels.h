@@ -76,12 +76,12 @@ const unsigned char PROGMEM level1Map[LEVEL_1_HEIGHT * LEVEL_1_WIDTH] = {
   ROOF2, ROOF2, ROOF2, ROOF2, ROOF2, ROOF2, ROOF2, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, ROOF2, ROOF2, ROOF2, ROOF2, ROOF2, ROOF2, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1,
 };
 
-const uint8_t PROGMEM level1StartingPositions[10] = {
-1, 12,    10, 9,    8, 13,    16, 3,    32, 9,    
+const uint8_t PROGMEM level1StartingPositions[12] = {
+1, 12,    10, 9,    8, 13,    16, 3,    17, 12,    32, 9,    
 };
 
-const uint8_t PROGMEM level1EndingPositions[10] = {
-2, 12,    11, 9,    7, 13,    15, 3,    33, 9,    
+const uint8_t PROGMEM level1EndingPositions[12] = {
+2, 12,    11, 9,    7, 13,    15, 3,    18, 12,    33, 9,    
 };
 
 
@@ -169,7 +169,7 @@ const uint8_t PROGMEM level3EndingPositions[8] = {
 const uint8_t *levelMaps[] =                    { level0Map, level1Map, level2Map, level3Map };
 const uint8_t *levelStartingPositions[] =       { level0StartingPositions, level1StartingPositions, level2StartingPositions, level3StartingPositions };
 const uint8_t *levelEndingPositions[] =         { level0EndingPositions, level1EndingPositions, level2EndingPositions, level3EndingPositions };
-const uint8_t levelPositionsCount[] =           { 1, 5, 4 }; 
+const uint8_t levelPositionsCount[] =           { 1, 6, 4 }; 
 
 const int8_t levelInit[] = { 
 

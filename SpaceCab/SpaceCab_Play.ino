@@ -84,7 +84,7 @@ void updateTime() {
 
 void launchCustomer() {
 
-  uint8_t numberOfPositions = levelPositionsCount[level.getLevelNumber()];
+  const uint8_t numberOfPositions = levelPositionsCount[level.getLevelNumber()];
   uint8_t customerStartingPos = random(numberOfPositions);
   uint8_t customerDestination = random(numberOfPositions);
 
@@ -141,6 +141,7 @@ void checkCollisionWithCustomer() {
     if (arduboy.collide(playerRect, customerRect)) {
       player.carryingCustomer = true;
       sound.tone(NOTE_E6, 50, NOTE_E3, 50, NOTE_E2, 50);
+      gotoCounter = GOTO_COUNTER_MAX;
     }
 
   }
@@ -305,6 +306,9 @@ void updateStatus() {
 void inGame() {
 
   updateTime();
+  flashingCounter++;
+  flashingCounter = flashingCounter % FLASH_MAX;
+  if (gotoCounter != 0) gotoCounter--;
 
   if (player.status == PlayerStatus::Active) {
   
@@ -317,8 +321,9 @@ void inGame() {
   drawLevel();
   playerDisplay();
   drawDollars();
-  drawHUD();
   customerDisplay();
+  drawHUD();
+  drawGoto();
 
   if (state == GameState::EndOfLevel) {
     drawLevelStart();

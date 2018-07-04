@@ -10,13 +10,13 @@ uint8_t clearScores = 0;
 void HighScore() {
 
   uint8_t xOffset = 33;
-  uint8_t yOffset = 22;
+  uint8_t yOffset = 17;
 
   //scrollingBackground(false);
 
-  arduboy.fillRect(0, 19, 128, 41, BLACK);
-  arduboy.drawFastVLine(22, 19, 43, WHITE);
-  arduboy.drawFastVLine(105, 19, 43, WHITE);
+//  arduboy.fillRect(0, 19, 128, 41, BLACK);
+//  arduboy.drawFastVLine(22, 19, 43, WHITE);
+//  arduboy.drawFastVLine(105, 19, 43, WHITE);
   
   for (uint8_t x =0; x < MAX_NUMBER_OF_SCORES; x++) {
 
@@ -46,7 +46,7 @@ void HighScore() {
 
   if (highScore.getSlotNumber() != DO_NOT_EDIT_SLOT) {
 
-    yOffset = 23;
+    yOffset = 17;
     alternate++;
   
     if (alternate < 40) {

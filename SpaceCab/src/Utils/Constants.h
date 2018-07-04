@@ -40,7 +40,7 @@
 static const uint8_t MAX_NUMBER_OF_SCORES         = 5;
 static const uint8_t DO_NOT_EDIT_SLOT             = 255;
 static const uint8_t GAME_TIME_MAX                = 10;
-static const uint8_t ARROW_FLASH                  = 40;
+static const uint8_t FLASH_MAX                    = 40;
 static const uint8_t ARROW_DO_NOT_SHOW            = 255;
 
 static const uint16_t PLAYER_FUEL_MAX             = 200;
@@ -50,6 +50,7 @@ static const uint16_t FARE_X_FRAMES               = 15;
 static const uint16_t FARE_COUNT                  = 10;
 
 static const uint8_t CUSTOMER_NO_STARTING_POS     = 255;
+static const uint8_t GOTO_COUNTER_MAX             = 80;
 
 
 enum class GameState : uint8_t {

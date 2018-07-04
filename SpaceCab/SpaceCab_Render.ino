@@ -20,6 +20,32 @@ void drawLevel() {
       uint8_t tile = pgm_read_byte(&levelMap[(y * level.getWidthInTiles()) + x]);
       arduboy.drawBitmap(bitmapX, bitmapY, tiles[tile], TILE_SIZE, TILE_SIZE, WHITE);
 
+      if (tile == SIGN1) {
+
+        arduboy.fillRect(bitmapX + 2, bitmapY - 2, 5, 7, WHITE);
+
+        if (flashingCounter < (FLASH_MAX / 2)) {
+
+          const uint8_t numberOfPositions = levelPositionsCount[level.getLevelNumber()];
+          const uint8_t *levelEndingPosition = levelEndingPositions[level.getLevelNumber()];
+
+          for (uint8_t i = 0; i < numberOfPositions; ++i) {
+
+            const uint8_t startPosX = pgm_read_byte(&levelEndingPosition[i * 2]);
+            const uint8_t startPosY = pgm_read_byte(&levelEndingPosition[(i * 2) + 1]);
+
+            if (x == startPosX && y == startPosY) {
+
+              Sprites::drawErase(bitmapX + 3, bitmapY - 1, font3x5_Numbers, (i + 1));
+
+            }
+
+          }
+
+        }
+
+      }
+
     }
 
   }
@@ -42,17 +68,20 @@ void drawHUD() {
   for(uint8_t i = 5; i > 0; --i) 
   font4x6.print(digits[i - 1]);
 
-  font4x6.setCursor(56, 57);
+//  font4x6.setCursor(56, 57);
+  font4x6.setCursor(57, 57);
   extractDigits(digitsFuel, player.fuel);
   for(uint8_t i = 3; i > 0; --i) 
   font4x6.print(digitsFuel[i - 1]);
 
-  font4x6.setCursor(92, 57);
+//  font4x6.setCursor(92, 57);
+  font4x6.setCursor(94, 57);
   extractDigits(digitsLives, player.numberOfLives);
   for(uint8_t i = 1; i > 0; --i) 
   font4x6.print(digitsLives[i - 1]);
 
-  font4x6.setCursor(112, 57);
+//  font4x6.setCursor(112, 57);
+  font4x6.setCursor(115, 57);
   extractDigits(digitsFare, customer.getFare());
   for(uint8_t i = 2; i > 0; --i)
   font4x6.print(digitsFare[i - 1]);
@@ -158,7 +187,6 @@ void playerDisplay() {
 }
 
 
-uint8_t arrowCount = 0;
 void customerDisplay() {
 
   int16_t customerXVal = customer.getX() + level.xOffset.getInteger();
@@ -171,8 +199,6 @@ void customerDisplay() {
     if (arduboy.everyXFrames(15)) {
       customer.incFrame();
     }
-
-    arrowCount = 0;
 
   }
   else if (state == GameState::PlayGame)  { 
@@ -187,14 +213,9 @@ void customerDisplay() {
     uint16_t customerX = 0;
     uint16_t customerY = 0;
 
-    //uint8_t const *images[] = { ArrowU, ArrowUR, ArrowR, ArrowDR, ArrowD, ArrowDL, ArrowL, ArrowUL };
-    //uint8_t const *masks[] = { ArrowU_Mask, ArrowUR_Mask, ArrowR_Mask, ArrowDR_Mask, ArrowD_Mask, ArrowDL_Mask, ArrowL_Mask, ArrowUL_Mask };
-
     // Render arrows.
 
-    arrowCount++;
-    arrowCount = arrowCount % ARROW_FLASH;
-    if (arrowCount < (ARROW_FLASH / 2)) { 
+    if (flashingCount < (FLASH_MAX / 2)) { 
 
       if (!player.carryingCustomer) {
 
@@ -258,83 +279,6 @@ void customerDisplay() {
 
       }
 
-/* Adds 98 bytes..
-
-    uint8_t idx = 0;
-
-    uint16_t customerX = 0;
-    uint16_t customerY = 0;
-
-    uint8_t const *images[] = { ArrowU, ArrowUR, ArrowR, ArrowDR, ArrowD, ArrowDL, ArrowL, ArrowUL };
-    uint8_t const *masks[] = { ArrowU_Mask, ArrowUR_Mask, ArrowR_Mask, ArrowDR_Mask, ArrowD_Mask, ArrowDL_Mask, ArrowL_Mask, ArrowUL_Mask };
-    uint8_t const xPos[] = { 59, 120, 120, 120, 59, 0, 0, 0 };
-    uint8_t const yPos[] = { 0, 0, 28, 56, 56, 56, 28, 0 };
-    
-    // Render arrows.
-
-    arrowCount++;
-    arrowCount = arrowCount % ARROW_FLASH;
-    if (arrowCount < (ARROW_FLASH / 2)) { 
-
-      if (!player.carryingCustomer) {
-
-        customerX = customer.getX();
-        customerY = customer.getY();
-
-      }
-      else {
-
-        customerX = customer.getXDestinationTile() * TILE_SIZE;
-        customerY = customer.getYDestinationTile() * TILE_SIZE;
-
-      }
-
-      SQ15x16 dX = static_cast<SQ15x16>(customerX) - (player.x - level.xOffset);
-      SQ15x16 dY = static_cast<SQ15x16>(customerY) - (player.y - level.yOffset);
-      SQ15x16 grad = dY / dX;
-
-      if (customerX < (player.x - level.xOffset)) {
-    
-        if (absT(dX) <= 0.02) {
-
-          if (dY > 0)             { idx = 4; }
-          if (dY < 0)             { idx = 0; }
-
-        }
-        else {
-
-          if (grad > 2.0)         { idx = 0; }
-          else if (grad > 0.14)   { idx = 7; }
-          else if (grad > -0.14)  { idx = 6; }
-          else if (grad > -2.0)   { idx = 5; }
-          else                    { idx = 4; }
-
-        }
-
-      } 
-      else {
-
-        if (absT(dX) <= 0.02) {
-
-          if (dY > 0)             { idx = 4; }
-          if (dY < 0)             { idx = 0; }
-
-        }
-        else {
-
-          if (grad > 2.0)         { idx = 4; }
-          else if (grad > 0.14)   { idx = 3; }
-          else if (grad > -0.14)  { idx = 2; }
-          else if (grad > -2.0)   { idx = 1; }
-          else                    { idx = 0; }
-
-        }
-
-      }
-
-      Sprites::drawExternalMask(xPos[idx], yPos[idx], images[idx], masks[idx], 0, 0);
-      */
-
     }
 #endif
 #ifndef ARROWS_FP
@@ -348,12 +292,10 @@ void customerDisplay() {
 
     Direction direction = Direction::Up;
 
+
     // Render arrows.
 
-    arrowCount++;
-    arrowCount = arrowCount % ARROW_FLASH;
-
-    if (arrowCount < (ARROW_FLASH / 2)) { 
+    if (flashingCounter < (FLASH_MAX / 2)) { 
 
       if (!player.carryingCustomer) {
 
@@ -386,23 +328,23 @@ void customerDisplay() {
       if (dX < -playerX) {
 
         if (dY < -playerY)                            { direction = Direction::UpLeft; arrowX = 0; arrowY = 0; }
-        if (dY >= -playerY && dY < -playerY + 64)     { direction = Direction::Left; arrowX = 0; arrowY = playerY + dY - 4; }
-        if (dY >= -playerY + 64)                      { direction = Direction::DownLeft; arrowX = 0; arrowY = 56; }
+        if (dY >= -playerY && dY < -playerY + 56)     { direction = Direction::Left; arrowX = 0; arrowY = playerY + dY - 4; }
+        if (dY >= -playerY + 56)                      { direction = Direction::DownLeft; arrowX = 0; arrowY = 48; }
 
       }
 
       if (dX >= -playerX && dX < -playerX + WIDTH) {
 
         if (dY < 0)                                   { direction = Direction::Up; arrowX = playerX + dX; arrowY = 0; }
-        if (dY > 0)                                   { direction = Direction::Down; arrowX = playerX + dX; arrowY = 56; }
+        if (dY > 0)                                   { direction = Direction::Down; arrowX = playerX + dX; arrowY = 48; }
 
       }
 
       if (dX >= -playerX + WIDTH) {
 
         if (dY < -playerY)                            { direction = Direction::UpRight; arrowX = 120; arrowY = 0; }
-        if (dY >= -playerY && dY < -playerY + 64)     { direction = Direction::Right; arrowX = 120; arrowY = playerY + dY - 4; }
-        if (dY >= -playerY + 64)                      { direction = Direction::DownRight; arrowX = 120; arrowY = 56; }
+        if (dY >= -playerY && dY < -playerY + 56)     { direction = Direction::Right; arrowX = 120; arrowY = playerY + dY - 4; }
+        if (dY >= -playerY + 56)                      { direction = Direction::DownRight; arrowX = 120; arrowY = 48; }
 
       }
 
@@ -445,6 +387,18 @@ void drawDollars() {
     Sprites::drawExternalMask(player.getXDisplay() - 5, player.getYDisplay() - 10, dollars, dollars_Mask, idx, idx);
     dollarsCount--;
   
+  }
+
+}
+
+
+void drawGoto() {
+
+  if (gotoCounter > 0 && flashingCounter < (FLASH_MAX / 2)) {
+
+    Sprites::drawExternalMask(45, 20, Hail, Hail_Mask, 0, 0);
+    Sprites::drawOverwrite(71, 25, font4x6_Full, customer.getDestinationPosition() + 53);
+
   }
 
 }

@@ -3,8 +3,6 @@
 #include <Arduboy2.h>
 #include "Constants.h"
 
-Arduboy2Base arduboy;
-
 uint8_t fadeWidth;
 
 

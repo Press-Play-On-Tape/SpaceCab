@@ -10,6 +10,7 @@
 #include <FixedPointsCommon.h>
 #include "src/Fonts/Font4x6.h"
 
+Arduboy2Base arduboy;
 ArduboyTones sound(arduboy.audio.enabled);
 Sprites sprite;
 
@@ -34,9 +35,8 @@ int16_t backdropx = 0;
 uint8_t alternate = 0;
 uint8_t fareCount = 0;
 uint8_t dollarsCount = 0;
-
-//------------------------------------------------------------------------------
-
+uint8_t flashingCounter = 0;
+uint8_t gotoCounter = 0;
 
 
 //------------------------------------------------------------------------------
