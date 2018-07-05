@@ -10,7 +10,7 @@ An arcade game inspired a lot by Space Taxi that was released on the Commodore 6
 ## To do list:
 
 - Add next level functionality.
-- Change fuel functionality to only allow X units of fuel.
+- [SH 2018-07-05] ~~Change fuel functionality to only allow X units of fuel.~~
 
 ## Enhancements:
 
@@ -23,5 +23,5 @@ An arcade game inspired a lot by Space Taxi that was released on the Commodore 6
 
 ## Bugs:
 
-- Thrusters are still not showing up on the title screen
+- [SH 2018-07-05] ~~Thrusters are still not showing up on the title screen~~
 - [SH 2018-07-05] ~~On highscore screen when entering a name pressing down goes to letter j not Z.~~
