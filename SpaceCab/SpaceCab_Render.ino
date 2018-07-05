@@ -18,7 +18,7 @@ void drawLevel() {
         continue;
 
       uint8_t tile = pgm_read_byte(&levelMap[(y * level.getWidthInTiles()) + x]);
-      arduboy.drawBitmap(bitmapX, bitmapY, tiles[tile], TILE_SIZE, TILE_SIZE, WHITE);
+      if (tile != EMPTY) Sprites::drawOverwrite(bitmapX, bitmapY, tiles, tile);
 
       if (tile == SIGN1) {
 
@@ -394,7 +394,7 @@ void drawDollars() {
 
 void drawGoto() {
 
-  if (gotoCounter > 0 && flashingCounter < (FLASH_MAX / 2)) {
+  if (counter > 0 && flashingCounter < (FLASH_MAX / 2)) {
 
     Sprites::drawExternalMask(44, 20, Hail, Hail_Mask, 0, 0);
     Sprites::drawOverwrite(71, 25, font4x6_Full, customer.getDestinationPosition() + 53);

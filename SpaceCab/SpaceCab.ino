@@ -36,7 +36,7 @@ uint8_t alternate = 0;
 uint8_t fareCount = 0;
 uint8_t dollarsCount = 0;
 uint8_t flashingCounter = 0;
-uint8_t gotoCounter = 0;
+uint8_t counter = 50;
 
 
 //------------------------------------------------------------------------------
@@ -54,8 +54,7 @@ void setup() {
   arduboy.setFrameRate(60);
 
   EEPROM_Utils::initEEPROM(false);
-  
-  fadeOutEffect.reset(0, HEIGHT, 1);
+    
 }
 
 void loop() {

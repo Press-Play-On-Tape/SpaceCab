@@ -14,8 +14,8 @@
 #define CUSTOMER_WIDTH 7
 #define CUSTOMER_HEIGHT 8
 
-#define PLAT1 0
-#define EMPTY 1
+#define EMPTY 0
+#define PLAT1 1
 #define EDGE1 2
 #define WATER 3
 #define SIGN1 4

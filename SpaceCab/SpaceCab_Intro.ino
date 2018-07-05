@@ -1,17 +1,36 @@
 #include <Arduboy2.h>
 
 void vsBoot() {
-  // Vsoft logo display
+  
   Sprites::drawOverwrite(29, 17, bootlogo, 0);
 
-  if (!fadeOutEffect.isComplete()) {
+  switch (counter) {
 
-    fadeOutEffect.draw(arduboy);
-    fadeOutEffect.update();
+    case 0:
+      
+      if (!fadeOutEffect.isComplete()) {
 
+        fadeOutEffect.draw(arduboy);
+        fadeOutEffect.update();
+
+      }
+
+      if (fadeOutEffect.isComplete())   state = GameState::SplashScreen_Init;
+
+      break;
+
+    case 1:
+
+      fadeOutEffect.reset(0, HEIGHT, 1);
+      --counter;
+      break;
+
+    default:
+  
+      --counter;
+      break;
+      
   }
-
-  if (fadeOutEffect.isComplete()) state = GameState::SplashScreen_Init;
 
 }
 

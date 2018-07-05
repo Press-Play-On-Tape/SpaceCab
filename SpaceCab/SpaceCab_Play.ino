@@ -141,7 +141,7 @@ void checkCollisionWithCustomer() {
     if (arduboy.collide(playerRect, customerRect)) {
       player.carryingCustomer = true;
       sound.tone(NOTE_E6, 50, NOTE_E3, 50, NOTE_E2, 50);
-      gotoCounter = GOTO_COUNTER_MAX;
+      counter = GOTO_COUNTER_MAX;
     }
 
   }
@@ -317,7 +317,7 @@ void inGame() {
   updateTime();
   flashingCounter++;
   flashingCounter = flashingCounter % FLASH_MAX;
-  if (gotoCounter != 0) gotoCounter--;
+  if (counter != 0) counter--;
 
   if (player.status == PlayerStatus::Active) {
   
