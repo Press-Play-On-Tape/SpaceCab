@@ -1,15 +1,6 @@
 # SpaceCab
 ![Screenshot](/Assets/SpaceCabBanner.png)
 
-## Inspired by Space Taxi on C64
-
-## Title Screen
-![Screenshot](/Assets/NewSplashscreen.png)
-## Gameplay Screen
-![Screenshot](/Assets/NewGameplay.png)
-## Game Over Screen
-![Screenshot](/Assets/NewGameOver.png)
-
 ## To do list:
 
 - Add next level functionality.
