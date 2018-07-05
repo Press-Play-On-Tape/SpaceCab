@@ -29,3 +29,4 @@ An arcade game inspired a lot by Space Taxi that was released on the Commodore 6
 
 - [SH 2018-07-05] ~~Thrusters are still not showing up on the title screen~~
 - [SH 2018-07-05] ~~On highscore screen when entering a name pressing down goes to letter j not Z.~~
+- When going back to the Title screen, the number on the sign disappears.
