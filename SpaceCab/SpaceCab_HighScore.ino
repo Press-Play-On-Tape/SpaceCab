@@ -9,7 +9,7 @@ uint8_t clearScores = 0;
 
 void HighScore() {
 
-  uint8_t xOffset = 33;
+  uint8_t xOffset = 35;
   uint8_t yOffset = 21;
 
   scrollingBackground(false);
@@ -35,7 +35,7 @@ void HighScore() {
       uint8_t digits[6] = {};
       extractDigits(digits, slot.getScore());
     
-      for (uint8_t i = 0, x2 = xOffset + 56; i < 6; ++i, x2 -= 5) {
+      for (uint8_t i = 0, x2 = xOffset + 54; i < 6; ++i, x2 -= 5) {
         Sprites::drawOverwrite(x2, yOffset, font4x6_Full, (digits[i] + 52));
       }
       
@@ -51,13 +51,13 @@ void HighScore() {
     yOffset = 21;
     alternate++;
   
-    if (alternate < 40) {
+    if (alternate < 15) {
 
       Sprites::drawOverwrite(xOffset - 5, yOffset + (highScore.getSlotNumber() * 8) - 1, arrow, 0);
-      Sprites::drawOverwrite(xOffset + 64, yOffset + (highScore.getSlotNumber() * 8) - 1, arrow, 0);
+      Sprites::drawOverwrite(xOffset + 62, yOffset + (highScore.getSlotNumber() * 8) - 1, arrow, 0);
     
     }
-    else if (alternate > 80) {
+    else if (alternate > 30) {
 
       alternate = 0;
 

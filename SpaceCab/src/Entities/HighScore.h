@@ -88,7 +88,7 @@ void HighScore::decCharIndex() {
 
 void HighScore::incChar(uint8_t idx) {
   
-  if (_chars[idx] == 35) {
+  if (_chars[idx] == 26) {
     _chars[idx] = 0; 
   } 
   else { 
@@ -100,7 +100,7 @@ void HighScore::incChar(uint8_t idx) {
 void HighScore::decChar(uint8_t idx) {
   
   if (_chars[idx] == 0) {
-    _chars[idx] = 35; 
+    _chars[idx] = 25; 
   } 
   else { 
     _chars[idx]--;
