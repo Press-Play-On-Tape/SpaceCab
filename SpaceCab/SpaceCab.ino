@@ -117,6 +117,7 @@ void loop() {
 
     case GameState::GameOver:
       gameoverScreen();
+      levelNumber = 0;
       break;
 
     case GameState::SaveScore:
