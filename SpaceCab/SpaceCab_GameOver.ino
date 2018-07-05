@@ -1,4 +1,4 @@
-#include <Arduboy2.h>
+#include "src/utils/Arduboy2Ext.h"
 
 void gameoverScreen() {
 
@@ -16,7 +16,7 @@ void gameoverScreen() {
 
   font4x6.setCursor(36, 35);
   font4x6.print(F("SCORE:"));
-  extractDigits(digits, player.currentScore);
+  extractDigits(digits, player.getScore());
   for(uint8_t i = 5; i > 0; --i)
   font4x6.print(digits[i - 1]);
   

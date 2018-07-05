@@ -10,118 +10,147 @@
 
 struct Player {
 
-  SQ15x16 x;
-  SQ15x16 y;
-  uint8_t frame = 0;
-  uint8_t numberOfLives = 0;
-  PlayerStatus status;
-  bool carryingCustomer = false;
-  uint16_t currentScore = 0;
+  private:
 
-  int8_t xDelta = 0;
-  int8_t yDelta = 0;
-  uint16_t fuel = 0;
+    SQ15x16 _x;
+    SQ15x16 _y;
+    int8_t _xDelta = 0;
+    int8_t _yDelta = 0;
+    uint8_t _frame = 0;
+    uint16_t _fuel = 0;
+    uint16_t _score = 0;
+    bool _carryingCustomer = false;
+    uint8_t _numberOfLives = 0;
+    PlayerStatus _status;
 
-  uint16_t getXDisplay() { return x.getInteger(); }
-  uint16_t getYDisplay() { return y.getInteger(); }
+  public:
 
-  SQ15x16 getXDeltaVal() { return (static_cast<SQ15x16>(xDelta) / 8.00); }
-  SQ15x16 getYDeltaVal() { return (static_cast<SQ15x16>(yDelta) / 8.00); }
+    const SQ15x16 getX()                  { return _x; }
+    const SQ15x16 getY()                  { return _y; }
+    int8_t getXDelta()                    { return _xDelta; }
+    int8_t getYDelta()                    { return _yDelta; }
+    uint8_t getFrame()                    { return _frame; }
+    uint8_t getNumberOfLives()            { return _numberOfLives; }
+    uint16_t getFuel()                    { return _fuel; }
+    uint16_t getScore()                   { return _score; }
+    bool getCarryingCustomer()            { return _carryingCustomer; }
+    PlayerStatus getStatus()              { return _status; }
 
-  void incXDelta() {
+    void setX(SQ15x16 val)                { _x = val; }
+    void setY(SQ15x16 val)                { _y = val; }
+    void setXDelta(int8_t val)            { _xDelta = val; }
+    void setYDelta(int8_t val)            { _yDelta = val; }
+    void setFrame(uint8_t val)            { _frame = val; }
+    void setNumberOfLives(uint8_t val)    { _numberOfLives = val; }
+    void setFuel(uint16_t val)            { _fuel = val; }
+    void setScore(uint16_t val)           { _score = val; }
+    void setCarryingCustomer(bool val)    { _carryingCustomer = val; }
+    void setStatus(PlayerStatus val)      { _status = val; }
 
-    switch (xDelta) {
+    uint16_t getXDisplay()                { return _x.getInteger(); }
+    uint16_t getYDisplay()                { return _y.getInteger(); }
+    SQ15x16 getXDeltaVal()                { return (static_cast<SQ15x16>(_xDelta) / 8.00); }
+    SQ15x16 getYDeltaVal()                { return (static_cast<SQ15x16>(_yDelta) / 8.00); }
 
-        case -8 ... -2:
-        xDelta = xDelta / 2;
-        break;
-        
-        case -1:
-        xDelta = 0;
-        break;
-        
-        case 0:
-        xDelta = 1;
-        break;
+    void incFuel()                        { _fuel++;}
+    void decFuel()                        { _fuel--;}
+    void decNumberOfLives()               { _numberOfLives--;}
+    void decStatus()                      { _status--;}
 
-        case 1 ... 4:
-        xDelta = xDelta * 2;
-        break;
+    void incXDelta() {
 
-    }
-
-  }
-
-  void decXDelta() {
-
-    switch (xDelta) {
-
-        case -4 ... -1:
-        xDelta = xDelta * 2;
-        break;
-
-        case 0:
-        xDelta = -1;
-        break;
-
-        case 1:
-        xDelta = 0;
-        break;
-
-        case 2 ... 8:
-        xDelta = xDelta / 2;
-        break;
-        
-    }
-
-  }
-
-  void incYDelta() {
-
-    switch (yDelta) {
+      switch (_xDelta) {
 
         case -8 ... -2:
-        yDelta = yDelta / 2;
-        break;
-        
+          _xDelta = _xDelta / 2;
+          break;
+          
         case -1:
-        yDelta = 0;
-        break;
-        
+          _xDelta = 0;
+          break;
+          
         case 0:
-        yDelta = 1;
-        break;
+          _xDelta = 1;
+          break;
 
         case 1 ... 4:
-        yDelta = yDelta * 2;
-        break;
+          _xDelta = _xDelta * 2;
+          break;
+
+      }
 
     }
 
-  }
+    void decXDelta() {
 
-  void decYDelta() {
-
-    switch (yDelta) {
+      switch (_xDelta) {
 
         case -4 ... -1:
-        yDelta = yDelta * 2;
-        break;
+          _xDelta = _xDelta * 2;
+          break;
 
         case 0:
-        yDelta = -1;
-        break;
+          _xDelta = -1;
+          break;
 
         case 1:
-        yDelta = 0;
-        break;
+          _xDelta = 0;
+          break;
 
         case 2 ... 8:
-        yDelta = yDelta / 2;
-        break;
-        
+          _xDelta = _xDelta / 2;
+          break;
+          
+      }
+
     }
 
-  }
+    void incYDelta() {
+
+      switch (_yDelta) {
+
+        case -8 ... -2:
+          _yDelta = _yDelta / 2;
+          break;
+          
+        case -1:
+          _yDelta = 0;
+          break;
+          
+        case 0:
+          _yDelta = 1;
+          break;
+
+        case 1 ... 4:
+          _yDelta = _yDelta * 2;
+          break;
+
+      }
+
+    }
+
+    void decYDelta() {
+
+      switch (_yDelta) {
+
+        case -4 ... -1:
+          _yDelta = _yDelta * 2;
+          break;
+
+        case 0:
+          _yDelta = -1;
+          break;
+
+        case 1:
+          _yDelta = 0;
+          break;
+
+        case 2 ... 8:
+          _yDelta = _yDelta / 2;
+          break;
+          
+      }
+
+    }
 
 };

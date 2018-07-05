@@ -6,3 +6,4 @@
 #include "Levels.h"
 #include "Player.h"
 #include "Slot.h"
+#include "Fuel.h"

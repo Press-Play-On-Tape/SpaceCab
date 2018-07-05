@@ -1,4 +1,5 @@
-#include <Arduboy2.h>
+#include "src/utils/Arduboy2Ext.h"
+
 #include <ArduboyTones.h>
 #include "src/Images/Images.h"
 #include "src/Entities/Entities.h"
@@ -10,13 +11,13 @@
 #include <FixedPointsCommon.h>
 #include "src/Fonts/Font4x6.h"
 
-Arduboy2Base arduboy;
+Arduboy2Ext arduboy;
 ArduboyTones sound(arduboy.audio.enabled);
 Sprites sprite;
 
 Player player;
 Customer customer;
-Level level;
+
 Font4x6 font4x6 = Font4x6(0);
 
 FadeOutEffect fadeOutEffect;
@@ -37,6 +38,15 @@ uint8_t fareCount = 0;
 uint8_t dollarsCount = 0;
 uint8_t flashingCounter = 0;
 uint8_t counter = 50;
+
+Fuel fuel0;
+Fuel fuel1;
+Fuel fuel2;
+Fuel fuel3;
+Fuel fuel4;
+
+Fuel *fuels[] = { &fuel0, &fuel1, &fuel2, &fuel3, &fuel4 };
+Level level(fuels);
 
 
 //------------------------------------------------------------------------------
@@ -73,7 +83,7 @@ void loop() {
     case GameState::SplashScreen_Init:
       initLevel(0, &player, &level, &customer);
       launchCustomer();
-      player.frame = 0;
+      player.setFrame(0);
       state = GameState::SplashScreen;
       fadeInEffect.reset(0, HEIGHT, 1);
       
@@ -111,7 +121,7 @@ void loop() {
 
     case GameState::SaveScore:
       highScore.reset();
-      highScore.setSlotNumber(EEPROM_Utils::saveScore(player.currentScore));
+      highScore.setSlotNumber(EEPROM_Utils::saveScore(player.getScore()));
       state = GameState::HighScore;
       fadeInEffect.reset(0, HEIGHT, 1);
       // break; Fall-through intentional.

@@ -1,4 +1,4 @@
-#include <Arduboy2.h>
+#include "src/utils/Arduboy2Ext.h"
 
 
 // ----------------------------------------------------------------------------------------------------------
@@ -193,9 +193,9 @@ bool canMoveDown() {
 
 void moveCab() {
 
-// Serial.print((float)player.x);
+// Serial.print((float)player.getX());
 // Serial.print(",");
-// Serial.print((float)player.y);
+// Serial.print((float)player.getY());
 // Serial.print(" ");
 // Serial.print((float)level.xOffset);
 // Serial.print(",");
@@ -207,13 +207,13 @@ void moveCab() {
 
   // --  Moving up -----------------------------------------------------------------------------------------
 
-  if (player.yDelta < 0) { 
+  if (player.getYDelta() < 0) { 
 
     if (canMoveUp()) {
 // Serial.print(" move up");
       if (level.yOffset < 0) {
 
-        if (player.y < PLAYER_Y_CENTRE) {
+        if (player.getY() < PLAYER_Y_CENTRE) {
           if (level.yOffset < playerYDeltaVal) {
             level.yOffset = level.yOffset - playerYDeltaVal;
           }
@@ -221,33 +221,33 @@ void moveCab() {
             level.yOffset = 0;
           }
         }
-        else if (player.y == PLAYER_Y_CENTRE) {
+        else if (player.getY() == PLAYER_Y_CENTRE) {
           if (level.yOffset < PLAYER_Y_CENTRE && (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8)) {
             level.yOffset = level.yOffset - playerYDeltaVal;
           }
           else {
-            player.y = player.y + playerYDeltaVal - level.yOffset;
+            player.setY(player.getY() + playerYDeltaVal - level.yOffset);
             level.yOffset = 0;
           }
         }
-        else if (player.y > PLAYER_Y_CENTRE) {
-          if (player.y + playerYDeltaVal > PLAYER_Y_CENTRE) {
-            player.y = player.y + playerYDeltaVal;
+        else if (player.getY() > PLAYER_Y_CENTRE) {
+          if (player.getY() + playerYDeltaVal > PLAYER_Y_CENTRE) {
+            player.setY(player.getY() + playerYDeltaVal);
           }
           else {
-            level.yOffset = level.yOffset + PLAYER_Y_CENTRE - player.y - playerYDeltaVal;
-            player.y = PLAYER_Y_CENTRE;
+            level.yOffset = level.yOffset + PLAYER_Y_CENTRE - player.getY() - playerYDeltaVal;
+            player.setY(PLAYER_Y_CENTRE);
           }
         }
 
       }
       else {
 
-        if (player.y > -playerYDeltaVal) {
-          player.y = player.y + playerYDeltaVal;
+        if (player.getY() > -playerYDeltaVal) {
+          player.setY(player.getY() + playerYDeltaVal);
         }
         else {
-          player.y = 0;
+          player.setY(0);
         }
 
       }
@@ -259,37 +259,37 @@ void moveCab() {
 
   // --  Moving down --------------------------------------------------------------------------------------------
 
-  if (player.yDelta > 0) { 
+  if (player.getYDelta() > 0) { 
     
     if (canMoveDown()) {
-      if (player.y < PLAYER_Y_CENTRE) {                         
-        if (player.y + playerYDeltaVal < PLAYER_Y_CENTRE) {
-          player.y = player.y + playerYDeltaVal;
+      if (player.getY() < PLAYER_Y_CENTRE) {                         
+        if (player.getY() + playerYDeltaVal < PLAYER_Y_CENTRE) {
+          player.setY(player.getY() + playerYDeltaVal);
         }
         else {
           if (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8) {
-            level.yOffset = PLAYER_Y_CENTRE - player.y - playerYDeltaVal;
+            level.yOffset = PLAYER_Y_CENTRE - player.getY() - playerYDeltaVal;
           }
-          player.y = PLAYER_Y_CENTRE;
+          player.setY(PLAYER_Y_CENTRE);
         }
       }
-      else if (player.y == PLAYER_Y_CENTRE) {                            
+      else if (player.getY() == PLAYER_Y_CENTRE) {                            
         if (level.yOffset - playerYDeltaVal > -level.getHeight() + HEIGHT && (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8)) {
           level.yOffset = level.yOffset - playerYDeltaVal;
         }
         else {
-          player.y = player.y + ((level.getHeight() - HEIGHT) + level.yOffset) + playerYDeltaVal;
+          player.setY(player.getY() + ((level.getHeight() - HEIGHT) + level.yOffset) + playerYDeltaVal);
           if (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8) {
             level.yOffset = -level.getHeight() + HEIGHT;
           }
         }
       }
-      else if (player.y > PLAYER_Y_CENTRE) {
-        if (player.y + playerYDeltaVal + PLAYER_HEIGHT < HEIGHT) {
-          player.y = player.y + playerYDeltaVal;
+      else if (player.getY() > PLAYER_Y_CENTRE) {
+        if (player.getY() + playerYDeltaVal + PLAYER_HEIGHT < HEIGHT) {
+          player.setY(player.getY() + playerYDeltaVal);
         }
         else {
-          player.y = HEIGHT - PLAYER_HEIGHT;
+          player.setY(HEIGHT - PLAYER_HEIGHT);
         }
 
       }
@@ -301,13 +301,13 @@ void moveCab() {
 
   // --  Moving left --------------------------------------------------------------------------------------------
 
-  if (player.xDelta < 0) { 
+  if (player.getXDelta() < 0) { 
 
     if (canMoveLeft()) {
 
       if (level.xOffset < 0) {
 
-        if (player.x < PLAYER_X_CENTRE) {
+        if (player.getX() < PLAYER_X_CENTRE) {
           if (level.xOffset < playerXDeltaVal) {
             level.xOffset = level.xOffset - playerXDeltaVal;
           }
@@ -315,33 +315,33 @@ void moveCab() {
             level.xOffset = 0;
           }
         }
-        else if (player.x == PLAYER_X_CENTRE) {
+        else if (player.getX() == PLAYER_X_CENTRE) {
           if (level.xOffset < playerXDeltaVal && (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8)) {
             level.xOffset = level.xOffset - playerXDeltaVal;
           }
           else {
-            player.x = player.x + playerXDeltaVal - level.xOffset;
+            player.setX(player.getX() + playerXDeltaVal - level.xOffset);
             level.xOffset = 0;
           }
         }
-        else if (player.x > PLAYER_X_CENTRE) {
-          if (player.x + playerXDeltaVal > PLAYER_X_CENTRE) {
-            player.x = player.x + playerXDeltaVal;
+        else if (player.getX() > PLAYER_X_CENTRE) {
+          if (player.getX() + playerXDeltaVal > PLAYER_X_CENTRE) {
+            player.setX(player.getX() + playerXDeltaVal);
           }
           else {
-            level.xOffset = level.xOffset + PLAYER_X_CENTRE - player.x - playerXDeltaVal;
-            player.x = PLAYER_X_CENTRE;
+            level.xOffset = level.xOffset + PLAYER_X_CENTRE - player.getX() - playerXDeltaVal;
+            player.setX(PLAYER_X_CENTRE);
           }
         }
 
       }
       else {
 
-        if (player.x > -playerXDeltaVal) {
-          player.x = player.x + playerXDeltaVal;
+        if (player.getX() > -playerXDeltaVal) {
+          player.setX(player.getX() + playerXDeltaVal);
         }
         else {
-          player.x = 0;
+          player.setX(0);
         }
 
       }
@@ -353,40 +353,40 @@ void moveCab() {
 
   // --  Moving Right -------------------------------------------------------------------------------------------
 
-  if (player.xDelta > 0) {
+  if (player.getXDelta() > 0) {
 
     if (canMoveRight()) {
 // Serial.print(" move right");
 
-      if (player.x < PLAYER_X_CENTRE) {
-        if (player.x + playerXDeltaVal < PLAYER_X_CENTRE) {
-          player.x = player.x + playerXDeltaVal;
+      if (player.getX() < PLAYER_X_CENTRE) {
+        if (player.getX() + playerXDeltaVal < PLAYER_X_CENTRE) {
+          player.setX(player.getX() + playerXDeltaVal);
         }
         else {
           if (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8) {
-            level.xOffset = PLAYER_X_CENTRE - player.x - playerXDeltaVal;
+            level.xOffset = PLAYER_X_CENTRE - player.getX() - playerXDeltaVal;
           }
-          player.x = PLAYER_X_CENTRE;
+          player.setX(PLAYER_X_CENTRE);
         }
       }
-      else if (player.x == PLAYER_X_CENTRE) {                            
+      else if (player.getX() == PLAYER_X_CENTRE) {                            
         if (level.xOffset - playerXDeltaVal > -level.getWidth() + WIDTH && (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8)) {
           level.xOffset = level.xOffset - playerXDeltaVal;
         }
         else {
-          player.x = player.x + ((level.getWidth() - WIDTH) + level.xOffset) + playerXDeltaVal;
+          player.setX(player.getX() + ((level.getWidth() - WIDTH) + level.xOffset) + playerXDeltaVal);
           if (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8) {
             level.xOffset = -level.getWidth() + WIDTH;
           }
         }
       }
-      else if (player.x > PLAYER_X_CENTRE) {
+      else if (player.getX() > PLAYER_X_CENTRE) {
 
-        if (player.x + playerXDeltaVal + PLAYER_WIDTH < WIDTH) {
-          player.x = player.x + playerXDeltaVal;
+        if (player.getX() + playerXDeltaVal + PLAYER_WIDTH < WIDTH) {
+          player.setX(player.getX() + playerXDeltaVal);
         }
         else {
-          player.x = WIDTH - PLAYER_WIDTH;
+          player.setX(WIDTH - PLAYER_WIDTH);
         }
 
       }

@@ -1,4 +1,4 @@
-#include <Arduboy2.h>
+#include "src/utils/Arduboy2Ext.h"
 
 void handleInput() {
 
@@ -6,17 +6,17 @@ void handleInput() {
 
     if (arduboy.pressed(LEFT_BUTTON)) {
       player.decXDelta();
-      player.frame = 1;
+      player.setFrame(1);
     }
 
     else if (arduboy.pressed(RIGHT_BUTTON)) {
       player.incXDelta();
-      player.frame = 0;
+      player.setFrame(0);
     }
 
     if (arduboy.pressed(A_BUTTON)) {
 
-      switch (player.frame) {
+      switch (player.getFrame()) {
 
         case 0: 
           Sprites::drawExternalMask(player.getXDisplay(), player.getYDisplay() + 8, thrusterRight, thrusterRightMask, thrusterFrame, thrusterFrame);
@@ -54,8 +54,8 @@ void handleInput() {
 
       if (arduboy.notPressed(LEFT_BUTTON) && arduboy.notPressed(RIGHT_BUTTON)) {
 
-        if (player.xDelta > 0)  player.decXDelta();
-        if (player.xDelta < 0)  player.incXDelta();
+        if (player.getXDelta() > 0)  player.decXDelta();
+        if (player.getXDelta() < 0)  player.incXDelta();
 
       }
 
@@ -124,7 +124,7 @@ void launchCustomer() {
 
 void checkCollisionWithCustomer() {
 
-  if (player.carryingCustomer) return;
+  if (player.getCarryingCustomer()) return;
 
   Rect playerRect = { static_cast<int16_t>(player.getXDisplay()), static_cast<int16_t>(player.getYDisplay()), PLAYER_WIDTH, PLAYER_HEIGHT };
 
@@ -139,7 +139,7 @@ void checkCollisionWithCustomer() {
     Rect customerRect = { customerXVal, customerYVal, CUSTOMER_WIDTH, CUSTOMER_HEIGHT };
 
     if (arduboy.collide(playerRect, customerRect)) {
-      player.carryingCustomer = true;
+      player.setCarryingCustomer(true);
       sound.tone(NOTE_E6, 50, NOTE_E3, 50, NOTE_E2, 50);
       counter = GOTO_COUNTER_MAX;
     }
@@ -217,21 +217,27 @@ void checkCollisionWithLevelElements_TestElement(uint8_t x, uint8_t y, uint8_t e
   switch (element) {
 
     case FUEL1:
-      if (player.fuel < PLAYER_FUEL_MAX) player.fuel++;
+      if (arduboy.getFrameCount(4) == 0) {
+        Fuel *fuel = level.getFuel(x, y);
+        if (fuel->getFuelLeft() > 0 && player.getFuel() < PLAYER_FUEL_MAX) {
+          player.incFuel();
+          fuel->decFuel();
+        }
+      }
       break;
 
     case SPIKU:
-      player.status = PlayerStatus::OutOfFuel_Max;
+      player.setStatus(PlayerStatus::OutOfFuel_Max);
       break;
 
     case SPIKD:
-      player.status = PlayerStatus::OutOfFuel_Max;
+      player.setStatus(PlayerStatus::OutOfFuel_Max);
       break;
 
     case SIGN1:
-      if (player.carryingCustomer && absT(customer.getXDestinationTile() - x) < 2 && customer.getYDestinationTile() == y) {
-        player.carryingCustomer = false;
-        player.currentScore = player.currentScore + customer.getFare();
+      if (player.getCarryingCustomer() && absT(customer.getXDestinationTile() - x) < 2 && customer.getYDestinationTile() == y) {
+        player.setCarryingCustomer(false);
+        player.setScore(player.getScore() + customer.getFare());
         launchCustomer();
         dollarsCount = DOLLARS_COUNT_MAX;
       }
@@ -247,34 +253,32 @@ void updateStatus() {
 
   // Burn fuel ..
 
-  if (player.status == PlayerStatus::Active && arduboy.everyXFrames(15)) {
+  if (player.getStatus() == PlayerStatus::Active && arduboy.everyXFrames(15)) {
 
-    --player.fuel;
+    player.decFuel();
 
-    if (player.fuel == 0) {
+    if (player.getFuel() == 0) {
 
-      player.status = PlayerStatus::OutOfFuel_Max;
+      player.setStatus(PlayerStatus::OutOfFuel_Max);
 
     }
 
   }
 
 
-
-
   // Update player status ..
 
-  switch (player.status) {
+  switch (player.getStatus()) {
 
     case PlayerStatus::OutOfFuel_Min ... PlayerStatus::OutOfFuel_Max:
-      player.status--;
+      player.decStatus();
       break;
 
     case PlayerStatus::OutOfFuel_End:
-      player.status = PlayerStatus::Inactive;
-      player.numberOfLives--;
+      player.setStatus(PlayerStatus::Inactive);
+      player.decNumberOfLives();
 
-      if (player.numberOfLives > 0) {
+      if (player.getNumberOfLives() > 0) {
         state = GameState::EndOfLevel;
       }
       else {
@@ -290,7 +294,7 @@ void updateStatus() {
 
   // Update fare if carrying a passenger ..
 
-  if (player.carryingCustomer) {
+  if (player.getCarryingCustomer()) {
 
     if (arduboy.everyXFrames(FARE_X_FRAMES)) {
 
@@ -319,7 +323,9 @@ void inGame() {
   flashingCounter = flashingCounter % FLASH_MAX;
   if (counter != 0) counter--;
 
-  if (player.status == PlayerStatus::Active) {
+  drawLevel();
+
+  if (player.getStatus() == PlayerStatus::Active) {
   
     handleInput();
     checkCollisionWithCustomer();
@@ -327,7 +333,6 @@ void inGame() {
 
   }
 
-  drawLevel();
   playerDisplay();
   drawDollars();
   customerDisplay();

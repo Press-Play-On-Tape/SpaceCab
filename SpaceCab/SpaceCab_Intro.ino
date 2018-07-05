@@ -1,4 +1,5 @@
-#include <Arduboy2.h>
+#include "src/utils/Arduboy2Ext.h"
+
 
 void vsBoot() {
   
@@ -44,12 +45,12 @@ void titleScreen() {
   Rect playerRect = {static_cast<int16_t>(player.getXDisplay()), static_cast<int16_t>(player.getYDisplay()), PLAYER_WIDTH, PLAYER_HEIGHT};
   Rect customerRect = {customerXVal, customerYVal, CUSTOMER_WIDTH, CUSTOMER_HEIGHT};
 
-  handleInput();
   Sprites::drawOverwrite(logoXVal, logoYVal, SpaceCabSplash, 0);
   drawLevel();
 
   playerDisplay();
   customerDisplay();
+  handleInput();
   
   if (arduboy.collide(playerRect, customerRect)){
     arduboy.initRandomSeed();

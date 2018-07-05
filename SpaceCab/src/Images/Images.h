@@ -6,3 +6,4 @@
 #include "Player.h"
 #include "Scoreboard.h"
 #include "SplashScreens.h"
+#include "Tiles.h"

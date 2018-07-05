@@ -1,4 +1,4 @@
-#include <Arduboy2.h>
+#include "src/utils/Arduboy2Ext.h"
 
 void drawLevel() {
 
@@ -18,32 +18,50 @@ void drawLevel() {
         continue;
 
       uint8_t tile = pgm_read_byte(&levelMap[(y * level.getWidthInTiles()) + x]);
-      if (tile != EMPTY) Sprites::drawOverwrite(bitmapX, bitmapY, tiles, tile);
 
-      if (tile == SIGN1) {
+      switch (tile) {
 
-        arduboy.fillRect(bitmapX + 2, bitmapY - 2, 5, 7, WHITE);
+        case EMPTY: break;
 
-        if (flashingCounter < (FLASH_MAX / 2)) {
+        case SIGN1:
 
-          const uint8_t numberOfPositions = levelPositionsCount[level.getLevelNumber()];
-          const uint8_t *levelEndingPosition = levelEndingPositions[level.getLevelNumber()];
+          Sprites::drawOverwrite(bitmapX, bitmapY, tiles, tile);
+          arduboy.fillRect(bitmapX + 2, bitmapY - 2, 5, 7, WHITE);
 
-          for (uint8_t i = 0; i < numberOfPositions; ++i) {
+          if (flashingCounter < (FLASH_MAX / 2)) {
 
-            const uint8_t startPosX = pgm_read_byte(&levelEndingPosition[i * 2]);
-            const uint8_t startPosY = pgm_read_byte(&levelEndingPosition[(i * 2) + 1]);
+            const uint8_t numberOfPositions = levelPositionsCount[level.getLevelNumber()];
+            const uint8_t *levelEndingPosition = levelEndingPositions[level.getLevelNumber()];
 
-            if (x == startPosX && y == startPosY) {
+            for (uint8_t i = 0; i < numberOfPositions; ++i) {
 
-              Sprites::drawErase(bitmapX + 3, bitmapY - 1, font3x5_Numbers, (i + 1));
+              const uint8_t startPosX = pgm_read_byte(&levelEndingPosition[i * 2]);
+              const uint8_t startPosY = pgm_read_byte(&levelEndingPosition[(i * 2) + 1]);
+
+              if (x == startPosX && y == startPosY) {
+
+                Sprites::drawErase(bitmapX + 3, bitmapY - 1, font3x5_Numbers, (i + 1));
+
+              }
 
             }
 
           }
 
-        }
+          break;
 
+
+        case FUEL1:
+          {
+            Fuel *fuel = level.getFuel(x, y);
+            Sprites::drawOverwrite(bitmapX, bitmapY, FuelImgs, fuel->getFuelLeftPerCent());
+          }
+          break;
+
+        default: 
+          Sprites::drawOverwrite(bitmapX, bitmapY, tiles, tile);
+          break;
+          
       }
 
     }
@@ -64,19 +82,19 @@ void drawHUD() {
 
   Sprites::drawOverwrite(0, 56, SpaceCabHUD, 0);
   font4x6.setCursor(13, 57);
-  extractDigits(digits, player.currentScore);
+  extractDigits(digits, player.getScore());
   for(uint8_t i = 5; i > 0; --i) 
   font4x6.print(digits[i - 1]);
 
 //  font4x6.setCursor(56, 57);
   font4x6.setCursor(57, 57);
-  extractDigits(digitsFuel, player.fuel);
+  extractDigits(digitsFuel, player.getFuel());
   for(uint8_t i = 3; i > 0; --i) 
   font4x6.print(digitsFuel[i - 1]);
 
 //  font4x6.setCursor(92, 57);
   font4x6.setCursor(94, 57);
-  extractDigits(digitsLives, player.numberOfLives);
+  extractDigits(digitsLives, player.getNumberOfLives());
   for(uint8_t i = 1; i > 0; --i) 
   font4x6.print(digitsLives[i - 1]);
 
@@ -86,11 +104,11 @@ void drawHUD() {
   for(uint8_t i = 2; i > 0; --i)
   font4x6.print(digitsFare[i - 1]);
 
-Serial.print(customer.getStartingPosition());
-Serial.print(", Dest : ");
-Serial.print(customer.getDestinationPosition());
-Serial.print(", Carrying : ");
-Serial.println( (player.carryingCustomer ? "Y" : "N") );
+// Serial.print(customer.getStartingPosition());
+// Serial.print(", Dest : ");
+// Serial.print(customer.getDestinationPosition());
+// Serial.print(", Carrying : ");
+// Serial.println( (player.carryingCustomer ? "Y" : "N") );
 }
 
 void scrollingBackground(bool scrollLeft) {
@@ -141,7 +159,7 @@ void playerDisplay() {
   int8_t xOffset = 0;
   int8_t yOffset = 0;
 
-  switch (player.status) {
+  switch (player.getStatus()) {
 
     case PlayerStatus::OutOfFuel_Img1_Start ... PlayerStatus::OutOfFuel_Img1_End:
       imageName = SpaceTaxi_OutOfFuel_1;
@@ -181,7 +199,7 @@ void playerDisplay() {
   }
 
   if (imageName != nullptr) {
-    Sprites::drawExternalMask(player.getXDisplay() + xOffset, player.getYDisplay() + yOffset, imageName, maskName, player.frame, player.frame);
+    Sprites::drawExternalMask(player.getXDisplay() + xOffset, player.getYDisplay() + yOffset, imageName, maskName, player.getFrame(), player.getFrame());
   }
 
 }
@@ -192,7 +210,7 @@ void customerDisplay() {
   int16_t customerXVal = customer.getX() + level.xOffset.getInteger();
   int16_t customerYVal = customer.getY() + level.yOffset.getInteger();
 
-  if (!player.carryingCustomer && customerXVal >= -CUSTOMER_WIDTH && customerXVal < WIDTH && customerYVal >= -CUSTOMER_HEIGHT && customerYVal < HEIGHT) {
+  if (!player.getCarryingCustomer() && customerXVal >= -CUSTOMER_WIDTH && customerXVal < WIDTH && customerYVal >= -CUSTOMER_HEIGHT && customerYVal < HEIGHT) {
 
     Sprites::drawExternalMask(customerXVal, customerYVal, Customer_Img, Customer_Img_Mask, customer.getFrame(), customer.getFrame());
 
@@ -217,7 +235,7 @@ void customerDisplay() {
 
     if (flashingCount < (FLASH_MAX / 2)) { 
 
-      if (!player.carryingCustomer) {
+      if (!player.getCarryingCustomer()) {
 
         customerX = customer.getX();
         customerY = customer.getY();
@@ -230,11 +248,11 @@ void customerDisplay() {
 
       }
 
-      SQ15x16 dX = static_cast<SQ15x16>(customerX) - (player.x - level.xOffset);
-      SQ15x16 dY = static_cast<SQ15x16>(customerY) - (player.y - level.yOffset);
+      SQ15x16 dX = static_cast<SQ15x16>(customerX) - (player.getX() - level.xOffset);
+      SQ15x16 dY = static_cast<SQ15x16>(customerY) - (player.getY() - level.yOffset);
       SQ15x16 grad = dY / dX;
 
-      if (customerX < (player.x - level.xOffset)) {
+      if (customerX < (player.getX() - level.xOffset)) {
     
         if (absT(dX) <= 0.02) {
 
@@ -297,7 +315,7 @@ void customerDisplay() {
 
     if (flashingCounter < (FLASH_MAX / 2)) { 
 
-      if (!player.carryingCustomer) {
+      if (!player.getCarryingCustomer()) {
 
         customerX = customer.getX();
         customerY = customer.getY();
@@ -322,8 +340,8 @@ void customerDisplay() {
 
       }
 
-      int16_t dX = customerX - (player.x - level.xOffset).getInteger();
-      int16_t dY = customerY - (player.y - level.yOffset).getInteger();
+      int16_t dX = customerX - (player.getX() - level.xOffset).getInteger();
+      int16_t dY = customerY - (player.getY() - level.yOffset).getInteger();
 
       if (dX < -playerX) {
 

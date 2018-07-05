@@ -51,7 +51,9 @@ static const uint16_t FARE_COUNT                  = 10;
 
 static const uint8_t CUSTOMER_NO_STARTING_POS     = 255;
 static const uint8_t GOTO_COUNTER_MAX             = 80;
-
+static const uint8_t FUEL_TILES_MAX               = 5;
+static const uint8_t FUEL_MIN                     = 40;
+static const uint8_t FUEL_MAX                     = 80;
 
 enum class GameState : uint8_t {
 

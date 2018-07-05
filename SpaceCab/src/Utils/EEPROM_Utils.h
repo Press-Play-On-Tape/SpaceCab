@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Arduboy2.h>
+#include "Arduboy2Ext.h"
 #include "../Entities/Slot.h"
 #include "../Entities/HighScore.h"
 
