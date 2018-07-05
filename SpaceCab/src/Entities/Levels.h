@@ -23,12 +23,12 @@ const unsigned char PROGMEM level0Map[LEVEL_0_HEIGHT * LEVEL_0_WIDTH] = {
   WATER, WATER, WATER, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, WATER, WATER, WATER, 
 };
 
-const uint8_t PROGMEM level0StartingPositions[2] = {
-12, 6, 
+const uint8_t PROGMEM level0StartingPositions[4] = {
+0, 0, 12, 6, 
 };
 
-const uint8_t PROGMEM level0EndingPositions[2] = {
-11, 6, 
+const uint8_t PROGMEM level0EndingPositions[4] = {
+0, 0, 11, 6, 
 };
 
 
@@ -151,7 +151,7 @@ const uint8_t PROGMEM level3EndingPositions[8] = {
 const uint8_t *levelMaps[] =                    { level0Map, level1Map, level2Map, level3Map };
 const uint8_t *levelStartingPositions[] =       { level0StartingPositions, level1StartingPositions, level2StartingPositions, level3StartingPositions };
 const uint8_t *levelEndingPositions[] =         { level0EndingPositions, level1EndingPositions, level2EndingPositions, level3EndingPositions };
-const uint8_t levelPositionsCount[] =           { 1, 6, 4 }; 
+const uint8_t levelPositionsCount[] =           { 2, 6, 4 }; 
 
 const int8_t levelInit[] = { 
 
