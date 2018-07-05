@@ -1,12 +1,13 @@
 # SpaceCab
 ![Screenshot](/Assets/SpaceCabBanner.png)
 
-An arcade game inspired a lot by Space Taxi that was released on the Commodore 64...
+# An arcade game inspired a lot by Space Taxi that was released on the Commodore 64...
 
+# Title Screen
 ![Screenshot](/Assets/NewSplashscreen.png)
-
+# Gameplay Screen
 ![Screenshot](/Assets/NewGameplay.png)
-
+# Game Over Screen
 ![Screenshot](/Assets/NewGameOver.png)
 
 ## To do list:
