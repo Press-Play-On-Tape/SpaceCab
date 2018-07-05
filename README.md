@@ -19,7 +19,7 @@ An arcade game inspired a lot by Space Taxi that was released on the Commodore 6
 
 - [SH 2018-07-05] ~~Make the boot logo stay visible a little longer.~~
 - Review the arrows – stay with lines or move to a single graphic.  My preference is the lines.
-- [SC 2018-07-05]~~Design a better ‘Goto ‘ graphic.~~
+- [SC 2018-07-05]~~Design a better ‘Goto ‘ graphic. And made it's position relative to the player~~
 - [SC 2018-07-04] ~~Add detection when crashing into spikes.~~
 - Add crash to bottom of screen when fuel runs out.
 - Add crash when you hit an obstacle at high velocity.
