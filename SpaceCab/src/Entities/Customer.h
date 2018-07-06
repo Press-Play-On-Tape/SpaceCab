@@ -40,4 +40,8 @@ struct Customer {
       _frame = (_frame == 0 ? 1 : 0);
     }
 
+    void decFare() {
+      _fare = (_fare == 0 ? 1 : 0);
+    }
+
 };

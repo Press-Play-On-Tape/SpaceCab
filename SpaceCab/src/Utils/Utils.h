@@ -29,14 +29,14 @@ template< size_t size > void extractDigits(uint8_t (&buffer)[size], uint16_t val
 
 //------------------------------------------------------------------------------
 
-void initGame(Player *player, Level *level, Customer *customer) {
+void initGame(Level *level, Player *player, Customer *customer) {
 
   player->setNumberOfLives(PLAYER_NUMBER_OF_LIVES_MAX);
   player->setScore(0);
 
 }
 
-void initLevel(uint8_t levelNumber, Player *player, Level *level, Customer *customer) {
+void initLevel(Level *level, Player *player, Customer *customer, uint8_t levelNumber) {
 
   uint8_t width = levelInit[levelNumber * 6];
   uint8_t height = levelInit[(levelNumber * 6) + 1];
@@ -52,6 +52,8 @@ void initLevel(uint8_t levelNumber, Player *player, Level *level, Customer *cust
   player->setFuel(PLAYER_FUEL_MAX);
   player->setCarryingCustomer(false);
   player->setStatus(PlayerStatus::Active);
+  player->setLandingGearDown(true);
+  player->setJustLanded(true);
   
   level->setLevelNumber(levelNumber);
   level->setHeight(height * TILE_SIZE);
@@ -113,4 +115,27 @@ template<typename T> T absT(const T & v) {
   
   return (v < 0) ? -v : v;
 
+}
+
+
+// ----------------------------------------------------------------------------------------------------------
+//  Is the nominated tile solid?
+// ----------------------------------------------------------------------------------------------------------
+
+bool isTileSolid(uint8_t tileType) {
+
+  switch (tileType) {
+    
+    case BRICK:
+    case PLAT1:
+    case ROCKS:
+    case METAL:
+    case SAND1:
+      return true;
+
+    default:
+      return false;
+
+  }
+  
 }

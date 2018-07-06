@@ -1,38 +1,16 @@
 #include "src/utils/Arduboy2Ext.h"
 
 
-// ----------------------------------------------------------------------------------------------------------
-//  Is the nominated tile solid?
-// ----------------------------------------------------------------------------------------------------------
-
-bool isTileSolid(uint8_t tileType) {
-
-  switch (tileType) {
-    
-    case BRICK:
-    case PLAT1:
-    case ROCKS:
-    case METAL:
-    case SAND1:
-      return true;
-
-    default:
-      return false;
-
-  }
-  
-}
-
 
 // ----------------------------------------------------------------------------------------------------------
 //  Can the player move left ?
 // ----------------------------------------------------------------------------------------------------------
 
-bool canMoveLeft() {
+bool canMoveLeft(Level *level, Player *player) {
 
-  const uint8_t * levelMap = levelMaps[level.getLevelNumber()];
-  uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay();
-  uint16_t playerYPosition = player.getYDisplay() - level.getYOffsetDisplay();
+  const uint8_t * levelMap = levelMaps[level->getLevelNumber()];
+  uint16_t playerXPosition = player->getXDisplay() - level->getXOffsetDisplay();
+  uint16_t playerYPosition = player->getYDisplay() - level->getYOffsetDisplay();
  
 
   // We are not yet at the left hand edge of tile so movement is possible ..
@@ -44,7 +22,7 @@ bool canMoveLeft() {
 
   uint8_t tileX = (playerXPosition / 8) - 1;
   uint8_t tileY1 = (playerYPosition / 8);
-  uint8_t tile1 = pgm_read_byte(&levelMap[(tileY1 * level.getWidthInTiles()) + tileX]);
+  uint8_t tile1 = pgm_read_byte(&levelMap[(tileY1 * level->getWidthInTiles()) + tileX]);
 
   if (isTileSolid(tile1)) return false;
 
@@ -54,7 +32,7 @@ bool canMoveLeft() {
   if (playerYPosition % TILE_SIZE != 0) {
 
     uint8_t tileY2 = (playerYPosition / 8) + 1;
-    uint8_t tile2 = pgm_read_byte(&levelMap[(tileY2 * level.getWidthInTiles()) + tileX]);
+    uint8_t tile2 = pgm_read_byte(&levelMap[(tileY2 * level->getWidthInTiles()) + tileX]);
 
     if (isTileSolid(tile2)) return false;
 
@@ -69,11 +47,11 @@ bool canMoveLeft() {
 //  Can the player move right ?
 // ----------------------------------------------------------------------------------------------------------
 
-bool canMoveRight() {
+bool canMoveRight(Level *level, Player *player) {
 
-  const uint8_t * levelMap = levelMaps[level.getLevelNumber()];
-  uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay() + PLAYER_WIDTH;
-  uint16_t playerYPosition = player.getYDisplay() - level.getYOffsetDisplay();
+  const uint8_t * levelMap = levelMaps[level->getLevelNumber()];
+  uint16_t playerXPosition = player->getXDisplay() - level->getXOffsetDisplay() + PLAYER_WIDTH;
+  uint16_t playerYPosition = player->getYDisplay() - level->getYOffsetDisplay();
 
 
   // We are not yet at the right hand edge of tile so movement is possible..
@@ -85,7 +63,7 @@ bool canMoveRight() {
   
   uint8_t tileX = (playerXPosition / 8) + 1;
   uint8_t tileY1 = (playerYPosition / 8);
-  uint8_t tile1 = pgm_read_byte(&levelMap[(tileY1 * level.getWidthInTiles()) + tileX]);
+  uint8_t tile1 = pgm_read_byte(&levelMap[(tileY1 * level->getWidthInTiles()) + tileX]);
 
   if (isTileSolid(tile1)) return false;
 
@@ -95,7 +73,7 @@ bool canMoveRight() {
   if (playerYPosition % TILE_SIZE != 0) {
 
     uint8_t tileY2 = (playerYPosition / 8) + 1;
-    uint8_t tile2 = pgm_read_byte(&levelMap[(tileY2 * level.getWidthInTiles()) + tileX]);
+    uint8_t tile2 = pgm_read_byte(&levelMap[(tileY2 * level->getWidthInTiles()) + tileX]);
 
     if (isTileSolid(tile2)) return false;
 
@@ -110,11 +88,11 @@ bool canMoveRight() {
 //  Can the player move up ?
 // ----------------------------------------------------------------------------------------------------------
 
-bool canMoveUp() {
+bool canMoveUp(Level *level, Player *player) {
 
-  const uint8_t * levelMap = levelMaps[level.getLevelNumber()];
-  uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay();
-  uint16_t playerYPosition = player.getYDisplay() - level.getYOffsetDisplay();
+  const uint8_t * levelMap = levelMaps[level->getLevelNumber()];
+  uint16_t playerXPosition = player->getXDisplay() - level->getXOffsetDisplay();
+  uint16_t playerYPosition = player->getYDisplay() - level->getYOffsetDisplay();
 
 
   // We are not yet at the top edge of tile so movement is possible ..
@@ -132,13 +110,13 @@ bool canMoveUp() {
 
   // Retrieve the the three tiles and test them in order ..
 
-  uint8_t tile1 = pgm_read_byte(&levelMap[(tileY * level.getWidthInTiles()) + tileX1]);
+  uint8_t tile1 = pgm_read_byte(&levelMap[(tileY * level->getWidthInTiles()) + tileX1]);
   if (isTileSolid(tile1)) return false;
 	
-  uint8_t tile2 = pgm_read_byte(&levelMap[(tileY * level.getWidthInTiles()) + tileX2]);
+  uint8_t tile2 = pgm_read_byte(&levelMap[(tileY * level->getWidthInTiles()) + tileX2]);
   if (isTileSolid(tile2)) return false;
 	
-  uint8_t tile3 = pgm_read_byte(&levelMap[(tileY * level.getWidthInTiles()) + tileX3]);
+  uint8_t tile3 = pgm_read_byte(&levelMap[(tileY * level->getWidthInTiles()) + tileX3]);
   if (isTileSolid(tile3)) return false;
 
   return true;
@@ -151,15 +129,16 @@ bool canMoveUp() {
 //  Can the player move down ?
 // ----------------------------------------------------------------------------------------------------------
 
-bool canMoveDown() {
+bool canMoveDown(Level *level, Player *player, uint8_t size) {
 
-  const uint8_t * levelMap = levelMaps[level.getLevelNumber()];
-  uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay();
-  uint16_t playerYPosition = player.getYDisplay() - level.getYOffsetDisplay() + PLAYER_HEIGHT;
+  const uint8_t * levelMap = levelMaps[level->getLevelNumber()];
+  uint16_t playerXPosition = player->getXDisplay() - level->getXOffsetDisplay();
+  uint16_t playerYPosition = player->getYDisplay() - level->getYOffsetDisplay() + size;
 
 
   // We are not yet at the bottom edge of tile so movement is possible ,,
 
+  //if (playerYPosition % TILE_SIZE != TILE_SIZE - 1) return true;
   if (playerYPosition % TILE_SIZE != 0) return true;
 
 
@@ -173,13 +152,13 @@ bool canMoveDown() {
 
   // Retrieve the the three tiles and test them in order ..
 
-  uint8_t tile1 = pgm_read_byte(&levelMap[(tileY * level.getWidthInTiles()) + tileX1]);
+  uint8_t tile1 = pgm_read_byte(&levelMap[(tileY * level->getWidthInTiles()) + tileX1]);
   if (isTileSolid(tile1)) return false;
 	
-  uint8_t tile2 = pgm_read_byte(&levelMap[(tileY * level.getWidthInTiles()) + tileX2]);
+  uint8_t tile2 = pgm_read_byte(&levelMap[(tileY * level->getWidthInTiles()) + tileX2]);
   if (isTileSolid(tile2)) return false;
 	
-  uint8_t tile3 = pgm_read_byte(&levelMap[(tileY * level.getWidthInTiles()) + tileX3]);
+  uint8_t tile3 = pgm_read_byte(&levelMap[(tileY * level->getWidthInTiles()) + tileX3]);
   if (isTileSolid(tile3)) return false;
 
   return true;
@@ -191,63 +170,66 @@ bool canMoveDown() {
 //  Move the cab ..
 // ----------------------------------------------------------------------------------------------------------
 
-void moveCab() {
+void moveCab(Level *level, Player *player) {
 
-// Serial.print((float)player.getX());
+// Serial.print((float)player->getX());
 // Serial.print(",");
-// Serial.print((float)player.getY());
+// Serial.print((float)player->getY());
 // Serial.print(" ");
-// Serial.print((float)level.xOffset);
+// Serial.print((float)level->xOffset);
 // Serial.print(",");
-// Serial.print((float)level.yOffset);
+// Serial.print((float)level->yOffset);
 
-  SQ15x16 playerYDeltaVal = player.getYDeltaVal();
-  SQ15x16 playerXDeltaVal = player.getXDeltaVal();
+  SQ15x16 playerYDeltaVal = player->getYDeltaVal();
+  SQ15x16 playerXDeltaVal = player->getXDeltaVal();
 
 
   // --  Moving up -----------------------------------------------------------------------------------------
 
-  if (player.getYDelta() < 0) { 
+  if (player->getYDelta() < 0) { 
 
-    if (canMoveUp()) {
-// Serial.print(" move up");
-      if (level.yOffset < 0) {
+    if (canMoveUp(level, player)) {
 
-        if (player.getY() < PLAYER_Y_CENTRE) {
-          if (level.yOffset < playerYDeltaVal) {
-            level.yOffset = level.yOffset - playerYDeltaVal;
+      player->decRetractLandingGear();
+      player->setJustLanded(false);
+
+      if (level->yOffset < 0) {
+
+        if (player->getY() < PLAYER_Y_CENTRE) {
+          if (level->yOffset < playerYDeltaVal) {
+            level->yOffset = level->yOffset - playerYDeltaVal;
           }
           else {
-            level.yOffset = 0;
+            level->yOffset = 0;
           }
         }
-        else if (player.getY() == PLAYER_Y_CENTRE) {
-          if (level.yOffset < PLAYER_Y_CENTRE && (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8)) {
-            level.yOffset = level.yOffset - playerYDeltaVal;
+        else if (player->getY() == PLAYER_Y_CENTRE) {
+          if (level->yOffset < PLAYER_Y_CENTRE && (level->getWidthInTiles() != 16 || level->getHeightInTiles() != 8)) {
+            level->yOffset = level->yOffset - playerYDeltaVal;
           }
           else {
-            player.setY(player.getY() + playerYDeltaVal - level.yOffset);
-            level.yOffset = 0;
+            player->setY(player->getY() + playerYDeltaVal - level->yOffset);
+            level->yOffset = 0;
           }
         }
-        else if (player.getY() > PLAYER_Y_CENTRE) {
-          if (player.getY() + playerYDeltaVal > PLAYER_Y_CENTRE) {
-            player.setY(player.getY() + playerYDeltaVal);
+        else if (player->getY() > PLAYER_Y_CENTRE) {
+          if (player->getY() + playerYDeltaVal > PLAYER_Y_CENTRE) {
+            player->setY(player->getY() + playerYDeltaVal);
           }
           else {
-            level.yOffset = level.yOffset + PLAYER_Y_CENTRE - player.getY() - playerYDeltaVal;
-            player.setY(PLAYER_Y_CENTRE);
+            level->yOffset = level->yOffset + PLAYER_Y_CENTRE - player->getY() - playerYDeltaVal;
+            player->setY(PLAYER_Y_CENTRE);
           }
         }
 
       }
       else {
 
-        if (player.getY() > -playerYDeltaVal) {
-          player.setY(player.getY() + playerYDeltaVal);
+        if (player->getY() > -playerYDeltaVal) {
+          player->setY(player->getY() + playerYDeltaVal);
         }
         else {
-          player.setY(0);
+          player->setY(0);
         }
 
       }
@@ -259,89 +241,97 @@ void moveCab() {
 
   // --  Moving down --------------------------------------------------------------------------------------------
 
-  if (player.getYDelta() > 0) { 
+  if (player->getYDelta() > 0) { 
     
-    if (canMoveDown()) {
-      if (player.getY() < PLAYER_Y_CENTRE) {                         
-        if (player.getY() + playerYDeltaVal < PLAYER_Y_CENTRE) {
-          player.setY(player.getY() + playerYDeltaVal);
+    if (canMoveDown(level, player, player->isLandingGearDown() ? 11 : 8) ) {
+      if (player->getY() < PLAYER_Y_CENTRE) {                         
+        if (player->getY() + playerYDeltaVal < PLAYER_Y_CENTRE) {
+          player->setY(player->getY() + playerYDeltaVal);
         }
         else {
-          if (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8) {
-            level.yOffset = PLAYER_Y_CENTRE - player.getY() - playerYDeltaVal;
+          if (level->getWidthInTiles() != 16 || level->getHeightInTiles() != 8) {
+            level->yOffset = PLAYER_Y_CENTRE - player->getY() - playerYDeltaVal;
           }
-          player.setY(PLAYER_Y_CENTRE);
+          player->setY(PLAYER_Y_CENTRE);
         }
       }
-      else if (player.getY() == PLAYER_Y_CENTRE) {                            
-        if (level.yOffset - playerYDeltaVal > -level.getHeight() + HEIGHT && (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8)) {
-          level.yOffset = level.yOffset - playerYDeltaVal;
+      else if (player->getY() == PLAYER_Y_CENTRE) {                            
+        if (level->yOffset - playerYDeltaVal > -level->getHeight() + HEIGHT && (level->getWidthInTiles() != 16 || level->getHeightInTiles() != 8)) {
+          level->yOffset = level->yOffset - playerYDeltaVal;
         }
         else {
-          player.setY(player.getY() + ((level.getHeight() - HEIGHT) + level.yOffset) + playerYDeltaVal);
-          if (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8) {
-            level.yOffset = -level.getHeight() + HEIGHT;
+          player->setY(player->getY() + ((level->getHeight() - HEIGHT) + level->yOffset) + playerYDeltaVal);
+          if (level->getWidthInTiles() != 16 || level->getHeightInTiles() != 8) {
+            level->yOffset = -level->getHeight() + HEIGHT;
           }
         }
       }
-      else if (player.getY() > PLAYER_Y_CENTRE) {
-        if (player.getY() + playerYDeltaVal + PLAYER_HEIGHT < HEIGHT) {
-          player.setY(player.getY() + playerYDeltaVal);
+      else if (player->getY() > PLAYER_Y_CENTRE) {
+        if (player->getY() + playerYDeltaVal + PLAYER_HEIGHT < HEIGHT) {
+          player->setY(player->getY() + playerYDeltaVal);
         }
         else {
-          player.setY(HEIGHT - PLAYER_HEIGHT);
+          player->setY(HEIGHT - PLAYER_HEIGHT);
         }
 
       }
 
     }
+    else {
+
+      player->setXDelta(0);
+      player->setJustLanded(true);
+
+    }
+
+    player->setRetractLandingGear(5);
 
   }
 
 
   // --  Moving left --------------------------------------------------------------------------------------------
 
-  if (player.getXDelta() < 0) { 
+  if (player->getXDelta() < 0) { 
 
-    if (canMoveLeft()) {
+    if (canMoveLeft(level, player)) {
 
-      if (level.xOffset < 0) {
+      if (level->xOffset < 0) {
 
-        if (player.getX() < PLAYER_X_CENTRE) {
-          if (level.xOffset < playerXDeltaVal) {
-            level.xOffset = level.xOffset - playerXDeltaVal;
+        if (player->getX() < PLAYER_X_CENTRE) {
+          if (level->xOffset < playerXDeltaVal) {
+            level->xOffset = level->xOffset - playerXDeltaVal;
           }
           else {
-            level.xOffset = 0;
+            level->xOffset = 0;
           }
         }
-        else if (player.getX() == PLAYER_X_CENTRE) {
-          if (level.xOffset < playerXDeltaVal && (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8)) {
-            level.xOffset = level.xOffset - playerXDeltaVal;
+        else if (player->getX() == PLAYER_X_CENTRE) {
+          if (level->xOffset < playerXDeltaVal && (level->getWidthInTiles() != 16 || level->getHeightInTiles() != 8)) {
+            level->xOffset = level->xOffset - playerXDeltaVal;
           }
           else {
-            player.setX(player.getX() + playerXDeltaVal - level.xOffset);
-            level.xOffset = 0;
+            player->setX(player->getX() + playerXDeltaVal - level->xOffset);
+            level->xOffset = 0;
           }
         }
-        else if (player.getX() > PLAYER_X_CENTRE) {
-          if (player.getX() + playerXDeltaVal > PLAYER_X_CENTRE) {
-            player.setX(player.getX() + playerXDeltaVal);
+        else if (player->getX() > PLAYER_X_CENTRE) {
+          if (player->getX() + playerXDeltaVal > PLAYER_X_CENTRE) {
+            player->setX(player->getX() + playerXDeltaVal);
           }
           else {
-            level.xOffset = level.xOffset + PLAYER_X_CENTRE - player.getX() - playerXDeltaVal;
-            player.setX(PLAYER_X_CENTRE);
+            level->xOffset = level->xOffset + PLAYER_X_CENTRE - player->getX() - playerXDeltaVal;
+            player->setX(PLAYER_X_CENTRE);
           }
         }
 
       }
       else {
 
-        if (player.getX() > -playerXDeltaVal) {
-          player.setX(player.getX() + playerXDeltaVal);
+        if (player->getX() > -playerXDeltaVal) {
+          player->setX(player->getX() + playerXDeltaVal);
         }
         else {
-          player.setX(0);
+          player->setX(0);
         }
 
       }
@@ -353,40 +343,39 @@ void moveCab() {
 
   // --  Moving Right -------------------------------------------------------------------------------------------
 
-  if (player.getXDelta() > 0) {
+  if (player->getXDelta() > 0) {
 
-    if (canMoveRight()) {
-// Serial.print(" move right");
+    if (canMoveRight(level, player)) {
 
-      if (player.getX() < PLAYER_X_CENTRE) {
-        if (player.getX() + playerXDeltaVal < PLAYER_X_CENTRE) {
-          player.setX(player.getX() + playerXDeltaVal);
+      if (player->getX() < PLAYER_X_CENTRE) {
+        if (player->getX() + playerXDeltaVal < PLAYER_X_CENTRE) {
+          player->setX(player->getX() + playerXDeltaVal);
         }
         else {
-          if (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8) {
-            level.xOffset = PLAYER_X_CENTRE - player.getX() - playerXDeltaVal;
+          if (level->getWidthInTiles() != 16 || level->getHeightInTiles() != 8) {
+            level->xOffset = PLAYER_X_CENTRE - player->getX() - playerXDeltaVal;
           }
-          player.setX(PLAYER_X_CENTRE);
+          player->setX(PLAYER_X_CENTRE);
         }
       }
-      else if (player.getX() == PLAYER_X_CENTRE) {                            
-        if (level.xOffset - playerXDeltaVal > -level.getWidth() + WIDTH && (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8)) {
-          level.xOffset = level.xOffset - playerXDeltaVal;
+      else if (player->getX() == PLAYER_X_CENTRE) {                            
+        if (level->xOffset - playerXDeltaVal > -level->getWidth() + WIDTH && (level->getWidthInTiles() != 16 || level->getHeightInTiles() != 8)) {
+          level->xOffset = level->xOffset - playerXDeltaVal;
         }
         else {
-          player.setX(player.getX() + ((level.getWidth() - WIDTH) + level.xOffset) + playerXDeltaVal);
-          if (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8) {
-            level.xOffset = -level.getWidth() + WIDTH;
+          player->setX(player->getX() + ((level->getWidth() - WIDTH) + level->xOffset) + playerXDeltaVal);
+          if (level->getWidthInTiles() != 16 || level->getHeightInTiles() != 8) {
+            level->xOffset = -level->getWidth() + WIDTH;
           }
         }
       }
-      else if (player.getX() > PLAYER_X_CENTRE) {
+      else if (player->getX() > PLAYER_X_CENTRE) {
 
-        if (player.getX() + playerXDeltaVal + PLAYER_WIDTH < WIDTH) {
-          player.setX(player.getX() + playerXDeltaVal);
+        if (player->getX() + playerXDeltaVal + PLAYER_WIDTH < WIDTH) {
+          player->setX(player->getX() + playerXDeltaVal);
         }
         else {
-          player.setX(WIDTH - PLAYER_WIDTH);
+          player->setX(WIDTH - PLAYER_WIDTH);
         }
 
       }
