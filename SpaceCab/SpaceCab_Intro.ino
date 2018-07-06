@@ -5,7 +5,7 @@ void vsBoot() {
   
   Sprites::drawOverwrite(29, 17, bootlogo, 0);
 
-  switch (counter) {
+  switch (bootCounter) {
 
     case 0:
       
@@ -23,12 +23,12 @@ void vsBoot() {
     case 1:
 
       fadeOutEffect.reset(0, HEIGHT, 1);
-      --counter;
+      --bootCounter;
       break;
 
     default:
   
-      --counter;
+      --bootCounter;
       break;
       
   }
@@ -45,7 +45,8 @@ void titleScreen(Level *level, Player *player, Customer *customer) {
   Rect playerRect = {static_cast<int16_t>(player->getXDisplay()), static_cast<int16_t>(player->getYDisplay()), PLAYER_WIDTH, PLAYER_HEIGHT};
   Rect customerRect = {customerXVal, customerYVal, CUSTOMER_WIDTH, CUSTOMER_HEIGHT};
 
-  Sprites::drawOverwrite(logoXVal, logoYVal, SpaceCabSplash, 0);
+//  Sprites::drawOverwrite(logoXVal, logoYVal, SpaceCabSplash, 0);
+ Sprites::drawExternalMask(player->getXDisplay(), player->getYDisplay() - 12, Ouch, Hail_Mask, 0, 0);  
   drawLevel(level);
 
   playerDisplay(player);

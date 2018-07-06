@@ -126,6 +126,7 @@ void launchCustomer(Level *level, Customer *customer) {
   customer->setDestinationPosition(customerDestination);
 
   customer->setFrame(0);
+  customer->setActive(true);
   customer->setFare(random(10, 20));
 
 }
@@ -137,7 +138,7 @@ void launchCustomer(Level *level, Customer *customer) {
 
 void checkCollisionWithCustomer(Level *level, Player *player, Customer *customer) {
 
-  if (player->isCarryingCustomer()) return;
+  if (player->isCarryingCustomer() || !customer->isActive()) return;
 
   Rect playerRect = { static_cast<int16_t>(player->getXDisplay()), static_cast<int16_t>(player->getYDisplay()), PLAYER_WIDTH, PLAYER_HEIGHT };
 
@@ -151,10 +152,14 @@ void checkCollisionWithCustomer(Level *level, Player *player, Customer *customer
   
     Rect customerRect = { customerXVal, customerYVal, CUSTOMER_WIDTH, CUSTOMER_HEIGHT };
 
+    // if (arduboy.collide(playerRect, customerRect)) {
+    //   player->setCarryingCustomer(true);
+    //   sound.tone(NOTE_E6, 50, NOTE_E3, 50, NOTE_E2, 50);
+    //   counter = GOTO_COUNTER_MAX;
+    // }
     if (arduboy.collide(playerRect, customerRect)) {
-      player->setCarryingCustomer(true);
-      sound.tone(NOTE_E6, 50, NOTE_E3, 50, NOTE_E2, 50);
-      counter = GOTO_COUNTER_MAX;
+      ouchCounter = OUCH_COUNTER_MAX;
+      customer->setActive(false);
     }
 
   }
@@ -340,9 +345,20 @@ void updateStatus(Player *player, Customer *customer) {
 void inGame(Level *level, Player *player, Customer *customer) {
 
   updateTime();
+
   flashingCounter++;
   flashingCounter = flashingCounter % FLASH_MAX;
-  if (counter != 0) counter--;
+
+  if (gotoCounter != 0)   gotoCounter--;
+  
+  if (ouchCounter != 0) { 
+
+    ouchCounter--;
+    if (ouchCounter == 0) {
+      launchCustomer(level, customer);
+    }
+
+  }
 
   drawLevel(level);
 
@@ -359,6 +375,7 @@ void inGame(Level *level, Player *player, Customer *customer) {
   customerDisplay(level, player, customer);
   drawHUD(player, customer);
   drawGoto(player);
+  drawOuch(player);
 
   if (state == GameState::EndOfLevel) {
     drawLevelStart();

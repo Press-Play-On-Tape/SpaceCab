@@ -211,10 +211,19 @@ void customerDisplay(Level *level, Player *player, Customer *customer) {
 
   if (!player->isCarryingCustomer() && customerXVal >= -CUSTOMER_WIDTH && customerXVal < WIDTH && customerYVal >= -CUSTOMER_HEIGHT && customerYVal < HEIGHT) {
 
-    Sprites::drawExternalMask(customerXVal, customerYVal, Customer_Img, Customer_Img_Mask, customer->getFrame(), customer->getFrame());
+    if (customer->isActive()) {
 
-    if (arduboy.everyXFrames(15)) {
-      customer->incFrame();
+      Sprites::drawExternalMask(customerXVal, customerYVal, Customer_Img, Customer_Img_Mask, customer->getFrame(), customer->getFrame());
+
+      if (arduboy.everyXFrames(15)) {
+        customer->incFrame();
+      }
+
+    }
+    else {
+
+      Sprites::drawExternalMask(customerXVal, customerYVal, Customer_Flat_Img, Customer_Flat_Mask, customer->getFrame(), customer->getFrame());
+
     }
 
   }
@@ -410,10 +419,20 @@ void drawDollars(Player *player) {
 
 void drawGoto(Player *player) {
 
-  if (counter > 0 && flashingCounter < (FLASH_MAX / 2)) {
+  if (gotoCounter > 0 && flashingCounter < (FLASH_MAX / 2)) {
 
     Sprites::drawExternalMask(player->getXDisplay(), player->getYDisplay() - 12, Hail, Hail_Mask, 0, 0);
     Sprites::drawErase(player->getXDisplay() + 25, player->getYDisplay() - 8, font4x6_Full, customer.getDestinationPosition() + 53);
+
+  }
+
+}
+
+void drawOuch(Player *player) {
+
+  if (ouchCounter > 0 && flashingCounter < (FLASH_MAX / 2)) {
+
+    Sprites::drawExternalMask(player->getXDisplay(), player->getYDisplay() - 12, Ouch, Hail_Mask, 0, 0);
 
   }
 

@@ -37,7 +37,9 @@ uint8_t alternate = 0;
 uint8_t fareCount = 0;
 uint8_t dollarsCount = 0;
 uint8_t flashingCounter = 0;
-uint8_t counter = 50;
+uint8_t bootCounter = 50;
+uint8_t gotoCounter = 0;
+uint8_t ouchCounter = 0;
 
 Fuel fuel0;
 Fuel fuel1;

@@ -13,6 +13,7 @@ struct Customer {
     uint8_t _destinationPosition;  
     uint8_t _xDestinationTile;
     uint8_t _yDestinationTile;
+    bool _active;
 
   public:
 
@@ -26,6 +27,7 @@ struct Customer {
     uint8_t getYDestinationTile()             { return _yDestinationTile; }
     uint8_t getStartingPosition()             { return _startingPosition; }
     uint8_t getDestinationPosition()          { return _destinationPosition; }
+    bool isActive()                           { return _active; }
     
     void setFrame(uint8_t val)                { _frame = val; }
     void setFare(uint8_t val)                 { _fare = val; }
@@ -35,6 +37,7 @@ struct Customer {
     void setYDestinationTile(uint8_t val)     { _yDestinationTile = val; }
     void setStartingPosition(uint8_t val)     { _startingPosition = val; }
     void setDestinationPosition(uint8_t val)  { _destinationPosition = val; }
+    void setActive(bool val)                  { _active = val; }
 
     void incFrame() {
       _frame = (_frame == 0 ? 1 : 0);
