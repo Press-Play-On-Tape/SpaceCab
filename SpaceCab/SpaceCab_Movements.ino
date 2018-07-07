@@ -306,7 +306,7 @@ void moveCab(Level *level, Player *player, Customer *customer) {
 
     }
 
-    player->setRetractLandingGear(5);
+    player->setRetractLandingGear(PLAYER_RETRACT_LANDING_GEAR);
 
   }
 
