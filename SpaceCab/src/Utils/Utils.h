@@ -29,7 +29,7 @@ template< size_t size > void extractDigits(uint8_t (&buffer)[size], uint16_t val
 
 //------------------------------------------------------------------------------
 
-void initGame(Level *level, Player *player, Customer *customer) {
+void initGame(Player *player) {
 
   player->setNumberOfLives(PLAYER_NUMBER_OF_LIVES_MAX);
   player->setScore(0);
@@ -54,6 +54,7 @@ void initLevel(Level *level, Player *player, Customer *customer, uint8_t levelNu
   player->setStatus(PlayerStatus::Active);
   player->setLandingGearDown(true);
   player->setJustLanded(true);
+  player->setPickingUpCustomer(false);
   
   level->setLevelNumber(levelNumber);
   level->setHeight(height * TILE_SIZE);

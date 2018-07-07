@@ -1,5 +1,6 @@
 #include "src/utils/Arduboy2Ext.h"
 
+
 void drawLevel(Level *level) {
 
   const uint8_t *levelMap = levelMaps[level->getLevelNumber()];
@@ -211,18 +212,63 @@ void customerDisplay(Level *level, Player *player, Customer *customer) {
 
   if (!player->isCarryingCustomer() && customerXVal >= -CUSTOMER_WIDTH && customerXVal < WIDTH && customerYVal >= -CUSTOMER_HEIGHT && customerYVal < HEIGHT) {
 
-    if (customer->isActive()) {
+    switch (customer->getStatus()) {
 
-      Sprites::drawExternalMask(customerXVal, customerYVal, Customer_Img, Customer_Img_Mask, customer->getFrame(), customer->getFrame());
+      case CustomerStatus::Dead:
 
-      if (arduboy.everyXFrames(15)) {
-        customer->incFrame();
-      }
+        Sprites::drawExternalMask(customerXVal, customerYVal, Customer_Flat_Img, Customer_Flat_Mask, 0, 0);
+        break;
 
-    }
-    else {
+      case CustomerStatus::Alive:
 
-      Sprites::drawExternalMask(customerXVal, customerYVal, Customer_Flat_Img, Customer_Flat_Mask, customer->getFrame(), customer->getFrame());
+        Sprites::drawExternalMask(customerXVal, customerYVal, Customer_Img, Customer_Img_Mask, customer->getFrame(), customer->getFrame());
+
+        if (arduboy.everyXFrames(15)) {
+          customer->incFrame();
+        }
+
+        break;
+
+      case CustomerStatus::BoardingCab:
+
+        if (customer->getWalkingDirection() == Direction::Left) {
+
+          Sprites::drawExternalMask(customerXVal + customer->getXWalkingOffset(), customerYVal, Customer_WalkingLeft, Customer_WalkingLeft_Mask, customer->getFrame(), customer->getFrame());
+
+        }
+        else {
+
+          Sprites::drawExternalMask(customerXVal + customer->getXWalkingOffset(), customerYVal, Customer_WalkingRight, Customer_WalkingRight_Mask, customer->getFrame(), customer->getFrame());
+
+        }
+
+        if (arduboy.everyXFrames(8)) {
+
+          uint16_t customerXPosition = customer->getX();
+
+          if (customerXPosition + CUSTOMER_WIDTH_HALF + customer->getXWalkingOffset() != player->getXDisplay() - level->getXOffsetDisplay() + PLAYER_WIDTH_HALF) {
+
+            customer->incFrame();
+
+            if (customer->getWalkingDirection() == Direction::Left) {
+              customer->decXWalkingOffset();
+            }
+            else {
+              customer->incXWalkingOffset();
+            }
+
+          }
+          else {
+
+            player->setCarryingCustomer(true);
+            player->setPickingUpCustomer(false);
+            sound.tone(NOTE_E6, 50, NOTE_E3, 50, NOTE_E2, 50);
+
+          }
+
+        }
+
+        break;
 
     }
 
@@ -417,22 +463,28 @@ void drawDollars(Player *player) {
 }
 
 
-void drawGoto(Player *player) {
+void drawGoto(Level *level, Customer *customer) {
 
   if (gotoCounter > 0 && flashingCounter < (FLASH_MAX / 2)) {
 
-    Sprites::drawExternalMask(player->getXDisplay(), player->getYDisplay() - 12, Hail, Hail_Mask, 0, 0);
-    Sprites::drawErase(player->getXDisplay() + 25, player->getYDisplay() - 8, font4x6_Full, customer.getDestinationPosition() + 53);
+    int16_t customerXVal = customer->getX() + level->xOffset.getInteger() + 1 + customer->getXWalkingOffset();
+    int16_t customerYVal = customer->getY() + level->yOffset.getInteger() - 13;
+    
+    Sprites::drawExternalMask(customerXVal, customerYVal, Hail, Hail_Mask, 0, 0);
+    Sprites::drawErase(customerXVal + 25, customerYVal + 4, font4x6_Full, customer->getDestinationPosition() + 53);
 
   }
 
 }
 
-void drawOuch(Player *player) {
+void drawOuch(Level *level, Customer *customer) {
 
   if (ouchCounter > 0 && flashingCounter < (FLASH_MAX / 2)) {
 
-    Sprites::drawExternalMask(player->getXDisplay(), player->getYDisplay() - 12, Ouch, Hail_Mask, 0, 0);
+    int16_t customerXVal = customer->getX() + level->xOffset.getInteger() + 1 + customer->getXWalkingOffset();
+    int16_t customerYVal = customer->getY() + level->yOffset.getInteger() - 13;
+
+    Sprites::drawExternalMask(customerXVal, customerYVal, Ouch, Hail_Mask, 0, 0);
 
   }
 

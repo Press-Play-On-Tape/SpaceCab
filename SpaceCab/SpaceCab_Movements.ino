@@ -1,7 +1,6 @@
 #include "src/utils/Arduboy2Ext.h"
 
 
-
 // ----------------------------------------------------------------------------------------------------------
 //  Can the player move left ?
 // ----------------------------------------------------------------------------------------------------------
@@ -170,15 +169,7 @@ bool canMoveDown(Level *level, Player *player, uint8_t size) {
 //  Move the cab ..
 // ----------------------------------------------------------------------------------------------------------
 
-void moveCab(Level *level, Player *player) {
-
-// Serial.print((float)player->getX());
-// Serial.print(",");
-// Serial.print((float)player->getY());
-// Serial.print(" ");
-// Serial.print((float)level->xOffset);
-// Serial.print(",");
-// Serial.print((float)level->yOffset);
+void moveCab(Level *level, Player *player, Customer *customer) {
 
   SQ15x16 playerYDeltaVal = player->getYDeltaVal();
   SQ15x16 playerXDeltaVal = player->getXDeltaVal();
@@ -243,7 +234,7 @@ void moveCab(Level *level, Player *player) {
 
   if (player->getYDelta() > 0) { 
     
-    if (canMoveDown(level, player, player->isLandingGearDown() ? 11 : 8) ) {
+    if (canMoveDown(level, player, player->getHeight())) {
       if (player->getY() < PLAYER_Y_CENTRE) {                         
         if (player->getY() + playerYDeltaVal < PLAYER_Y_CENTRE) {
           player->setY(player->getY() + playerYDeltaVal);
@@ -267,11 +258,11 @@ void moveCab(Level *level, Player *player) {
         }
       }
       else if (player->getY() > PLAYER_Y_CENTRE) {
-        if (player->getY() + playerYDeltaVal + PLAYER_HEIGHT < HEIGHT) {
+        if (player->getY() + playerYDeltaVal + player->getHeight() < HEIGHT) {
           player->setY(player->getY() + playerYDeltaVal);
         }
         else {
-          player->setY(HEIGHT - PLAYER_HEIGHT);
+          player->setY(HEIGHT - player->getHeight());
         }
 
       }
@@ -281,6 +272,37 @@ void moveCab(Level *level, Player *player) {
 
       player->setXDelta(0);
       player->setJustLanded(true);
+
+
+      // If we have landed within 8 pixels of a customer then pick up the fare ..
+
+      if (!player->getPickingUpCustomer() && !player->isCarryingCustomer() && customer->getStatus() != CustomerStatus::Dead) {
+
+        uint16_t playerXPosition = player->getXDisplay() - level->getXOffsetDisplay();
+        uint16_t playerYPosition = player->getYDisplay() - level->getYOffsetDisplay() + player->getHeight();
+        uint16_t customerXPosition = customer->getX();
+        uint16_t customerYPosition = customer->getY() + CUSTOMER_HEIGHT;
+
+        int16_t left = customerXPosition - CUSTOMER_WIDTH - CUSTOMER_PICKUP_RANGE - PLAYER_WIDTH;
+        int16_t right = customerXPosition + CUSTOMER_WIDTH + CUSTOMER_PICKUP_RANGE;
+
+        if ((left <= static_cast<int16_t>(playerXPosition) && static_cast<int16_t>(playerXPosition) <= right) &&
+            (customerYPosition - 2 <= playerYPosition && playerYPosition <= customerYPosition + 2)) {
+          customer->setStatus(CustomerStatus::BoardingCab);
+          customer->setXWalkingOffset(0);
+          player->setPickingUpCustomer(true);
+          gotoCounter = GOTO_COUNTER_MAX;
+
+          if (customerXPosition + CUSTOMER_WIDTH_HALF < player->getXDisplay() - level->getXOffsetDisplay() + PLAYER_WIDTH_HALF) {
+            customer->setWalkingDirection(Direction::Right);
+          }
+          else {
+            customer->setWalkingDirection(Direction::Left);
+          }
+
+        }
+
+      }
 
     }
 

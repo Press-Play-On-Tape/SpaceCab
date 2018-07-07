@@ -97,7 +97,7 @@ void loop() {
 
     case GameState::PlayGame_InitGame:
       levelNumber = 1;
-      initGame(&level, &player, &customer);
+      initGame(&player);
       state = GameState::PlayGame_InitLevel;
       // break;  -- Fall through intentional.
 
@@ -133,7 +133,7 @@ void loop() {
   }
 
   arduboy.display();
-  moveCab(&level, &player);
+  moveCab(&level, &player, &customer);
 
 }
 

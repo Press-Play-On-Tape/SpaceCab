@@ -1,6 +1,12 @@
 #include "src/utils/Arduboy2Ext.h"
 
+
 void handleInput(Player *player) {
+
+
+  // You cannot move while loading a customer ..
+
+  if (player->getPickingUpCustomer()) return;
 
   if (arduboy.justPressed(B_BUTTON)) {
 
@@ -126,7 +132,7 @@ void launchCustomer(Level *level, Customer *customer) {
   customer->setDestinationPosition(customerDestination);
 
   customer->setFrame(0);
-  customer->setActive(true);
+  customer->setStatus(CustomerStatus::Alive);
   customer->setFare(random(10, 20));
 
 }
@@ -138,9 +144,9 @@ void launchCustomer(Level *level, Customer *customer) {
 
 void checkCollisionWithCustomer(Level *level, Player *player, Customer *customer) {
 
-  if (player->isCarryingCustomer() || !customer->isActive()) return;
+  if (player->isCarryingCustomer() || customer->getStatus() == CustomerStatus::Dead) return;
 
-  Rect playerRect = { static_cast<int16_t>(player->getXDisplay()), static_cast<int16_t>(player->getYDisplay()), PLAYER_WIDTH, PLAYER_HEIGHT };
+  Rect playerRect = { static_cast<int16_t>(player->getXDisplay()), static_cast<int16_t>(player->getYDisplay()), PLAYER_WIDTH, player->getHeight() };
 
 
   // Check customer collision only if they are on-screen ..
@@ -152,14 +158,12 @@ void checkCollisionWithCustomer(Level *level, Player *player, Customer *customer
   
     Rect customerRect = { customerXVal, customerYVal, CUSTOMER_WIDTH, CUSTOMER_HEIGHT };
 
-    // if (arduboy.collide(playerRect, customerRect)) {
-    //   player->setCarryingCustomer(true);
-    //   sound.tone(NOTE_E6, 50, NOTE_E3, 50, NOTE_E2, 50);
-    //   counter = GOTO_COUNTER_MAX;
-    // }
     if (arduboy.collide(playerRect, customerRect)) {
+
       ouchCounter = OUCH_COUNTER_MAX;
-      customer->setActive(false);
+      customer->setStatus(CustomerStatus::Dead);
+      player->setPickingUpCustomer(false);
+
     }
 
   }
@@ -374,8 +378,8 @@ void inGame(Level *level, Player *player, Customer *customer) {
   drawDollars(player);
   customerDisplay(level, player, customer);
   drawHUD(player, customer);
-  drawGoto(player);
-  drawOuch(player);
+  drawGoto(level, customer);
+  drawOuch(level, customer);
 
   if (state == GameState::EndOfLevel) {
     drawLevelStart();

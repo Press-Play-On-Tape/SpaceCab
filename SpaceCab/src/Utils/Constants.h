@@ -12,6 +12,7 @@
 #define PLAYER_HEIGHT_HALF PLAYER_HEIGHT / 2
 
 #define CUSTOMER_WIDTH 7
+#define CUSTOMER_WIDTH_HALF CUSTOMER_WIDTH / 2
 #define CUSTOMER_HEIGHT 8
 
 #define EMPTY 0
@@ -50,8 +51,10 @@ static const uint16_t FARE_X_FRAMES               = 15;
 static const uint16_t FARE_COUNT                  = 10;
 
 static const uint8_t CUSTOMER_NO_STARTING_POS     = 255;
-static const uint8_t GOTO_COUNTER_MAX             = 80;
-static const uint8_t OUCH_COUNTER_MAX             = 80;
+static const uint8_t CUSTOMER_PICKUP_RANGE        = 16;
+
+static const uint8_t GOTO_COUNTER_MAX             = 120;
+static const uint8_t OUCH_COUNTER_MAX             = 120;
 
 static const uint8_t FUEL_TILES_MAX               = 5;
 static const uint8_t FUEL_MIN                     = 40;
@@ -142,6 +145,15 @@ enum class Direction : uint8_t {
   UpLeft
 
 };
+
+enum class CustomerStatus : uint8_t {
+
+  Dead,
+  Alive,
+  BoardingCab
+
+};
+
 
 inline PlayerStatus operator++( PlayerStatus & c ) {
 

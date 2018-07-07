@@ -23,6 +23,7 @@ struct Player {
     bool _carryingCustomer = false;
     bool _landingGearDown = false;
     bool _justLanded = true;
+    bool _pickingUpCustomer = false;
     uint8_t _numberOfLives = 0;
     PlayerStatus _status;
 
@@ -39,6 +40,7 @@ struct Player {
     bool isCarryingCustomer()                   { return _carryingCustomer; }
     bool isLandingGearDown()                    { return _landingGearDown; }
     bool hasJustLanded()                        { return _justLanded; }
+    bool getPickingUpCustomer()                 { return _pickingUpCustomer; }
     PlayerStatus getStatus()                    { return _status; }
     uint8_t getRetractLandingGear()             { return _retractLandgingGear; }
 
@@ -53,6 +55,7 @@ struct Player {
     void setCarryingCustomer(bool val)          { _carryingCustomer = val; }
     void setLandingGearDown(bool val)           { _landingGearDown = val; }
     void setJustLanded(bool val)                { _justLanded = val; }
+    void setPickingUpCustomer(bool val)         { _pickingUpCustomer = val; }
     void setStatus(PlayerStatus val)            { _status = val; }
     void setRetractLandingGear(int8_t val)      { _retractLandgingGear = val; }
 
@@ -175,6 +178,12 @@ struct Player {
           break;
           
       }
+
+    }
+
+    uint8_t getHeight() {
+
+      return (_landingGearDown ? PLAYER_HEIGHT + 3 : PLAYER_HEIGHT);
 
     }
 

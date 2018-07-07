@@ -1,6 +1,5 @@
 #include "src/utils/Arduboy2Ext.h"
 
-
 void vsBoot() {
   
   Sprites::drawOverwrite(29, 17, bootlogo, 0);
@@ -42,11 +41,10 @@ void titleScreen(Level *level, Player *player, Customer *customer) {
   int16_t logoXVal = 0 + level->xOffset.getInteger();
   int16_t logoYVal = 6 + level->yOffset.getInteger();  
   
-  Rect playerRect = {static_cast<int16_t>(player->getXDisplay()), static_cast<int16_t>(player->getYDisplay()), PLAYER_WIDTH, PLAYER_HEIGHT};
+  Rect playerRect = {static_cast<int16_t>(player->getXDisplay()), static_cast<int16_t>(player->getYDisplay()), PLAYER_WIDTH, player->getHeight()};
   Rect customerRect = {customerXVal, customerYVal, CUSTOMER_WIDTH, CUSTOMER_HEIGHT};
 
-//  Sprites::drawOverwrite(logoXVal, logoYVal, SpaceCabSplash, 0);
- Sprites::drawExternalMask(player->getXDisplay(), player->getYDisplay() - 12, Ouch, Hail_Mask, 0, 0);  
+  Sprites::drawOverwrite(logoXVal, logoYVal, SpaceCabSplash, 0);
   drawLevel(level);
 
   playerDisplay(player);

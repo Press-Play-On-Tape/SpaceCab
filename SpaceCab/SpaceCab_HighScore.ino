@@ -1,4 +1,4 @@
-#include "Arduboy2.h"
+#include "src/utils/Arduboy2Ext.h"
 
 uint8_t clearScores = 0;
 
