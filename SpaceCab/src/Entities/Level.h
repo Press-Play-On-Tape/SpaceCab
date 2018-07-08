@@ -4,6 +4,7 @@
 #include "../Utils/Constants.h"
 #include "Levels.h"
 #include "Fuel.h"
+#include "Gate.h"
 
 #include "FixedPoints.h"
 #include "FixedPointsCommon.h"
@@ -24,6 +25,17 @@ struct Level {
     uint16_t _widthInTiles = 0;
     Fuel *_fuels[FUEL_TILES_MAX];
     uint8_t _levelData[256];
+    bool _openGates;
+    uint8_t _levelScore;
+
+    Gate _gate0;
+    Gate _gate1;
+    Gate _gate2;
+    Gate _gate3;
+    Gate _gate4;
+
+    Gate *_gates[GATE_TILES_MAX] = { &_gate0, &_gate1, &_gate2, &_gate3, &_gate4 };
+
 
   public:
 
@@ -31,6 +43,10 @@ struct Level {
       
       for (uint8_t x = 0 ; x < FUEL_TILES_MAX; x++) {
         _fuels[x] = fuels[x];
+      }
+      
+      for (uint8_t x = 0 ; x < GATE_TILES_MAX; x++) {
+        _gates[x]->setActive(false);
       }
 
     };
@@ -43,13 +59,14 @@ struct Level {
     uint16_t getWidth()                       const { return _width; }
     uint16_t getHeightInTiles()               const { return _heightInTiles; }
     uint16_t getWidthInTiles()                const { return _widthInTiles; }
+    uint16_t getLevelScore()                  const { return _levelScore; }
 
     Fuel * getFuel(uint8_t idx)               const { return _fuels[idx]; }
 
     void setHeight(uint16_t val)              { _height = val; }
     void setWidth(uint16_t val)               { _width = val; }
-    void setHeightInTiles(uint16_t val)       { _heightInTiles = val; }
-    void setWidthInTiles(uint16_t val)        { _widthInTiles = val; }
+    void setHeightInTiles(uint16_t val)       { _heightInTiles = val; _height = val * TILE_SIZE; }
+    void setWidthInTiles(uint16_t val)        { _widthInTiles = val; _width = val * TILE_SIZE; }
 
     void setFuel(uint8_t idx, Fuel * fuel)    { _fuels[idx] = fuel; }
 
@@ -72,67 +89,112 @@ struct Level {
 
     uint8_t getLevelData(uint8_t x, uint8_t y) {
 
+      uint8_t tile = EMPTY;
+
       if ((x % 2) == 0) {
-        return (_levelData[((y * _widthInTiles) / 2) + (x / 2)] >> 4);
+        tile = (_levelData[((y * _widthInTiles) / 2) + (x / 2)] >> 4);
       }
       else {
-        return (_levelData[((y * _widthInTiles) / 2) + (x / 2)] & 0x0f);
+        tile = (_levelData[((y * _widthInTiles) / 2) + (x / 2)] & 0x0f);
+      }
+
+      switch (tile) {
+
+        case GATE1:
+
+          if (_openGates) return EMPTY;
+          return GATE1;
+
+        default:  
+          return tile;
+
       }
 
     }
 
-    void setLevelNumber(uint8_t val) { 
-      
-      _number = val; 
-
-
-    // Parse level for fuel tiles ..
-
-    for (uint8_t y = 0; y < FUEL_TILES_MAX; y++) {
-
-      Fuel *fuel = _fuels[y];
-      fuel->setXTile(0);
-      fuel->setYTile(0);
-      fuel->setFuelLeft(0);
-
+    void openGates() {
+      _openGates = true;
     }
 
-    {
- 
-      const uint8_t *levelMap = levelMaps[_number];
-      uint8_t fuelIdx = 0;
+    void reset(uint8_t levelNumber/*, uint8_t width, uint8_t height*/) { 
       
-      for (uint8_t y = 0; y < _heightInTiles; y++) {
+      _number = levelNumber; 
+      _openGates = false;
 
-        for (uint8_t x = 0; x < _widthInTiles; x = x + 2) {
+      _widthInTiles = levelInit[levelNumber * 7];
+      _heightInTiles = levelInit[(levelNumber * 7) + 1];
+      _width = _widthInTiles * TILE_SIZE;
+      _height = _heightInTiles * TILE_SIZE;
 
-          uint8_t tileIndex = ((y * _widthInTiles) / 2) + (x / 2);
-          uint8_t tile = pgm_read_byte(&levelMap[tileIndex]);
+      xOffset = static_cast<SQ15x16>(levelInit[(levelNumber * 7) + 2]);
+      yOffset = static_cast<SQ15x16>(levelInit[(levelNumber * 7) + 3]);
+      _levelScore = levelInit[(levelNumber * 7) + 6];
 
-          _levelData[tileIndex] = tile;
 
-          {
-            uint8_t isFuel = (tile & 0xf0) >> 4;
+      // Parse level for fuel tiles ..
 
-            if (isFuel == FUEL1) {
-              
-              Fuel *fuel = _fuels[fuelIdx];
-              fuel->setXTile(x);
-              fuel->setYTile(y);
-              fuel->setFuelLeft(random(FUEL_MIN, FUEL_MAX));
-              fuelIdx++;
+      for (uint8_t y = 0; y < FUEL_TILES_MAX; y++) {
 
-            }
+        Fuel *fuel = _fuels[y];
+        fuel->setXTile(0);
+        fuel->setYTile(0);
+        fuel->setFuelLeft(0);
 
-            isFuel = (tile & 0x0f);
+      }
 
-            if (isFuel == FUEL1) {
-              
-              Fuel *fuel = _fuels[fuelIdx];
-              fuel->setXTile(x);
-              fuel->setYTile(y);
-              fuel->setFuelLeft(random(FUEL_MIN, FUEL_MAX));
-              fuelIdx++;
+      {
+  
+        const uint8_t *levelMap = levelMaps[_number];
+        uint8_t fuelIdx = 0;
+        uint8_t gateIdx = 0;
+        
+        for (uint8_t y = 0; y < _heightInTiles; y++) {
+
+          for (uint8_t x = 0; x < _widthInTiles; x = x + 2) {
+
+            uint8_t tileIndex = ((y * _widthInTiles) / 2) + (x / 2);
+            uint8_t tiles = pgm_read_byte(&levelMap[tileIndex]);
+
+            _levelData[tileIndex] = tiles;
+
+            {
+
+              // Left hand side tile ..
+
+              uint8_t tile = (tiles & 0xf0) >> 4;
+
+              switch (tile) {
+
+                case FUEL1:
+                  updateFuelDetails(x, y, fuelIdx);
+                  fuelIdx++;
+                  break;
+
+                case GATE1:
+                  updateGateDetails(x, y, gateIdx);
+                  gateIdx++;
+                  break;
+
+              }
+
+
+              // Right hand side tile ..
+
+              tile = (tiles & 0x0f);
+
+              switch (tile) {
+
+                case FUEL1:
+                  updateFuelDetails(x, y, fuelIdx);
+                  fuelIdx++;
+                  break;
+
+                case GATE1:
+                  updateGateDetails(x, y, gateIdx);
+                  gateIdx++;
+                  break;
+
+              }
 
             }
 
@@ -144,6 +206,22 @@ struct Level {
 
     }
 
-  }
+    void updateFuelDetails(uint8_t x, uint8_t y, uint8_t index) {
+
+      Fuel *fuel = _fuels[index];
+      fuel->setXTile(x);
+      fuel->setYTile(y);
+      fuel->setFuelLeft(random(FUEL_MIN, FUEL_MAX));
+ 
+    }
+
+    void updateGateDetails(uint8_t x, uint8_t y, uint8_t index) {
+
+      Gate *gate = _gates[index];
+      gate->setXTile(x);
+      gate->setYTile(y);
+      gate->setActive(true);
+ 
+    }
 
 };

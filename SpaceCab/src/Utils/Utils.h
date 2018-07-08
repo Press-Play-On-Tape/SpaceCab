@@ -38,32 +38,9 @@ void initGame(Player *player) {
 
 void initLevel(Level *level, Player *player, Customer *customer, uint8_t levelNumber) {
 
-  uint8_t width = levelInit[levelNumber * 6];
-  uint8_t height = levelInit[(levelNumber * 6) + 1];
-
-  level->xOffset = static_cast<SQ15x16>(levelInit[(levelNumber * 6) + 2]);
-  level->yOffset = static_cast<SQ15x16>(levelInit[(levelNumber * 6) + 3]);
-
-  player->setX(static_cast<SQ15x16>(levelInit[(levelNumber * 6) + 4]));
-  player->setY(static_cast<SQ15x16>(levelInit[(levelNumber * 6) + 5]));
-  player->setXDelta(0);
-  player->setYDelta(0);
-  player->setFrame(1);
-  player->setFuel(PLAYER_FUEL_MAX);
-  player->setCarryingCustomer(false);
-  player->setStatus(PlayerStatus::Active);
-  player->setLandingGearDown(true);
-  player->setJustLanded(true);
-  player->setPickingUpCustomer(false);
-  
-  level->setHeight(height * TILE_SIZE);
-  level->setWidth(width * TILE_SIZE);
-  level->setHeightInTiles(height);
-  level->setWidthInTiles(width);
-  level->setLevelNumber(levelNumber);
-
+  level->reset(levelNumber);
+  player->reset(static_cast<SQ15x16>(levelInit[(levelNumber * 7) + 4]), static_cast<SQ15x16>(levelInit[(levelNumber * 7) + 5]));
   customer->setStartingPosition(CUSTOMER_NO_STARTING_POS);
-
 
 }
 

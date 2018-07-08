@@ -65,31 +65,57 @@ const unsigned char PROGMEM level1Map[LEVEL_1_HEIGHT * LEVEL_1_WIDTH / 2] = {
   // GRASS, GRASS, SIGN1, ROCKS, ROCKS, ROCKS, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, GRASS, GRASS, SIGN1, ROCKS, ROCKS, ROCKS, EMPTY, EMPTY, EMPTY, ROCKS, ROCKS, GRASS, GRASS, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY,
   // BRICK, BRICK, BRICK, ROCKS, ROCKS, ROCKS, GRASS, SIGN1, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, BRICK, BRICK, BRICK, ROCKS, ROCKS, ROCKS, WATER, WATER, WATER, ROCKS, ROCKS, ROCKS, ROCKS, WATER, WATER, WATER, WATER, WATER,
   // ROCKS, ROCKS, ROCKS, ROCKS, ROCKS, ROCKS, ROCKS, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, ROCKS, ROCKS, ROCKS, ROCKS, ROCKS, ROCKS, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1, PLAT1,
-136, 136, 136, 136, 136, 136, 136, 136, 101, 85, 104, 136, 136, 136, 136, 136, 136, 
-0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-176, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 168, 
-102, 0, 0, 0, 38, 32, 0, 4, 34, 34, 34, 0, 0, 0, 0, 10, 136, 
-221, 0, 0, 0, 102, 96, 0, 6, 102, 102, 102, 0, 0, 0, 0, 8, 136, 
-0, 0, 0, 0, 136, 128, 0, 160, 0, 0, 0, 160, 0, 0, 6, 102, 102, 
-0, 10, 0, 0, 0, 0, 0, 131, 51, 51, 51, 128, 0, 0, 13, 221, 221, 
-0, 8, 0, 0, 0, 0, 0, 136, 136, 136, 136, 128, 0, 0, 0, 0, 0, 
-0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-0, 8, 160, 0, 10, 164, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 164, 
-0, 8, 138, 0, 9, 153, 0, 0, 0, 0, 160, 0, 10, 0, 14, 230, 102, 
-0, 8, 136, 0, 8, 136, 0, 0, 0, 10, 138, 0, 8, 160, 6, 102, 102, 
-170, 72, 136, 0, 0, 0, 0, 0, 170, 72, 136, 0, 8, 138, 160, 0, 0, 
-153, 152, 136, 164, 170, 170, 170, 170, 153, 152, 136, 51, 56, 136, 131, 51, 51, 
-136, 136, 136, 129, 17, 17, 17, 17, 136, 136, 136, 17, 17, 17, 17, 17, 17, 
+// 136, 136, 136, 136, 136, 136, 136, 136, 101, 85, 104, 136, 136, 136, 136, 136, 136, 
+// 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+// 176, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 168, 
+// 102, 0, 0, 0, 38, 32, 0, 4, 34, 34, 34, 0, 0, 0, 0, 10, 136, 
+// 221, 0, 0, 0, 102, 96, 0, 6, 102, 102, 102, 0, 0, 0, 0, 8, 136, 
+// 0, 0, 0, 0, 136, 128, 0, 160, 0, 0, 0, 160, 0, 0, 6, 102, 102, 
+// 0, 10, 0, 0, 0, 0, 0, 131, 51, 51, 51, 128, 0, 0, 13, 221, 221, 
+// 0, 8, 0, 0, 0, 0, 0, 136, 136, 136, 136, 128, 0, 0, 0, 0, 0, 
+// 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+// 0, 8, 160, 0, 10, 164, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 164, 
+// 0, 8, 138, 0, 9, 153, 0, 0, 0, 0, 160, 0, 10, 0, 14, 230, 102, 
+// 0, 8, 136, 0, 8, 136, 0, 0, 0, 10, 138, 0, 8, 160, 6, 102, 102, 
+// 170, 72, 136, 0, 0, 0, 0, 0, 170, 72, 136, 0, 8, 138, 160, 0, 0, 
+// 153, 152, 136, 164, 170, 170, 170, 170, 153, 152, 136, 51, 56, 136, 131, 51, 51, 
+// 136, 136, 136, 129, 17, 17, 17, 17, 136, 136, 136, 17, 17, 17, 17, 17, 17, 
+
+
+136	,	136	,	136	,	136	,	136	,	136	,	136	,	136	,	101	,	85	,	104	,	136	,	136	,	136	,	136	,	136	,	136	,
+0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,
+0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,
+0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,
+0	,	0	,	0	,	0	,	0	,	0	,	164	,	170	,	160	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,
+0	,	0	,	0	,	0	,	0	,	0	,	136	,	129	,	16	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,
+0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,
+0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,
+0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,
+0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,
+0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,
+0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,
+0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,
+0	,	0	,	164	,	170	,	170	,	170	,	0	,	10	,	170	,	170	,	170	,	74	,	0	,	0	,	0	,	0	,	0	,
+136	,	136	,	136	,	129	,	17	,	17	,	17	,	17	,	136	,	136	,	136	,	17	,	17	,	17	,	17	,	17	,	17	,
+
 };
 
-const uint8_t PROGMEM level1StartingPositions[12] = {
-1, 12,    10, 9,    8, 13,    16, 3,    17, 12,    32, 9,    
+// const uint8_t PROGMEM level1StartingPositions[12] = {
+// 1, 12,    10, 9,    8, 13,    16, 3,    17, 12,    32, 9,    
+// };
+
+// const uint8_t PROGMEM level1EndingPositions[12] = {
+// 2, 12,    11, 9,    7, 13,    15, 3,    18, 12,    33, 9,    
+// };
+
+
+const uint8_t PROGMEM level1StartingPositions[6] = {
+6, 13,    21, 13   , 12, 4
 };
 
-const uint8_t PROGMEM level1EndingPositions[12] = {
-2, 12,    11, 9,    7, 13,    15, 3,    18, 12,    33, 9,    
+const uint8_t PROGMEM level1EndingPositions[6] = {
+5, 13,    22,13 , 13, 4
 };
-
 
 //-------------------------------------------------------------------------------------
 // Level 2 ..
@@ -262,15 +288,16 @@ const uint8_t PROGMEM level4EndingPositions[8] = {
 const uint8_t *levelMaps[] =                    { level0Map, level1Map, level2Map, level3Map, level4Map };
 const uint8_t *levelStartingPositions[] =       { level0StartingPositions, level1StartingPositions, level2StartingPositions, level3StartingPositions, level4StartingPositions };
 const uint8_t *levelEndingPositions[] =         { level0EndingPositions, level1EndingPositions, level2EndingPositions, level3EndingPositions, level4EndingPositions };
-const uint8_t levelPositionsCount[] =           { 2, 6, 4, 4 }; 
+//const uint8_t levelPositionsCount[] =           { 2, 6, 4, 4 }; 
+const uint8_t levelPositionsCount[] =           { 2, 3, 4, 4 }; 
 
 const int8_t levelInit[] = { 
 
-// Level width   Level Height,   Level     Level     Player  Player
-//                               X Offset  Y Offset  X Pos   Y Pos
-  LEVEL_0_WIDTH, LEVEL_0_HEIGHT,       0,        0,     28,     45, 
-  LEVEL_1_WIDTH, LEVEL_1_HEIGHT,     -54,      -56,     56,     45,
-  LEVEL_2_WIDTH, LEVEL_2_HEIGHT,     -32,      -32,     56,     45, 
-  LEVEL_3_WIDTH, LEVEL_3_HEIGHT,     -32,      -32,     56,     45, 
-  LEVEL_4_WIDTH, LEVEL_4_HEIGHT,     -32,      -32,     56,     45 
+// Level width   Level Height,   Level     Level     Player  Player  Required
+//                               X Offset  Y Offset  X Pos   Y Pos    Score
+  LEVEL_0_WIDTH, LEVEL_0_HEIGHT,       0,        0,     28,     45,     0,
+  LEVEL_1_WIDTH, LEVEL_1_HEIGHT,     -54,      -56,     56,     45,     5,
+  LEVEL_2_WIDTH, LEVEL_2_HEIGHT,     -32,      -32,     56,     45,     60,
+  LEVEL_3_WIDTH, LEVEL_3_HEIGHT,     -32,      -32,     56,     45,     80,
+  LEVEL_4_WIDTH, LEVEL_4_HEIGHT,     -32,      -32,     56,     45,     100
 };

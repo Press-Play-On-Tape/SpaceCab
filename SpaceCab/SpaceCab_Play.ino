@@ -133,7 +133,7 @@ void launchCustomer(Level *level, Customer *customer) {
 
   customer->setFrame(0);
   customer->setStatus(CustomerStatus::Alive);
-  customer->setFare(random(10, 20));
+  customer->setFare(random(FARE_MIN, FARE_MAX));
 
 }
 
@@ -257,6 +257,7 @@ void checkCollisionWithLevelElements_TestElement(Level *level, Player *player, C
       if (player->isCarryingCustomer() && absT(customer->getXDestinationTile() - x) < 2 && customer->getYDestinationTile() == y) {
         player->setCarryingCustomer(false);
         player->setScore(player->getScore() + customer->getFare());
+        if (player->getScore() >= level->getLevelScore()) level->openGates();
         launchCustomer(level, customer);
         dollarsCount = DOLLARS_COUNT_MAX;
       }

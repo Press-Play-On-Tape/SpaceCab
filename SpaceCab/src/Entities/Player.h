@@ -187,4 +187,21 @@ struct Player {
 
     }
 
+    void reset(SQ15x16 x, SQ15x16 y) {
+
+      _xDelta = 0;
+      _yDelta = 0;
+      _frame = 0;
+      _fuel = PLAYER_FUEL_MAX;
+      _carryingCustomer = false;
+      _landingGearDown = true;
+      _justLanded = true;
+      _pickingUpCustomer = false;
+      _status = PlayerStatus::Active;
+
+      _x = x; 
+      _y = y; 
+
+    }
+
 };

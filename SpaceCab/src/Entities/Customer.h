@@ -58,7 +58,7 @@ struct Customer {
     }
 
     void decFare() {
-      _fare = (_fare == 0 ? 1 : 0);
+      if (_fare > FARE_MIN ) --_fare;
     }
 
 };

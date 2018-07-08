@@ -99,6 +99,11 @@ bool canMoveUp(Level *level, Player *player) {
   if (playerYPosition % TILE_SIZE != 0) return true;
 
 
+  // If we are at the top of the screen then we can go no higher ..
+
+  if (playerYPosition == 0) return false;
+
+
   // The player is 17 pixels wide so always straddles 3 tiles .. 
 
   uint8_t tileY = (playerYPosition / 8) - 1;
@@ -222,6 +227,18 @@ void moveCab(Level *level, Player *player, Customer *customer) {
         else {
           player->setY(0);
         }
+
+      }
+
+    }
+    else {
+
+      // Are we at the top of the screen ?
+
+      if (player->getY().getInteger() == 0) {
+
+        state = GameState::PlayGame_InitLevel;
+        levelNumber++;
 
       }
 
