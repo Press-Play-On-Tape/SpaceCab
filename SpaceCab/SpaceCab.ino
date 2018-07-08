@@ -83,7 +83,8 @@ void loop() {
       break;
 
     case GameState::SplashScreen_Init:
-      initLevel(&level, &player, &customer, 0);
+    levelNumber = 0;
+      initLevel(&level, &player, &customer, levelNumber);
       launchCustomer(&level, &customer);
       player.setFrame(0);
       state = GameState::SplashScreen;
