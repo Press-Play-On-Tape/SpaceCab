@@ -20,6 +20,7 @@
 - Add an 'End of Game' sound or splash screen when you have completed the last level.
 - Add a Space Cop that shows up sometimes. We need to avoid him while he's on the screen.
 - Add switches mechanics to open/close parts of the level. In some cases to bring a customer you would need to open certain spots.
+- If you fly off the top off the screen on the intro, you automatically end up at the next level. Nte: waiting on decision regarding intro screen before fixing.
 
 ## Bugs:
 
