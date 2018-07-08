@@ -182,7 +182,7 @@ void checkCollisionWithLevelElements(Level *level, Player *player, Customer *cus
 
   for (uint8_t i = 0; i < TILE_COUNT; i++)  tileAlreadyTested[i] = 0;
 
-  const uint8_t * levelMap = levelMaps[level->getLevelNumber()];
+//  const uint8_t * levelMap = levelMaps[level->getLevelNumber()];
   uint16_t playerXPosition = player->getXDisplay() - level->getXOffsetDisplay();
   uint16_t playerYPosition = player->getYDisplay() - level->getYOffsetDisplay();
 
@@ -192,19 +192,19 @@ void checkCollisionWithLevelElements(Level *level, Player *player, Customer *cus
   uint8_t tileY1 = (playerYPosition / 8);
   uint8_t tileY2 = (playerYPosition / 8) + 1;
 
-  uint8_t tile = pgm_read_byte(&levelMap[(tileY1 * level->getWidthInTiles()) + tileX1]);
+  uint8_t tile = level->getLevelData(tileX1, tileY1);// pgm_read_byte(&levelMap[(tileY1 * level->getWidthInTiles()) + tileX1]);
   if (tileAlreadyTested[tile] == 0) {
     checkCollisionWithLevelElements_TestElement(level, player, customer, tileX1, tileY1, tile);
     tileAlreadyTested[tile] = 1;
   }
 
-  tile = pgm_read_byte(&levelMap[(tileY1 * level->getWidthInTiles()) + tileX2]);
+  tile = level->getLevelData(tileX2, tileY1);// pgm_read_byte(&levelMap[(tileY1 * level->getWidthInTiles()) + tileX2]);
   if (tileAlreadyTested[tile] == 0) {
     checkCollisionWithLevelElements_TestElement(level, player, customer, tileX2, tileY1, tile);
     tileAlreadyTested[tile] = 1;
   }
 
-  tile = pgm_read_byte(&levelMap[(tileY1 * level->getWidthInTiles()) + tileX3]);
+  tile = level->getLevelData(tileX3, tileY1);// pgm_read_byte(&levelMap[(tileY1 * level->getWidthInTiles()) + tileX3]);
   if (tileAlreadyTested[tile] == 0) {
     checkCollisionWithLevelElements_TestElement(level, player, customer, tileX3, tileY1, tile);
     tileAlreadyTested[tile] = 1;
@@ -212,19 +212,19 @@ void checkCollisionWithLevelElements(Level *level, Player *player, Customer *cus
 
   if (playerYPosition / 8 != 0) {
 
-    tile = pgm_read_byte(&levelMap[(tileY2 * level->getWidthInTiles()) + tileX1]);
+    tile = level->getLevelData(tileX1, tileY2);// pgm_read_byte(&levelMap[(tileY2 * level->getWidthInTiles()) + tileX1]);
     if (tileAlreadyTested[tile] == 0) {
       checkCollisionWithLevelElements_TestElement(level, player, customer, tileX1, tileY2, tile);
       tileAlreadyTested[tile] = 1;
     }
 
-    tile = pgm_read_byte(&levelMap[(tileY2 * level->getWidthInTiles()) + tileX2]);
+    tile = level->getLevelData(tileX2, tileY2);// pgm_read_byte(&levelMap[(tileY2 * level->getWidthInTiles()) + tileX2]);
     if (tileAlreadyTested[tile] == 0) {
       checkCollisionWithLevelElements_TestElement(level, player, customer, tileX2, tileY2, tile);
       tileAlreadyTested[tile] = 1;
     }
 
-    tile = pgm_read_byte(&levelMap[(tileY2 * level->getWidthInTiles()) + tileX3]);
+    tile = level->getLevelData(tileX3, tileY2);// pgm_read_byte(&levelMap[(tileY2 * level->getWidthInTiles()) + tileX3]);
     if (tileAlreadyTested[tile] == 0) {
       checkCollisionWithLevelElements_TestElement(level, player, customer, tileX3, tileY2, tile);
       tileAlreadyTested[tile] = 1;

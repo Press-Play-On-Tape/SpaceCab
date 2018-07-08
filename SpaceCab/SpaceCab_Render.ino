@@ -3,7 +3,7 @@
 
 void drawLevel(Level *level) {
 
-  const uint8_t *levelMap = levelMaps[level->getLevelNumber()];
+//  const uint8_t *levelMap = levelMaps[level->getLevelNumber()];
   
   for (uint8_t y = 0; y < level->getHeightInTiles(); y++) {
 
@@ -18,7 +18,7 @@ void drawLevel(Level *level) {
       if (bitmapX < -8 || bitmapX >= WIDTH || bitmapY < -8 || bitmapY >= HEIGHT)
         continue;
 
-      uint8_t tile = pgm_read_byte(&levelMap[(y * level->getWidthInTiles()) + x]);
+      uint8_t tile = level->getLevelData(x, y);// pgm_read_byte(&levelMap[(y * level->getWidthInTiles()) + x]);
 
       switch (tile) {
 

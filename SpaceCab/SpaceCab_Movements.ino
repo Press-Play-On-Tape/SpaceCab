@@ -7,7 +7,7 @@
 
 bool canMoveLeft(Level *level, Player *player) {
 
-  const uint8_t * levelMap = levelMaps[level->getLevelNumber()];
+//  const uint8_t * levelMap = levelMaps[level->getLevelNumber()];
   uint16_t playerXPosition = player->getXDisplay() - level->getXOffsetDisplay();
   uint16_t playerYPosition = player->getYDisplay() - level->getYOffsetDisplay();
  
@@ -21,7 +21,7 @@ bool canMoveLeft(Level *level, Player *player) {
 
   uint8_t tileX = (playerXPosition / 8) - 1;
   uint8_t tileY1 = (playerYPosition / 8);
-  uint8_t tile1 = pgm_read_byte(&levelMap[(tileY1 * level->getWidthInTiles()) + tileX]);
+  uint8_t tile1 = level->getLevelData(tileX, tileY1);// pgm_read_byte(&levelMap[(tileY1 * level->getWidthInTiles()) + tileX]);
 
   if (isTileSolid(tile1)) return false;
 
@@ -31,7 +31,7 @@ bool canMoveLeft(Level *level, Player *player) {
   if (playerYPosition % TILE_SIZE != 0) {
 
     uint8_t tileY2 = (playerYPosition / 8) + 1;
-    uint8_t tile2 = pgm_read_byte(&levelMap[(tileY2 * level->getWidthInTiles()) + tileX]);
+    uint8_t tile2 = level->getLevelData(tileX, tileY2);// pgm_read_byte(&levelMap[(tileY2 * level->getWidthInTiles()) + tileX]);
 
     if (isTileSolid(tile2)) return false;
 
@@ -48,7 +48,7 @@ bool canMoveLeft(Level *level, Player *player) {
 
 bool canMoveRight(Level *level, Player *player) {
 
-  const uint8_t * levelMap = levelMaps[level->getLevelNumber()];
+//  const uint8_t * levelMap = levelMaps[level->getLevelNumber()];
   uint16_t playerXPosition = player->getXDisplay() - level->getXOffsetDisplay() + PLAYER_WIDTH;
   uint16_t playerYPosition = player->getYDisplay() - level->getYOffsetDisplay();
 
@@ -62,7 +62,7 @@ bool canMoveRight(Level *level, Player *player) {
   
   uint8_t tileX = (playerXPosition / 8) + 1;
   uint8_t tileY1 = (playerYPosition / 8);
-  uint8_t tile1 = pgm_read_byte(&levelMap[(tileY1 * level->getWidthInTiles()) + tileX]);
+  uint8_t tile1 = level->getLevelData(tileX, tileY1);// pgm_read_byte(&levelMap[(tileY1 * level->getWidthInTiles()) + tileX]);
 
   if (isTileSolid(tile1)) return false;
 
@@ -72,7 +72,7 @@ bool canMoveRight(Level *level, Player *player) {
   if (playerYPosition % TILE_SIZE != 0) {
 
     uint8_t tileY2 = (playerYPosition / 8) + 1;
-    uint8_t tile2 = pgm_read_byte(&levelMap[(tileY2 * level->getWidthInTiles()) + tileX]);
+    uint8_t tile2 = level->getLevelData(tileX, tileY2);// pgm_read_byte(&levelMap[(tileY2 * level->getWidthInTiles()) + tileX]);
 
     if (isTileSolid(tile2)) return false;
 
@@ -89,7 +89,7 @@ bool canMoveRight(Level *level, Player *player) {
 
 bool canMoveUp(Level *level, Player *player) {
 
-  const uint8_t * levelMap = levelMaps[level->getLevelNumber()];
+//  const uint8_t * levelMap = levelMaps[level->getLevelNumber()];
   uint16_t playerXPosition = player->getXDisplay() - level->getXOffsetDisplay();
   uint16_t playerYPosition = player->getYDisplay() - level->getYOffsetDisplay();
 
@@ -109,13 +109,13 @@ bool canMoveUp(Level *level, Player *player) {
 
   // Retrieve the the three tiles and test them in order ..
 
-  uint8_t tile1 = pgm_read_byte(&levelMap[(tileY * level->getWidthInTiles()) + tileX1]);
+  uint8_t tile1 = level->getLevelData(tileX1, tileY);// pgm_read_byte(&levelMap[(tileY * level->getWidthInTiles()) + tileX1]);
   if (isTileSolid(tile1)) return false;
 	
-  uint8_t tile2 = pgm_read_byte(&levelMap[(tileY * level->getWidthInTiles()) + tileX2]);
+  uint8_t tile2 = level->getLevelData(tileX2, tileY);// pgm_read_byte(&levelMap[(tileY * level->getWidthInTiles()) + tileX2]);
   if (isTileSolid(tile2)) return false;
 	
-  uint8_t tile3 = pgm_read_byte(&levelMap[(tileY * level->getWidthInTiles()) + tileX3]);
+  uint8_t tile3 = level->getLevelData(tileX3, tileY);// pgm_read_byte(&levelMap[(tileY * level->getWidthInTiles()) + tileX3]);
   if (isTileSolid(tile3)) return false;
 
   return true;
@@ -130,7 +130,7 @@ bool canMoveUp(Level *level, Player *player) {
 
 bool canMoveDown(Level *level, Player *player, uint8_t size) {
 
-  const uint8_t * levelMap = levelMaps[level->getLevelNumber()];
+//  const uint8_t * levelMap = levelMaps[level->getLevelNumber()];
   uint16_t playerXPosition = player->getXDisplay() - level->getXOffsetDisplay();
   uint16_t playerYPosition = player->getYDisplay() - level->getYOffsetDisplay() + size;
 
@@ -151,13 +151,13 @@ bool canMoveDown(Level *level, Player *player, uint8_t size) {
 
   // Retrieve the the three tiles and test them in order ..
 
-  uint8_t tile1 = pgm_read_byte(&levelMap[(tileY * level->getWidthInTiles()) + tileX1]);
+  uint8_t tile1 = level->getLevelData(tileX1, tileY);// pgm_read_byte(&levelMap[(tileY * level->getWidthInTiles()) + tileX1]);
   if (isTileSolid(tile1)) return false;
 	
-  uint8_t tile2 = pgm_read_byte(&levelMap[(tileY * level->getWidthInTiles()) + tileX2]);
+  uint8_t tile2 = level->getLevelData(tileX2, tileY);// pgm_read_byte(&levelMap[(tileY * level->getWidthInTiles()) + tileX2]);
   if (isTileSolid(tile2)) return false;
 	
-  uint8_t tile3 = pgm_read_byte(&levelMap[(tileY * level->getWidthInTiles()) + tileX3]);
+  uint8_t tile3 = level->getLevelData(tileX3, tileY);// pgm_read_byte(&levelMap[(tileY * level->getWidthInTiles()) + tileX3]);
   if (isTileSolid(tile3)) return false;
 
   return true;

@@ -56,54 +56,13 @@ void initLevel(Level *level, Player *player, Customer *customer, uint8_t levelNu
   player->setJustLanded(true);
   player->setPickingUpCustomer(false);
   
-  level->setLevelNumber(levelNumber);
   level->setHeight(height * TILE_SIZE);
   level->setWidth(width * TILE_SIZE);
   level->setHeightInTiles(height);
   level->setWidthInTiles(width);
+  level->setLevelNumber(levelNumber);
 
   customer->setStartingPosition(CUSTOMER_NO_STARTING_POS);
-
-
-
-  // Parse level for fuel tiles ..
-
-  for (uint8_t y = 0; y < FUEL_TILES_MAX; y++) {
-
-    Fuel *fuel = level->getFuel(y);
-    fuel->setXTile(0);
-    fuel->setYTile(0);
-    fuel->setFuelLeft(0);
-
-  }
-
-  {
-    const uint8_t *levelMap = levelMaps[level->getLevelNumber()];
-    uint8_t fuelIdx = 0;
-    
-    for (uint8_t y = 0; y < level->getHeightInTiles(); y++) {
-
-      for (uint8_t x = 0; x < level->getWidthInTiles(); x++) {
-
-        uint8_t tile = pgm_read_byte(&levelMap[(y * level->getWidthInTiles()) + x]);
-
-        if (tile == FUEL1) {
-          
-          Fuel *fuel = level->getFuel(fuelIdx);
-          fuel->setXTile(x);
-          fuel->setYTile(y);
-          fuel->setFuelLeft(random(FUEL_MIN, FUEL_MAX));
-          fuelIdx++;
-
-        }
-
-      }
-
-    }
-
-  }
-
-
 
 
 }
