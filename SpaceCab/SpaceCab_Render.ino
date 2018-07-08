@@ -87,10 +87,19 @@ void drawHUD(Player *player, Customer *customer) {
   for(uint8_t i = 5; i > 0; --i) 
   font4x6.print(digits[i - 1]);
 
-  font4x6.setCursor(57, 57);
-  extractDigits(digitsFuel, player->getFuel());
-  for(uint8_t i = 3; i > 0; --i) 
-  font4x6.print(digitsFuel[i - 1]);
+  if (player->getFuel() > 0 && player->getFuel() < PLAYER_FUEL_MIN_BLINK && flashingCounter < (FLASH_MAX / 2)) {
+  
+    arduboy.fillRect(44, 57, 30, 8 , BLACK);
+  
+  }
+  else {
+   
+    font4x6.setCursor(57, 57);
+    extractDigits(digitsFuel, player->getFuel());
+    for(uint8_t i = 3; i > 0; --i) 
+    font4x6.print(digitsFuel[i - 1]);
+
+  }
 
   font4x6.setCursor(94, 57);
   extractDigits(digitsLives, player->getNumberOfLives());

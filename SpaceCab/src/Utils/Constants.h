@@ -46,6 +46,7 @@ static const uint8_t FLASH_MAX                    = 40;
 static const uint8_t ARROW_DO_NOT_SHOW            = 255;
 
 static const uint16_t PLAYER_FUEL_MAX             = 200;
+static const uint16_t PLAYER_FUEL_MIN_BLINK       = 20; 
 static const uint8_t PLAYER_NUMBER_OF_LIVES_MAX   = 3;
 static const uint8_t PLAYER_RETRACT_LANDING_GEAR  = 20;
 

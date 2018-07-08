@@ -8,7 +8,7 @@ void handleInput(Player *player) {
 
   if (player->getPickingUpCustomer()) return;
 
-  if (arduboy.justPressed(B_BUTTON)) {
+  if (arduboy.justPressed(B_BUTTON) && player->getFuel() != 0) {
 
       player->setLandingGearDown(!player->isLandingGearDown());
 
@@ -31,7 +31,7 @@ void handleInput(Player *player) {
 
       }
 
-      if (arduboy.pressed(A_BUTTON)) {
+      if (arduboy.pressed(A_BUTTON) && player->getFuel() > 0) {
 
         switch (player->getFrame()) {
 
@@ -62,7 +62,7 @@ void handleInput(Player *player) {
 
         // If the A Button is not being pressed, then we should start falling ..
 
-        if (arduboy.notPressed(A_BUTTON)) {
+        if (arduboy.notPressed(A_BUTTON) || player->getFuel() == 0) {
           player->incYDelta(); 
         }
 
@@ -290,7 +290,8 @@ void updateStatus(Player *player, Customer *customer) {
 
     if (player->getFuel() == 0) {
 
-      player->setStatus(PlayerStatus::OutOfFuel_Max);
+//       player->setStatus(PlayerStatus::OutOfFuel_Max);
+       player->setLandingGearDown(false);
 
     }
 

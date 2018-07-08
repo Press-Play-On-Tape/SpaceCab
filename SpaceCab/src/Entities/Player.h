@@ -65,9 +65,9 @@ struct Player {
     SQ15x16 getYDeltaVal()                      { return (static_cast<SQ15x16>(_yDelta) / 8.00); }
 
     void incFuel()                              { _fuel++;}
-    void decFuel()                              { _fuel--;}
-    void decNumberOfLives()                     { _numberOfLives--;}
-    void decStatus()                            { _status--;}
+    void decFuel()                              { if (_fuel > 0) _fuel--; }
+    void decNumberOfLives()                     { _numberOfLives--; }
+    void decStatus()                            { _status--; }
 
     void decRetractLandingGear() { 
 
