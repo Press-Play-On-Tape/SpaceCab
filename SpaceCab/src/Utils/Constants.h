@@ -38,6 +38,7 @@
 #define DOLLARS_COUNT_MULT 8
 #define DOLLARS_COUNT_MAX (DOLLARS_COUNT_MULT * 5) - 1 
 
+static const uint8_t MAX_NUMBER_OF_LEVELS         = 4;
 static const uint8_t MAX_NUMBER_OF_SCORES         = 5;
 static const uint8_t DO_NOT_EDIT_SLOT             = 255;
 static const uint8_t GAME_TIME_MAX                = 10;
@@ -47,7 +48,6 @@ static const uint8_t ARROW_DO_NOT_SHOW            = 255;
 static const uint16_t PLAYER_FUEL_MAX             = 200;
 static const uint8_t PLAYER_NUMBER_OF_LIVES_MAX   = 3;
 static const uint8_t PLAYER_RETRACT_LANDING_GEAR  = 20;
-
 
 static const uint16_t FARE_X_FRAMES               = 15;
 static const uint16_t FARE_COUNT                  = 10;

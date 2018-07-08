@@ -237,8 +237,14 @@ void moveCab(Level *level, Player *player, Customer *customer) {
 
       if (player->getY().getInteger() == 0) {
 
-        state = GameState::PlayGame_InitLevel;
-        levelNumber++;
+        if (levelNumber == MAX_NUMBER_OF_LEVELS) {
+          //TODO End of GameState
+          state = GameState::GameOver;
+        }
+        else {
+          state = GameState::PlayGame_InitLevel;
+          levelNumber++;
+        }
 
       }
 
