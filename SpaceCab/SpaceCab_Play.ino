@@ -101,25 +101,30 @@ void updateTime() {
 //  Valid launching positions are derived from the level design.
 //------------------------------------------------------------------------------
 
-void launchCustomer(Level *level, Customer *customer) {
+void launchCustomer(Level *level, Customer *customer, uint8_t defaultStartPosition) {
 
   const uint8_t numberOfPositions = levelPositionsCount[level->getLevelNumber()];
-  uint8_t customerStartingPos = random(numberOfPositions);
+  uint8_t customerStartingPos = (defaultStartPosition == RANDOM_START_POSITION ? random(numberOfPositions) : defaultStartPosition);
   uint8_t customerDestination = random(numberOfPositions);
 
 
   // Ensure new customer is not placed in the location the last customer was dropped at ..
 
-  while (numberOfPositions != 1 && (customerStartingPos == customer->getStartingPosition() || customerStartingPos == customer->getDestinationPosition())) {
+  while (defaultStartPosition == RANDOM_START_POSITION && (customerStartingPos == customer->getStartingPosition() || customerStartingPos == customer->getDestinationPosition())) {
       customerStartingPos = random(numberOfPositions);
   }
 
 
   // Make sure the staryting point and destination are different!
 
-  while (numberOfPositions != 1 && customerStartingPos == customerDestination) {
+  while (defaultStartPosition == RANDOM_START_POSITION && customerStartingPos == customerDestination) {
     customerDestination = random(numberOfPositions);
   }
+
+Serial.print("launchCustomer: ");
+Serial.print(defaultStartPosition);
+Serial.print(" ");
+Serial.println(customerStartingPos);
 
   const uint8_t *levelStartingPosition = levelStartingPositions[level->getLevelNumber()];
   customer->setXTile(pgm_read_byte(&levelStartingPosition[customerStartingPos * 2]));
@@ -258,7 +263,7 @@ void checkCollisionWithLevelElements_TestElement(Level *level, Player *player, C
         player->setCarryingCustomer(false);
         player->setScore(player->getScore() + customer->getFare());
         if (player->getScore() >= level->getLevelScore()) level->openGates();
-        launchCustomer(level, customer);
+        launchCustomer(level, customer, RANDOM_START_POSITION);
         dollarsCount = DOLLARS_COUNT_MAX;
       }
       break;
@@ -361,7 +366,7 @@ void inGame(Level *level, Player *player, Customer *customer) {
 
     ouchCounter--;
     if (ouchCounter == 0) {
-      launchCustomer(level, customer);
+      launchCustomer(level, customer, RANDOM_START_POSITION);
     }
 
   }

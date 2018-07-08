@@ -116,7 +116,7 @@ struct Level {
       _openGates = true;
     }
 
-    void reset(uint8_t levelNumber/*, uint8_t width, uint8_t height*/) { 
+    void reset(uint8_t levelNumber) { 
       
       _number = levelNumber; 
       _openGates = false;

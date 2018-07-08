@@ -160,6 +160,7 @@ void playerDisplay(Player *player) {
   uint8_t const *maskName = nullptr;
   int8_t xOffset = 0;
   int8_t yOffset = 0;
+  uint8_t frameNumber = player->getFrame();
 
   switch (player->getStatus()) {
 
@@ -168,6 +169,7 @@ void playerDisplay(Player *player) {
       maskName = SpaceTaxi_OutOfFuel_1_Mask;
       xOffset = -5;
       yOffset = -5;
+      frameNumber = 0;
       break;
 
     case PlayerStatus::OutOfFuel_Img2_Start ... PlayerStatus::OutOfFuel_Img2_End:
@@ -175,6 +177,7 @@ void playerDisplay(Player *player) {
       maskName = SpaceTaxi_OutOfFuel_2_Mask;
       xOffset = -5;
       yOffset = -5;
+      frameNumber = 0;
       break;
 
     case PlayerStatus::OutOfFuel_Img3_Start ... PlayerStatus::OutOfFuel_Img3_End:
@@ -208,7 +211,7 @@ void playerDisplay(Player *player) {
   }
 
   if (imageName != nullptr) {
-    Sprites::drawExternalMask(player->getXDisplay() + xOffset, player->getYDisplay() + yOffset, imageName, maskName, player->getFrame(), player->getFrame());
+    Sprites::drawExternalMask(player->getXDisplay() + xOffset, player->getYDisplay() + yOffset, imageName, maskName, frameNumber, frameNumber);
   }
 
 }

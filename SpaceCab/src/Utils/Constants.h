@@ -44,6 +44,7 @@ static const uint8_t DO_NOT_EDIT_SLOT             = 255;
 static const uint8_t GAME_TIME_MAX                = 10;
 static const uint8_t FLASH_MAX                    = 40;
 static const uint8_t ARROW_DO_NOT_SHOW            = 255;
+static const uint8_t RANDOM_START_POSITION        = 255;
 
 static const uint16_t PLAYER_FUEL_MAX             = 200;
 static const uint16_t PLAYER_FUEL_MIN_BLINK       = 20; 
