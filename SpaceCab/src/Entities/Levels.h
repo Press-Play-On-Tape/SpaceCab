@@ -69,11 +69,11 @@ const unsigned char PROGMEM level1Map[LEVEL_1_HEIGHT * LEVEL_1_WIDTH / 2] = {
 };
 
 const uint8_t PROGMEM level1StartingPositions[12] = {
-3, 3,    1, 9,   11, 13    24, 3,    23, 10,    29, 13,
+3, 3,    1, 9,   11, 13,    24, 3,    23, 10,    29, 13,
 };
 
 const uint8_t PROGMEM level1EndingPositions[12] = {
-4, 3,    2, 9,   12, 13    25, 3,    24, 10,    30, 13,
+4, 3,    2, 9,   12, 13,    25, 3,    24, 10,    30, 13,
 };
 
 //-------------------------------------------------------------------------------------
@@ -104,11 +104,11 @@ const unsigned char PROGMEM level2Map[LEVEL_2_HEIGHT * LEVEL_2_WIDTH / 2] = {
 };
 
 const uint8_t PROGMEM level2StartingPositions[8] = {
-0, 12,    15, 8,   26, 8    30,13,
+0, 12,    15, 8,   26, 8,    30,13,
 };
 
 const uint8_t PROGMEM level2EndingPositions[8] = {
-1, 12,    16, 8,   27, 8    31,13,
+1, 12,    16, 8,   27, 8,    31,13,
 };
 
 //-------------------------------------------------------------------------------------
@@ -214,6 +214,6 @@ const int8_t levelInit[] = {
   LEVEL_0_WIDTH, LEVEL_0_HEIGHT,       0,        0,     28,     45,     0,
   LEVEL_1_WIDTH, LEVEL_1_HEIGHT,     -54,      -56,     56,     45,     20,
   LEVEL_2_WIDTH, LEVEL_2_HEIGHT,     -54,      -56,     56,     45,     80,
-  LEVEL_3_WIDTH, LEVEL_3_HEIGHT,     -54,      -56,     56,     45,     140,
+  LEVEL_3_WIDTH, LEVEL_3_HEIGHT,     -54,      -56,     16,     24,     140,
   LEVEL_4_WIDTH, LEVEL_4_HEIGHT,     -32,      -32,     56,     45,     200
 };
