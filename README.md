@@ -44,6 +44,8 @@
 - [SH 2018-07-07] ~~When going back to the Title screen, the number on the sign disappears.~~
 - [SH 2018-07-10] ~~Fixed HUD issue on level 2.~~
 - Prevent fuel going down while refuelling.  Not sure if this is actually fixed.
+- The life counter goes to 9 after getting to 0
+- sometimes the gate1 doesn’t open even when the required money is there ( that issue will not be one if we change it to number of customer to complete a level.)
 
 
 ## Before going live:
