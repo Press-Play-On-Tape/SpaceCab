@@ -21,8 +21,13 @@
 - Add an 'End of Game' sound or splash screen when you have completed the last level.
 - Add a Space Cop that shows up sometimes. We need to avoid him while he's on the screen.
 - Add switches mechanics to open/close parts of the level. In some cases to bring a customer you would need to open certain spots.
-- If you fly off the top off the screen on the intro, you automatically end up at the next level. Nte: waiting on decision regarding intro screen before fixing.
+- If you fly off the top off the screen on the intro, you automatically end up at the next level. Note: waiting on decision regarding intro screen before fixing.
 - [SC 2018-07-09] ~~Update the customer run animation to look more natural.~~
+- [SH 2018-07-10] ~~Change logic to count number of fares (not dollars) before next level.~~
+- [SH 2018-07-10] ~~Change go to gate logic so last fare says 'Go to gate' and gate opens.~~
+- [SH 2018-07-10] ~~Prevent fuel going down while refuelling.~~
+- [SH 2018-07-10] ~~Fare descreases as soon as customer calls for the cab.~~
+
 
 ## Bugs:
 
