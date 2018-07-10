@@ -311,6 +311,7 @@ void moveCab(Level *level, Player *player, Customer *customer) {
 
         if ((left <= static_cast<int16_t>(playerXPosition) && static_cast<int16_t>(playerXPosition) <= right) &&
             (customerYPosition - 2 <= playerYPosition && playerYPosition <= customerYPosition + 2)) {
+
           customer->setStatus(CustomerStatus::BoardingCab);
           customer->setXWalkingOffset(0);
           player->setPickingUpCustomer(true);
@@ -321,6 +322,32 @@ void moveCab(Level *level, Player *player, Customer *customer) {
           }
           else {
             customer->setWalkingDirection(Direction::Left);
+          }
+
+        }
+
+      }
+
+
+      // If we have landed within 8 pixels of a flag then drop off the fare ..
+
+      else if (player->isCarryingCustomer() && customer->getStatus() != CustomerStatus::Dead) {
+
+        uint8_t x = ((player->getXDisplay() - level->getXOffsetDisplay()) / 8) + 1; // Move over one to account for 17 pixels
+        uint8_t y = ((player->getYDisplay() - level->getYOffsetDisplay()) / 8) + 1;
+
+        if (player->isCarryingCustomer() && diffT(customer->getXDestinationTile(), x) < 3 && customer->getYDestinationTile() == y) {
+
+          player->setCarryingCustomer(false);
+          player->setScore(player->getScore() + customer->getFare());
+          player->incFaresCompleted();
+          dollarsCount = DOLLARS_COUNT_MAX;
+
+          if (player->getFaresCompleted() >= level->getFaresRequired()) {
+            launchCustomer(level, customer, RANDOM_START_POSITION, GO_TO_GATE);
+          }
+          else {
+            launchCustomer(level, customer, RANDOM_START_POSITION, RANDOM_END_POSITION);
           }
 
         }

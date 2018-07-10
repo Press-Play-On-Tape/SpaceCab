@@ -121,11 +121,6 @@ void launchCustomer(Level *level, Customer *customer, uint8_t defaultStartPositi
     customerDestination = random(numberOfPositions);
   }
 
-Serial.print("launchCustomer: ");
-Serial.print(defaultStartPosition);
-Serial.print(" ");
-Serial.println(customerStartingPos);
-
   if (customerStartingPos != GO_TO_GATE) {
 
     const uint8_t *levelStartingPosition = levelStartingPositions[level->getLevelNumber()];
@@ -190,7 +185,8 @@ void checkCollisionWithCustomer(Level *level, Player *player, Customer *customer
 //  Handle collisions with level elements ..
 //------------------------------------------------------------------------------
 
-void checkCollisionWithLevelElements(Level *level, Player *player, Customer *customer) {
+//void checkCollisionWithLevelElements(Level *level, Player *player, Customer *customer) {
+void checkCollisionWithLevelElements(Level *level, Player *player) {
 
   player->setFuelling(false);
 
@@ -210,19 +206,19 @@ void checkCollisionWithLevelElements(Level *level, Player *player, Customer *cus
 
   uint8_t tile = level->getLevelData(tileX1, tileY1);// pgm_read_byte(&levelMap[(tileY1 * level->getWidthInTiles()) + tileX1]);
   if (tileAlreadyTested[tile] == 0) {
-    checkCollisionWithLevelElements_TestElement(level, player, customer, tileX1, tileY1, tile);
+    checkCollisionWithLevelElements_TestElement(level, player, tileX1, tileY1, tile);
     tileAlreadyTested[tile] = 1;
   }
 
   tile = level->getLevelData(tileX2, tileY1);// pgm_read_byte(&levelMap[(tileY1 * level->getWidthInTiles()) + tileX2]);
   if (tileAlreadyTested[tile] == 0) {
-    checkCollisionWithLevelElements_TestElement(level, player, customer, tileX2, tileY1, tile);
+    checkCollisionWithLevelElements_TestElement(level, player, tileX2, tileY1, tile);
     tileAlreadyTested[tile] = 1;
   }
 
   tile = level->getLevelData(tileX3, tileY1);// pgm_read_byte(&levelMap[(tileY1 * level->getWidthInTiles()) + tileX3]);
   if (tileAlreadyTested[tile] == 0) {
-    checkCollisionWithLevelElements_TestElement(level, player, customer, tileX3, tileY1, tile);
+    checkCollisionWithLevelElements_TestElement(level, player, tileX3, tileY1, tile);
     tileAlreadyTested[tile] = 1;
   }
 
@@ -230,19 +226,19 @@ void checkCollisionWithLevelElements(Level *level, Player *player, Customer *cus
 
     tile = level->getLevelData(tileX1, tileY2);// pgm_read_byte(&levelMap[(tileY2 * level->getWidthInTiles()) + tileX1]);
     if (tileAlreadyTested[tile] == 0) {
-      checkCollisionWithLevelElements_TestElement(level, player, customer, tileX1, tileY2, tile);
+      checkCollisionWithLevelElements_TestElement(level, player, tileX1, tileY2, tile);
       tileAlreadyTested[tile] = 1;
     }
 
     tile = level->getLevelData(tileX2, tileY2);// pgm_read_byte(&levelMap[(tileY2 * level->getWidthInTiles()) + tileX2]);
     if (tileAlreadyTested[tile] == 0) {
-      checkCollisionWithLevelElements_TestElement(level, player, customer, tileX2, tileY2, tile);
+      checkCollisionWithLevelElements_TestElement(level, player, tileX2, tileY2, tile);
       tileAlreadyTested[tile] = 1;
     }
 
     tile = level->getLevelData(tileX3, tileY2);// pgm_read_byte(&levelMap[(tileY2 * level->getWidthInTiles()) + tileX3]);
     if (tileAlreadyTested[tile] == 0) {
-      checkCollisionWithLevelElements_TestElement(level, player, customer, tileX3, tileY2, tile);
+      checkCollisionWithLevelElements_TestElement(level, player, tileX3, tileY2, tile);
       tileAlreadyTested[tile] = 1;
     }
 
@@ -250,7 +246,8 @@ void checkCollisionWithLevelElements(Level *level, Player *player, Customer *cus
 
 }
 
-void checkCollisionWithLevelElements_TestElement(Level *level, Player *player, Customer *customer, uint8_t x, uint8_t y, uint8_t element) {
+//void checkCollisionWithLevelElements_TestElement(Level *level, Player *player, Customer *customer, uint8_t x, uint8_t y, uint8_t element) {
+void checkCollisionWithLevelElements_TestElement(Level *level, Player *player, uint8_t x, uint8_t y, uint8_t element) {
 
   switch (element) {
 
@@ -270,20 +267,20 @@ void checkCollisionWithLevelElements_TestElement(Level *level, Player *player, C
       player->setStatus(PlayerStatus::OutOfFuel_Max);
       break;
 
-    case SIGN1:
-      if (player->isCarryingCustomer() && absT(customer->getXDestinationTile() - x) < 2 && customer->getYDestinationTile() == y) {
-        player->setCarryingCustomer(false);
-        player->setScore(player->getScore() + customer->getFare());
-        player->incFaresCompleted();
-        if (player->getFaresCompleted() >= level->getFaresRequired()) {
-          launchCustomer(level, customer, RANDOM_START_POSITION, GO_TO_GATE);
-        }
-        else {
-          launchCustomer(level, customer, RANDOM_START_POSITION, RANDOM_END_POSITION);
-        }
-        dollarsCount = DOLLARS_COUNT_MAX;
-      }
-      break;
+    // case SIGN1:
+    //   if (player->isCarryingCustomer() && diffT(customer->getXDestinationTile() - x) < 2 && customer->getYDestinationTile() == y) {
+    //     player->setCarryingCustomer(false);
+    //     player->setScore(player->getScore() + customer->getFare());
+    //     player->incFaresCompleted();
+    //     if (player->getFaresCompleted() >= level->getFaresRequired()) {
+    //       launchCustomer(level, customer, RANDOM_START_POSITION, GO_TO_GATE);
+    //     }
+    //     else {
+    //       launchCustomer(level, customer, RANDOM_START_POSITION, RANDOM_END_POSITION);
+    //     }
+    //     dollarsCount = DOLLARS_COUNT_MAX;
+    //   }
+    //   break;
     
   }
 
@@ -397,7 +394,8 @@ void inGame(Level *level, Player *player, Customer *customer) {
   
     handleInput(player);
     checkCollisionWithCustomer(level, player, customer);
-    checkCollisionWithLevelElements(level, player, customer);
+//    checkCollisionWithLevelElements(level, player, customer);
+    checkCollisionWithLevelElements(level, player);
 
   }
 
