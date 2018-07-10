@@ -29,18 +29,18 @@ template< size_t size > void extractDigits(uint8_t (&buffer)[size], uint16_t val
 
 //------------------------------------------------------------------------------
 
-void initGame(Player *player) {
+void initGame(Player &player) {
 
-  player->setNumberOfLives(PLAYER_NUMBER_OF_LIVES_MAX);
-  player->setScore(0);
+  player.setNumberOfLives(PLAYER_NUMBER_OF_LIVES_MAX);
+  player.setScore(0);
 
 }
 
-void initLevel(Level *level, Player *player, Customer *customer, uint8_t levelNumber) {
+void initLevel(Level &level, Player &player, Customer &customer, uint8_t levelNumber) {
 
-  level->reset(levelNumber);
-  player->reset(static_cast<SQ15x16>(levelInit[(levelNumber * 7) + 4]), static_cast<SQ15x16>(levelInit[(levelNumber * 7) + 5]));
-  customer->setStartingPosition(CUSTOMER_NO_STARTING_POS);
+  level.reset(levelNumber);
+  player.reset(static_cast<SQ15x16>(levelInit[(levelNumber * 7) + 4]), static_cast<SQ15x16>(levelInit[(levelNumber * 7) + 5]));
+  customer.setStartingPosition(CUSTOMER_NO_STARTING_POS);
 
 }
 
@@ -94,9 +94,9 @@ const char * getLevelName(uint8_t index)
 	return reinterpret_cast<const char *>(pgm_read_ptr(&levelNames[index]));
 }
 
-const __FlashStringHelper * getLevelName(Level *level) {
+const __FlashStringHelper * getLevelName(Level &level) {
 
-  const uint8_t levelNumber = level->getLevelNumber() - 1;
+  const uint8_t levelNumber = level.getLevelNumber() - 1;
   return reinterpret_cast<const __FlashStringHelper*>(getLevelName(levelNumber));
 
 }

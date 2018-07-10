@@ -77,8 +77,8 @@ void loop() {
 
     case GameState::SplashScreen_Init:
       levelNumber = 0;
-      initLevel(&level, &player, &customer, levelNumber);
-      launchCustomer(&level, &customer, 1, GO_TO_GATE);
+      initLevel(level, player, customer, levelNumber);
+      launchCustomer(level, customer, 1, GO_TO_GATE);
       player.setFrame(0);
       state = GameState::SplashScreen;
       fadeInEffect.reset(0, HEIGHT, 1);
@@ -86,26 +86,26 @@ void loop() {
       // break;  -- Fall through intentional.
 
     case GameState::SplashScreen:
-      titleScreen(&level, &player, &customer);
+      titleScreen(level, player, customer);
       break;
 
     case GameState::PlayGame_InitGame:
       levelNumber = 1;
-      initGame(&player);
+      initGame(player);
       state = GameState::PlayGame_InitLevel;
       // break;  -- Fall through intentional.
 
     case GameState::PlayGame_InitLevel:
       thrusterFrame = 0;
       gameTime = GAME_TIME_MAX;
-      initLevel(&level, &player, &customer, levelNumber);
-      launchCustomer(&level, &customer, RANDOM_START_POSITION, RANDOM_END_POSITION);
+      initLevel(level, player, customer, levelNumber);
+      launchCustomer(level, customer, RANDOM_START_POSITION, RANDOM_END_POSITION);
       state = GameState::PlayGame;
       // break;  -- Fall through intentional.
         
     case GameState::PlayGame:
     case GameState::EndOfLevel:
-      inGame(&font4x6, &level, &player, &customer);
+      inGame(font4x6, level, player, customer);
       break;
 
     case GameState::GameOver:
@@ -121,13 +121,13 @@ void loop() {
       // break; Fall-through intentional.
 
     case GameState::HighScore:
-      renderHighScore(&highScore);
+      renderHighScore(highScore);
       break;
 
   }
 
   arduboy.display();
-  moveCab(&level, &player, &customer);
+  moveCab(level, player, customer);
 
 }
 

@@ -1,24 +1,24 @@
 #include "src/utils/Arduboy2Ext.h"
 
 
-void drawLevel(Level *level) {
+void drawLevel(Level &level) {
 
-//  const uint8_t *levelMap = levelMaps[level->getLevelNumber()];
+//  const uint8_t *levelMap = levelMaps[level.getLevelNumber()];
   
-  for (uint8_t y = 0; y < level->getHeightInTiles(); y++) {
+  for (uint8_t y = 0; y < level.getHeightInTiles(); y++) {
 
-    for (uint8_t x = 0; x < level->getWidthInTiles(); x++) {
+    for (uint8_t x = 0; x < level.getWidthInTiles(); x++) {
 
       const int16_t tileX = (x * TILE_SIZE);
       const int16_t tileY = (y * TILE_SIZE);
-      const int16_t bitmapX = tileX + level->getXOffsetDisplay();
-      const int16_t bitmapY = tileY + level->getYOffsetDisplay();
+      const int16_t bitmapX = tileX + level.getXOffsetDisplay();
+      const int16_t bitmapY = tileY + level.getYOffsetDisplay();
       
       // Do we really need to render the tile?
       if (bitmapX < -8 || bitmapX >= WIDTH || bitmapY < -8 || bitmapY >= HEIGHT)
         continue;
 
-      uint8_t tile = level->getLevelData(x, y);// pgm_read_byte(&levelMap[(y * level->getWidthInTiles()) + x]);
+      uint8_t tile = level.getLevelData(x, y);// pgm_read_byte(&levelMap[(y * level.getWidthInTiles()) + x]);
 
       switch (tile) {
 
@@ -31,8 +31,8 @@ void drawLevel(Level *level) {
 
           if (flashingCounter < (FLASH_MAX / 2)) {
 
-            const uint8_t numberOfPositions = levelPositionsCount[level->getLevelNumber()];
-            const uint8_t *levelEndingPosition = levelEndingPositions[level->getLevelNumber()];
+            const uint8_t numberOfPositions = levelPositionsCount[level.getLevelNumber()];
+            const uint8_t *levelEndingPosition = levelEndingPositions[level.getLevelNumber()];
 
             for (uint8_t i = 0; i < numberOfPositions; ++i) {
 
@@ -54,7 +54,7 @@ void drawLevel(Level *level) {
 
         case FUEL1:
           {
-            Fuel *fuel = level->getFuel(x, y);
+            Fuel *fuel = level.getFuel(x, y);
             Sprites::drawOverwrite(bitmapX, bitmapY, FuelImgs, fuel->getFuelLeftPerCent());
           }
           break;
@@ -74,7 +74,7 @@ void drawLevel(Level *level) {
 #define HUD_OFFSET 10
 #define HUD_WIDTH 66
 
-void drawHUD(Player *player, Customer *customer) {
+void drawHUD(Player &player, Customer &customer) {
 
   uint8_t digits[5];
   uint8_t digitsFare[2];
@@ -83,11 +83,11 @@ void drawHUD(Player *player, Customer *customer) {
 
   Sprites::drawOverwrite(0, 56, SpaceCabHUD, 0);
   font4x6.setCursor(13, 57);
-  extractDigits(digits, player->getScore());
+  extractDigits(digits, player.getScore());
   for(uint8_t i = 5; i > 0; --i) 
   font4x6.print(digits[i - 1]);
 
-  if (player->getFuel() > 0 && player->getFuel() < PLAYER_FUEL_MIN_BLINK && flashingCounter < (FLASH_MAX / 2)) {
+  if (player.getFuel() > 0 && player.getFuel() < PLAYER_FUEL_MIN_BLINK && flashingCounter < (FLASH_MAX / 2)) {
   
     arduboy.fillRect(44, 57, 30, 8 , BLACK);
   
@@ -95,19 +95,19 @@ void drawHUD(Player *player, Customer *customer) {
   else {
    
     font4x6.setCursor(57, 57);
-    extractDigits(digitsFuel, player->getFuel());
+    extractDigits(digitsFuel, player.getFuel());
     for(uint8_t i = 3; i > 0; --i) 
     font4x6.print(digitsFuel[i - 1]);
 
   }
 
   font4x6.setCursor(94, 57);
-  extractDigits(digitsLives, player->getNumberOfLives());
+  extractDigits(digitsLives, player.getNumberOfLives());
   for(uint8_t i = 1; i > 0; --i) 
   font4x6.print(digitsLives[i - 1]);
 
   font4x6.setCursor(115, 57);
-  extractDigits(digitsFare, customer->getFare());
+  extractDigits(digitsFare, customer.getFare());
   for(uint8_t i = 2; i > 0; --i)
   font4x6.print(digitsFare[i - 1]);
 
@@ -154,15 +154,15 @@ void scrollingBackground(bool scrollLeft) {
 
 }
 
-void playerDisplay(Player *player) {
+void playerDisplay(Player &player) {
 
   uint8_t const *imageName = nullptr;
   uint8_t const *maskName = nullptr;
   int8_t xOffset = 0;
   int8_t yOffset = 0;
-  uint8_t frameNumber = player->getFrame();
+  uint8_t frameNumber = player.getFrame();
 
-  switch (player->getStatus()) {
+  switch (player.getStatus()) {
 
     case PlayerStatus::OutOfFuel_Img1_Start ... PlayerStatus::OutOfFuel_Img1_End:
       imageName = SpaceTaxi_OutOfFuel_1;
@@ -196,7 +196,7 @@ void playerDisplay(Player *player) {
 
     case PlayerStatus::Active:
 
-      if (player->isLandingGearDown()) {
+      if (player.isLandingGearDown()) {
         imageName = SpaceTaxi_LandingGear;
         maskName = SpaceTaxi_LandingGear_Mask;
       }
@@ -211,20 +211,20 @@ void playerDisplay(Player *player) {
   }
 
   if (imageName != nullptr) {
-    Sprites::drawExternalMask(player->getXDisplay() + xOffset, player->getYDisplay() + yOffset, imageName, maskName, frameNumber, frameNumber);
+    Sprites::drawExternalMask(player.getXDisplay() + xOffset, player.getYDisplay() + yOffset, imageName, maskName, frameNumber, frameNumber);
   }
 
 }
 
 
-void customerDisplay(Level *level, Player *player, Customer *customer) {
+void customerDisplay(Level &level, Player &player, Customer &customer) {
 
-  int16_t customerXVal = customer->getX() + level->xOffset.getInteger();
-  int16_t customerYVal = customer->getY() + level->yOffset.getInteger();
+  int16_t customerXVal = customer.getX() + level.xOffset.getInteger();
+  int16_t customerYVal = customer.getY() + level.yOffset.getInteger();
 
-  if (!player->isCarryingCustomer() && customerXVal >= -CUSTOMER_WIDTH && customerXVal < WIDTH && customerYVal >= -CUSTOMER_HEIGHT && customerYVal < HEIGHT) {
+  if (!player.isCarryingCustomer() && customerXVal >= -CUSTOMER_WIDTH && customerXVal < WIDTH && customerYVal >= -CUSTOMER_HEIGHT && customerYVal < HEIGHT) {
 
-    switch (customer->getStatus()) {
+    switch (customer.getStatus()) {
 
       case CustomerStatus::Dead:
 
@@ -233,48 +233,48 @@ void customerDisplay(Level *level, Player *player, Customer *customer) {
 
       case CustomerStatus::Alive:
 
-        Sprites::drawExternalMask(customerXVal, customerYVal, Customer_Img, Customer_Img_Mask, customer->getFrame(), customer->getFrame());
+        Sprites::drawExternalMask(customerXVal, customerYVal, Customer_Img, Customer_Img_Mask, customer.getFrame(), customer.getFrame());
 
         if (arduboy.everyXFrames(15)) {
-          customer->incFrame();
+          customer.incFrame();
         }
 
         break;
 
       case CustomerStatus::BoardingCab:
 
-        if (customer->getWalkingDirection() == Direction::Left) {
+        if (customer.getWalkingDirection() == Direction::Left) {
 
-          Sprites::drawExternalMask(customerXVal + customer->getXWalkingOffset(), customerYVal, Customer_WalkingLeft, Customer_WalkingLeft_Mask, customer->getFrame(), customer->getFrame());
+          Sprites::drawExternalMask(customerXVal + customer.getXWalkingOffset(), customerYVal, Customer_WalkingLeft, Customer_WalkingLeft_Mask, customer.getFrame(), customer.getFrame());
 
         }
         else {
 
-          Sprites::drawExternalMask(customerXVal + customer->getXWalkingOffset(), customerYVal, Customer_WalkingRight, Customer_WalkingRight_Mask, customer->getFrame(), customer->getFrame());
+          Sprites::drawExternalMask(customerXVal + customer.getXWalkingOffset(), customerYVal, Customer_WalkingRight, Customer_WalkingRight_Mask, customer.getFrame(), customer.getFrame());
 
         }
 
         if (arduboy.everyXFrames(8)) {
 
-          uint16_t customerXPosition = customer->getX();
+          uint16_t customerXPosition = customer.getX();
 
-          if (customerXPosition + CUSTOMER_WIDTH_HALF + customer->getXWalkingOffset() != player->getXDisplay() - level->getXOffsetDisplay() + PLAYER_WIDTH_HALF) {
+          if (customerXPosition + CUSTOMER_WIDTH_HALF + customer.getXWalkingOffset() != player.getXDisplay() - level.getXOffsetDisplay() + PLAYER_WIDTH_HALF) {
 
-            customer->incFrame();
+            customer.incFrame();
 
-            if (customer->getWalkingDirection() == Direction::Left) {
-              customer->decXWalkingOffset();
+            if (customer.getWalkingDirection() == Direction::Left) {
+              customer.decXWalkingOffset();
             }
             else {
-              customer->incXWalkingOffset();
+              customer.incXWalkingOffset();
             }
 
           }
           else {
 
-            player->setCarryingCustomer(true);
-            player->setPickingUpCustomer(false);
-            if (player->getFaresCompleted() >= level->getFaresRequired()) { level->openGates(); }
+            player.setCarryingCustomer(true);
+            player.setPickingUpCustomer(false);
+            if (player.getFaresCompleted() >= level.getFaresRequired()) { level.openGates(); }
 
             sound.tone(NOTE_E6, 50, NOTE_E3, 50, NOTE_E2, 50);
 
@@ -289,14 +289,14 @@ void customerDisplay(Level *level, Player *player, Customer *customer) {
   }
   else if (state == GameState::PlayGame)  { 
 
-    if (player->isCarryingCustomer() && customer->getDestinationPosition() == GO_TO_GATE) { return; }
+    if (player.isCarryingCustomer() && customer.getDestinationPosition() == GO_TO_GATE) { return; }
 
     uint16_t customerX = 0;
     uint16_t customerY = 0;
     uint8_t arrowX = 0;
     uint8_t arrowY = 0;
-    uint8_t playerX = player->getXDisplay();
-    uint8_t playerY = player->getYDisplay();
+    uint8_t playerX = player.getXDisplay();
+    uint8_t playerY = player.getYDisplay();
 
     Direction direction = Direction::Up;
 
@@ -305,24 +305,24 @@ void customerDisplay(Level *level, Player *player, Customer *customer) {
 
     if (flashingCounter < (FLASH_MAX / 2)) { 
 
-      if (!player->isCarryingCustomer()) {
+      if (!player.isCarryingCustomer()) {
 
-        customerX = customer->getX();
-        customerY = customer->getY();
+        customerX = customer.getX();
+        customerY = customer.getY();
 
       }
       else {
 
-        customerX = customer->getXDestinationTile() * TILE_SIZE;
-        customerY = customer->getYDestinationTile() * TILE_SIZE;
+        customerX = customer.getXDestinationTile() * TILE_SIZE;
+        customerY = customer.getYDestinationTile() * TILE_SIZE;
 
       }
 
 
       // If the customer location is on screen then do not render ..
       {
-        int16_t customerXDisplay = customerX + level->getXOffsetDisplay();
-        int16_t customerYDisplay = customerY + level->getYOffsetDisplay();
+        int16_t customerXDisplay = customerX + level.getXOffsetDisplay();
+        int16_t customerYDisplay = customerY + level.getYOffsetDisplay();
 
         if (customerXDisplay >= -CUSTOMER_WIDTH && customerXDisplay < WIDTH && customerYDisplay >= -CUSTOMER_HEIGHT && customerYDisplay < HEIGHT) {
           return;
@@ -330,8 +330,8 @@ void customerDisplay(Level *level, Player *player, Customer *customer) {
 
       }
 
-      int16_t dX = customerX - (player->getX() - level->xOffset).getInteger();
-      int16_t dY = customerY - (player->getY() - level->yOffset).getInteger();
+      int16_t dX = customerX - (player.getX() - level.xOffset).getInteger();
+      int16_t dY = customerY - (player.getY() - level.yOffset).getInteger();
 
       if (dX < -playerX) {
 
@@ -364,15 +364,15 @@ void customerDisplay(Level *level, Player *player, Customer *customer) {
 
 }
 
-void drawLevelStart(Font4x6 *font4x6, Level *level) {
+void drawLevelStart(Font4x6 &font4x6, Level &level) {
 
   arduboy.fillRect(18, 23, 94, 16, BLACK);
   arduboy.drawFastHLine(19, 25, 92, WHITE);
   arduboy.drawFastHLine(19, 38, 92, WHITE);
   arduboy.drawFastHLine(19, 39, 92, BLACK);
 
-  font4x6->setCursor(22, 28);
-  font4x6->print(getLevelName(level));
+  font4x6.setCursor(22, 28);
+  font4x6.print(getLevelName(level));
 
   if (arduboy.justPressed(A_BUTTON)) { 
     
@@ -382,13 +382,13 @@ void drawLevelStart(Font4x6 *font4x6, Level *level) {
 
 }
 
-void drawDollars(Player *player) {
+void drawDollars(Player &player) {
 
   if (dollarsCount > 0) {
 
     uint8_t idx = (DOLLARS_COUNT_MAX - dollarsCount) / DOLLARS_COUNT_MULT;
 
-    Sprites::drawExternalMask(player->getXDisplay() - 5, player->getYDisplay() - 10, dollars, dollars_Mask, idx, idx);
+    Sprites::drawExternalMask(player.getXDisplay() - 5, player.getYDisplay() - 10, dollars, dollars_Mask, idx, idx);
     dollarsCount--;
   
   }
@@ -396,31 +396,31 @@ void drawDollars(Player *player) {
 }
 
 
-void drawGoto(Level *level, Player *player, Customer *customer) {
+void drawGoto(Level &level, Player &player, Customer &customer) {
 
   if (gotoCounter > 0 && flashingCounter < (FLASH_MAX / 2)) {
 
-    int16_t customerXVal = customer->getX() + level->xOffset.getInteger() + 1 + customer->getXWalkingOffset();
-    int16_t customerYVal = customer->getY() + level->yOffset.getInteger() - 13;
+    int16_t customerXVal = customer.getX() + level.xOffset.getInteger() + 1 + customer.getXWalkingOffset();
+    int16_t customerYVal = customer.getY() + level.yOffset.getInteger() - 13;
     
-    if (player->getFaresCompleted() >= level->getFaresRequired()) {
+    if (player.getFaresCompleted() >= level.getFaresRequired()) {
       Sprites::drawExternalMask(customerXVal, customerYVal, Hail_GoGate, Hail_Mask, 0, 0);
     }
     else {
       Sprites::drawExternalMask(customerXVal, customerYVal, Hail, Hail_Mask, 0, 0);
-      Sprites::drawErase(customerXVal + 25, customerYVal + 4, font4x6_Full, customer->getDestinationPosition() + 53);
+      Sprites::drawErase(customerXVal + 25, customerYVal + 4, font4x6_Full, customer.getDestinationPosition() + 53);
     }
 
   }
 
 }
 
-void drawOuch(Level *level, Customer *customer) {
+void drawOuch(Level &level, Customer &customer) {
 
   if (ouchCounter > 0 && flashingCounter < (FLASH_MAX / 2)) {
 
-    int16_t customerXVal = customer->getX() + level->xOffset.getInteger() + 1 + customer->getXWalkingOffset();
-    int16_t customerYVal = customer->getY() + level->yOffset.getInteger() - 13;
+    int16_t customerXVal = customer.getX() + level.xOffset.getInteger() + 1 + customer.getXWalkingOffset();
+    int16_t customerYVal = customer.getY() + level.yOffset.getInteger() - 13;
 
     Sprites::drawExternalMask(customerXVal, customerYVal, Ouch, Hail_Mask, 0, 0);
 

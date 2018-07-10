@@ -34,14 +34,14 @@ void vsBoot() {
 
 }
 
-void titleScreen(Level *level, Player *player, Customer *customer) {
+void titleScreen(Level &level, Player &player, Customer &customer) {
 
-  int16_t customerXVal = customer->getX() + level->xOffset.getInteger();
-  int16_t customerYVal = customer->getY() + level->yOffset.getInteger();
-  int16_t logoXVal = 0 + level->xOffset.getInteger();
-  int16_t logoYVal = 6 + level->yOffset.getInteger();  
+  int16_t customerXVal = customer.getX() + level.xOffset.getInteger();
+  int16_t customerYVal = customer.getY() + level.yOffset.getInteger();
+  int16_t logoXVal = 0 + level.xOffset.getInteger();
+  int16_t logoYVal = 6 + level.yOffset.getInteger();  
   
-  Rect playerRect = {static_cast<int16_t>(player->getXDisplay()), static_cast<int16_t>(player->getYDisplay()), PLAYER_WIDTH, player->getHeight()};
+  Rect playerRect = {static_cast<int16_t>(player.getXDisplay()), static_cast<int16_t>(player.getYDisplay()), PLAYER_WIDTH, player.getHeight()};
   Rect customerRect = {customerXVal, customerYVal, CUSTOMER_WIDTH, CUSTOMER_HEIGHT};
 
   Sprites::drawOverwrite(logoXVal, logoYVal, SpaceCabSplash, 0);
@@ -51,8 +51,8 @@ void titleScreen(Level *level, Player *player, Customer *customer) {
   customerDisplay(level, player, customer);
   handleInput(player);
 
-  if (player->getY() >= 41 && player->getYDelta()> 0) {
-    player->setLandingGearDown(true);
+  if (player.getY() >= 41 && player.getYDelta()> 0) {
+    player.setLandingGearDown(true);
   } 
 
   if (arduboy.collide(playerRect, customerRect)){
