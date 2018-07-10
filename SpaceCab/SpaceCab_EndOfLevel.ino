@@ -4,8 +4,8 @@ uint8_t starfieldy = 0;
 
 void drawStarfield()
 {
-  arduboy.drawBitmap(0, starfieldy, starBackground, 128, 64, WHITE);
-  arduboy.drawBitmap(0, starfieldy - 64, starBackground, 128, 64, WHITE);
+  Sprites::drawOverwrite(0, starfieldy, starBackground, WHITE);
+  Sprites::drawOverwrite(0, starfieldy - 64, starBackground, WHITE);
   ++starfieldy;
   if( starfieldy > 64 )
   {
