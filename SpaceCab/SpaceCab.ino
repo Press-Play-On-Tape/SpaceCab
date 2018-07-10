@@ -85,7 +85,7 @@ void loop() {
     case GameState::SplashScreen_Init:
       levelNumber = 0;
       initLevel(&level, &player, &customer, levelNumber);
-      launchCustomer(&level, &customer, 1);
+      launchCustomer(&level, &customer, 1, GO_TO_GATE);
       player.setFrame(0);
       state = GameState::SplashScreen;
       fadeInEffect.reset(0, HEIGHT, 1);
@@ -106,7 +106,7 @@ void loop() {
       thrusterFrame = 0;
       gameTime = GAME_TIME_MAX;
       initLevel(&level, &player, &customer, levelNumber);
-      launchCustomer(&level, &customer, RANDOM_START_POSITION);
+      launchCustomer(&level, &customer, RANDOM_START_POSITION, RANDOM_END_POSITION);
       state = GameState::PlayGame;
       // break;  -- Fall through intentional.
         

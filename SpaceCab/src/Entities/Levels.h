@@ -179,11 +179,11 @@ const uint8_t levelPositionsCount[] =           { 2, 6, 4, 4, 4 };
 
 const int8_t levelInit[] = { 
 
-// Level width   Level Height,   Level     Level     Player  Player  Required
-//                               X Offset  Y Offset  X Pos   Y Pos    Score
+// Level width   Level Height,   Level     Level     Player  Player   Fares
+//                               X Offset  Y Offset  X Pos   Y Pos   Required
   LEVEL_0_WIDTH, LEVEL_0_HEIGHT,       0,        0,     28,     45,     0,
-  LEVEL_1_WIDTH, LEVEL_1_HEIGHT,     -54,      -56,     56,     45,     40,
-  LEVEL_2_WIDTH, LEVEL_2_HEIGHT,     -54,      -56,     56,     45,     80,
-  LEVEL_3_WIDTH, LEVEL_3_HEIGHT,     -54,      -56,     16,     24,     160,
-  LEVEL_4_WIDTH, LEVEL_4_HEIGHT,     -32,      -32,     56,     45,     200
+  LEVEL_1_WIDTH, LEVEL_1_HEIGHT,     -54,      -56,     56,     45,     1,
+  LEVEL_2_WIDTH, LEVEL_2_HEIGHT,     -54,      -56,     56,     45,     2,
+  LEVEL_3_WIDTH, LEVEL_3_HEIGHT,     -54,      -56,     16,     24,     2,
+  LEVEL_4_WIDTH, LEVEL_4_HEIGHT,     -32,      -32,     56,     45,     2
 };

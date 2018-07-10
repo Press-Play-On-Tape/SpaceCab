@@ -274,6 +274,8 @@ void customerDisplay(Level *level, Player *player, Customer *customer) {
 
             player->setCarryingCustomer(true);
             player->setPickingUpCustomer(false);
+            if (player->getFaresCompleted() >= level->getFaresRequired()) { level->openGates(); }
+
             sound.tone(NOTE_E6, 50, NOTE_E3, 50, NOTE_E2, 50);
 
           }
@@ -286,86 +288,6 @@ void customerDisplay(Level *level, Player *player, Customer *customer) {
 
   }
   else if (state == GameState::PlayGame)  { 
-
-#ifdef ARROWS_FP
-
-    uint8_t const *imageName = nullptr;
-    uint8_t const *maskName = nullptr;
-    uint8_t xPos = 0;
-    uint8_t yPos = 0;
-
-    uint16_t customerX = 0;
-    uint16_t customerY = 0;
-
-    // Render arrows.
-
-    if (flashingCount < (FLASH_MAX / 2)) { 
-
-      if (!player->isCarryingCustomer()) {
-
-        customerX = customer->getX();
-        customerY = customer->getY();
-
-      }
-      else {
-
-        customerX = customer->getXDestinationTile() * TILE_SIZE;
-        customerY = customer->getYDestinationTile() * TILE_SIZE;
-
-      }
-
-      SQ15x16 dX = static_cast<SQ15x16>(customerX) - (player->getX() - level->xOffset);
-      SQ15x16 dY = static_cast<SQ15x16>(customerY) - (player->getY() - level->yOffset);
-      SQ15x16 grad = dY / dX;
-
-      if (customerX < (player->getX() - level->xOffset)) {
-    
-        if (absT(dX) <= 0.02) {
-
-          if (dY > 0)             { imageName = ArrowD;   maskName = ArrowD_Mask;   xPos = 59;  yPos = 56; }
-          if (dY < 0)             { imageName = ArrowU;   maskName = ArrowU_Mask;   xPos = 59;  yPos = 0; }
-
-        }
-        else {
-
-          if (grad > 2.0)         { imageName = ArrowU;   maskName = ArrowU_Mask;   xPos = 59;  yPos = 0; }
-          else if (grad > 0.14)   { imageName = ArrowUL;  maskName = ArrowUL_Mask;  xPos = 0;   yPos = 0; }
-          else if (grad > -0.14)  { imageName = ArrowL;   maskName = ArrowL_Mask;   xPos = 0;   yPos = 28; }
-          else if (grad > -2.0)   { imageName = ArrowDL;  maskName = ArrowDL_Mask;  xPos = 0;   yPos = 56; }
-          else                    { imageName = ArrowD;   maskName = ArrowD_Mask;   xPos = 59;  yPos = 56; }
-
-        }
-
-      } 
-      else {
-
-        if (absT(dX) <= 0.02) {
-
-          if (dY > 0)             { imageName = ArrowD;   maskName = ArrowD_Mask;   xPos = 59;  yPos = 56; }
-          if (dY < 0)             { imageName = ArrowU;   maskName = ArrowU_Mask;   xPos = 59;  yPos = 0; }
-
-        }
-        else {
-
-          if (grad > 2.0)         { imageName = ArrowD;   maskName = ArrowD_Mask;   xPos = 59;  yPos = 56; }
-          else if (grad > 0.14)   { imageName = ArrowDR;  maskName = ArrowDR_Mask;  xPos = 120; yPos = 56; }
-          else if (grad > -0.14)  { imageName = ArrowR;   maskName = ArrowR_Mask;   xPos = 120; yPos = 28; }
-          else if (grad > -2.0)   { imageName = ArrowUR;  maskName = ArrowUR_Mask;  xPos = 120; yPos = 0; }
-          else                    { imageName = ArrowU;   maskName = ArrowU_Mask;   xPos = 59;  yPos = 0; }
-
-        }
-
-      }
-
-      if (imageName != nullptr) {
-
-        Sprites::drawExternalMask(xPos, yPos, imageName, maskName, 0, 0);
-
-      }
-
-    }
-#endif
-#ifndef ARROWS_FP
 
     uint16_t customerX = 0;
     uint16_t customerY = 0;
@@ -435,7 +357,6 @@ void customerDisplay(Level *level, Player *player, Customer *customer) {
       Sprites::drawExternalMask(arrowX, arrowY, ArrowImgs, ArrowMasks, static_cast<uint8_t>(direction), static_cast<uint8_t>(direction));
 
     }
-#endif
 
   }
 
@@ -475,15 +396,20 @@ void drawDollars(Player *player) {
 }
 
 
-void drawGoto(Level *level, Customer *customer) {
+void drawGoto(Level *level, Player *player, Customer *customer) {
 
   if (gotoCounter > 0 && flashingCounter < (FLASH_MAX / 2)) {
 
     int16_t customerXVal = customer->getX() + level->xOffset.getInteger() + 1 + customer->getXWalkingOffset();
     int16_t customerYVal = customer->getY() + level->yOffset.getInteger() - 13;
     
-    Sprites::drawExternalMask(customerXVal, customerYVal, Hail, Hail_Mask, 0, 0);
-    Sprites::drawErase(customerXVal + 25, customerYVal + 4, font4x6_Full, customer->getDestinationPosition() + 53);
+    if (player->getFaresCompleted() >= level->getFaresRequired()) {
+      Sprites::drawExternalMask(customerXVal, customerYVal, Hail_GoGate, Hail_Mask, 0, 0);
+    }
+    else {
+      Sprites::drawExternalMask(customerXVal, customerYVal, Hail, Hail_Mask, 0, 0);
+      Sprites::drawErase(customerXVal + 25, customerYVal + 4, font4x6_Full, customer->getDestinationPosition() + 53);
+    }
 
   }
 

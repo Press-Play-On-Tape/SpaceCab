@@ -26,7 +26,8 @@ struct Level {
     Fuel *_fuels[FUEL_TILES_MAX];
     uint8_t _levelData[256];
     bool _openGates;
-    uint8_t _levelScore;
+    uint8_t _faresRequired;
+
 
     Gate _gate0;
     Gate _gate1;
@@ -59,7 +60,7 @@ struct Level {
     uint16_t getWidth()                       const { return _width; }
     uint16_t getHeightInTiles()               const { return _heightInTiles; }
     uint16_t getWidthInTiles()                const { return _widthInTiles; }
-    uint16_t getLevelScore()                  const { return _levelScore; }
+    uint16_t getFaresRequired()               const { return _faresRequired; }
 
     Fuel * getFuel(uint8_t idx)               const { return _fuels[idx]; }
 
@@ -128,7 +129,7 @@ struct Level {
 
       xOffset = static_cast<SQ15x16>(levelInit[(levelNumber * 7) + 2]);
       yOffset = static_cast<SQ15x16>(levelInit[(levelNumber * 7) + 3]);
-      _levelScore = levelInit[(levelNumber * 7) + 6];
+      _faresRequired = levelInit[(levelNumber * 7) + 6];
 
 
       // Parse level for fuel tiles ..

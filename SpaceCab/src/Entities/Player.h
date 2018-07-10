@@ -26,6 +26,7 @@ struct Player {
     bool _pickingUpCustomer = false;
     uint8_t _numberOfLives = 0;
     PlayerStatus _status;
+    uint8_t _faresCompleted;
 
   public:
 
@@ -43,6 +44,7 @@ struct Player {
     bool getPickingUpCustomer()                 { return _pickingUpCustomer; }
     PlayerStatus getStatus()                    { return _status; }
     uint8_t getRetractLandingGear()             { return _retractLandgingGear; }
+    uint8_t getFaresCompleted()                 { return _faresCompleted; }
 
     void setX(SQ15x16 val)                      { _x = val; }
     void setY(SQ15x16 val)                      { _y = val; }
@@ -58,12 +60,14 @@ struct Player {
     void setPickingUpCustomer(bool val)         { _pickingUpCustomer = val; }
     void setStatus(PlayerStatus val)            { _status = val; }
     void setRetractLandingGear(int8_t val)      { _retractLandgingGear = val; }
+    void setFaresCompleted(int8_t val)          { _faresCompleted = val; }
 
     uint16_t getXDisplay()                      { return _x.getInteger(); }
     uint16_t getYDisplay()                      { return _y.getInteger(); }
     SQ15x16 getXDeltaVal()                      { return (static_cast<SQ15x16>(_xDelta) / 8.00); }
     SQ15x16 getYDeltaVal()                      { return (static_cast<SQ15x16>(_yDelta) / 8.00); }
 
+    void incFaresCompleted()                    { _faresCompleted++;}
     void incFuel()                              { _fuel++;}
     void decFuel()                              { if (_fuel > 0) _fuel--; }
     void decNumberOfLives()                     { _numberOfLives--; }
@@ -198,6 +202,7 @@ struct Player {
       _justLanded = true;
       _pickingUpCustomer = false;
       _status = PlayerStatus::Active;
+      _faresCompleted = 0;
 
       _x = x; 
       _y = y; 

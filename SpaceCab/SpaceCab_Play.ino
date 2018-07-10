@@ -101,11 +101,11 @@ void updateTime() {
 //  Valid launching positions are derived from the level design.
 //------------------------------------------------------------------------------
 
-void launchCustomer(Level *level, Customer *customer, uint8_t defaultStartPosition) {
+void launchCustomer(Level *level, Customer *customer, uint8_t defaultStartPosition, uint8_t defaultEndingPosition) {
 
   const uint8_t numberOfPositions = levelPositionsCount[level->getLevelNumber()];
   uint8_t customerStartingPos = (defaultStartPosition == RANDOM_START_POSITION ? random(numberOfPositions) : defaultStartPosition);
-  uint8_t customerDestination = random(numberOfPositions);
+  uint8_t customerDestination = (defaultEndingPosition == RANDOM_END_POSITION ? random(numberOfPositions) : defaultEndingPosition);
 
 
   // Ensure new customer is not placed in the location the last customer was dropped at ..
@@ -126,15 +126,24 @@ Serial.print(defaultStartPosition);
 Serial.print(" ");
 Serial.println(customerStartingPos);
 
-  const uint8_t *levelStartingPosition = levelStartingPositions[level->getLevelNumber()];
-  customer->setXTile(pgm_read_byte(&levelStartingPosition[customerStartingPos * 2]));
-  customer->setYTile(pgm_read_byte(&levelStartingPosition[(customerStartingPos * 2) + 1]));
-  customer->setStartingPosition(customerStartingPos);
+  if (customerStartingPos != GO_TO_GATE) {
 
-  const uint8_t *levelEndingPosition = levelEndingPositions[level->getLevelNumber()];
-  customer->setXDestinationTile(pgm_read_byte(&levelEndingPosition[customerDestination * 2]));
-  customer->setYDestinationTile(pgm_read_byte(&levelEndingPosition[(customerDestination * 2) + 1]));
-  customer->setDestinationPosition(customerDestination);
+    const uint8_t *levelStartingPosition = levelStartingPositions[level->getLevelNumber()];
+    customer->setXTile(pgm_read_byte(&levelStartingPosition[customerStartingPos * 2]));
+    customer->setYTile(pgm_read_byte(&levelStartingPosition[(customerStartingPos * 2) + 1]));
+    customer->setStartingPosition(customerStartingPos);
+
+  }
+
+
+  if (customerDestination != GO_TO_GATE) {
+
+    const uint8_t *levelEndingPosition = levelEndingPositions[level->getLevelNumber()];
+    customer->setXDestinationTile(pgm_read_byte(&levelEndingPosition[customerDestination * 2]));
+    customer->setYDestinationTile(pgm_read_byte(&levelEndingPosition[(customerDestination * 2) + 1]));
+    customer->setDestinationPosition(customerDestination);
+
+  }
 
   customer->setFrame(0);
   customer->setStatus(CustomerStatus::Alive);
@@ -262,8 +271,13 @@ void checkCollisionWithLevelElements_TestElement(Level *level, Player *player, C
       if (player->isCarryingCustomer() && absT(customer->getXDestinationTile() - x) < 2 && customer->getYDestinationTile() == y) {
         player->setCarryingCustomer(false);
         player->setScore(player->getScore() + customer->getFare());
-        if (player->getScore() >= level->getLevelScore()) level->openGates();
-        launchCustomer(level, customer, RANDOM_START_POSITION);
+        player->incFaresCompleted();
+        if (player->getFaresCompleted() >= level->getFaresRequired()) {
+          launchCustomer(level, customer, RANDOM_START_POSITION, GO_TO_GATE);
+        }
+        else {
+          launchCustomer(level, customer, RANDOM_START_POSITION, RANDOM_END_POSITION);
+        }
         dollarsCount = DOLLARS_COUNT_MAX;
       }
       break;
@@ -366,7 +380,7 @@ void inGame(Level *level, Player *player, Customer *customer) {
 
     ouchCounter--;
     if (ouchCounter == 0) {
-      launchCustomer(level, customer, RANDOM_START_POSITION);
+      launchCustomer(level, customer, RANDOM_START_POSITION, RANDOM_END_POSITION);
     }
 
   }
@@ -385,7 +399,7 @@ void inGame(Level *level, Player *player, Customer *customer) {
   drawDollars(player);
   customerDisplay(level, player, customer);
   drawHUD(player, customer);
-  drawGoto(level, customer);
+  drawGoto(level, player, customer);
   drawOuch(level, customer);
 
   if (state == GameState::EndOfLevel) {
