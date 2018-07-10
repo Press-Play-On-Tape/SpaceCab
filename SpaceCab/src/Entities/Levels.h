@@ -2,6 +2,7 @@
 
 #include "../Utils/Arduboy2Ext.h"
 #include "../Utils/Constants.h"
+#include "../Fonts/Font4x6.h"
 
 
 //-------------------------------------------------------------------------------------
@@ -186,4 +187,17 @@ const int8_t levelInit[] = {
   LEVEL_2_WIDTH, LEVEL_2_HEIGHT,     -54,      -56,     56,     45,     2,
   LEVEL_3_WIDTH, LEVEL_3_HEIGHT,     -54,      -56,     16,     24,     2,
   LEVEL_4_WIDTH, LEVEL_4_HEIGHT,     -32,      -32,     56,     45,     2
+};
+
+
+char const levelName1[] PROGMEM = " Level One Name";
+char const levelName2[] PROGMEM = " Golden Arches";
+char const levelName3[] PROGMEM = "Level Three Name";
+char const levelName4[] PROGMEM = "Level Four Name";
+
+char const * const levelNames[] PROGMEM = {
+  levelName1,
+  levelName2,
+  levelName3,
+  levelName4
 };

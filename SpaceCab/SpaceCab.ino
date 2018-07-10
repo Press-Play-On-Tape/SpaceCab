@@ -105,7 +105,7 @@ void loop() {
         
     case GameState::PlayGame:
     case GameState::EndOfLevel:
-      inGame(&level, &player, &customer);
+      inGame(&font4x6, &level, &player, &customer);
       break;
 
     case GameState::GameOver:

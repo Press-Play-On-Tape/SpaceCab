@@ -289,6 +289,8 @@ void customerDisplay(Level *level, Player *player, Customer *customer) {
   }
   else if (state == GameState::PlayGame)  { 
 
+    if (player->isCarryingCustomer() && customer->getDestinationPosition() == GO_TO_GATE) { return; }
+
     uint16_t customerX = 0;
     uint16_t customerY = 0;
     uint8_t arrowX = 0;
@@ -362,17 +364,15 @@ void customerDisplay(Level *level, Player *player, Customer *customer) {
 
 }
 
-void drawLevelStart() {
+void drawLevelStart(Font4x6 *font4x6, Level *level) {
 
   arduboy.fillRect(18, 23, 94, 16, BLACK);
   arduboy.drawFastHLine(19, 25, 92, WHITE);
   arduboy.drawFastHLine(19, 38, 92, WHITE);
   arduboy.drawFastHLine(19, 39, 92, BLACK);
 
-  font4x6.setCursor(22, 28);
-  font4x6.print(F("Level "));
-  font4x6.print(levelNumber);
-  font4x6.print(F(" GOOD LUCK! "));
+  font4x6->setCursor(22, 28);
+  font4x6->print(getLevelName(level));
 
   if (arduboy.justPressed(A_BUTTON)) { 
     

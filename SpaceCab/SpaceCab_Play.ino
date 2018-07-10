@@ -121,22 +121,17 @@ void launchCustomer(Level *level, Customer *customer, uint8_t defaultStartPositi
     customerDestination = random(numberOfPositions);
   }
 
-  if (customerStartingPos != GO_TO_GATE) {
-
-    const uint8_t *levelStartingPosition = levelStartingPositions[level->getLevelNumber()];
-    customer->setXTile(pgm_read_byte(&levelStartingPosition[customerStartingPos * 2]));
-    customer->setYTile(pgm_read_byte(&levelStartingPosition[(customerStartingPos * 2) + 1]));
-    customer->setStartingPosition(customerStartingPos);
-
-  }
-
+  const uint8_t *levelStartingPosition = levelStartingPositions[level->getLevelNumber()];
+  customer->setXTile(pgm_read_byte(&levelStartingPosition[customerStartingPos * 2]));
+  customer->setYTile(pgm_read_byte(&levelStartingPosition[(customerStartingPos * 2) + 1]));
+  customer->setStartingPosition(customerStartingPos);
+  customer->setDestinationPosition(customerDestination);
 
   if (customerDestination != GO_TO_GATE) {
 
     const uint8_t *levelEndingPosition = levelEndingPositions[level->getLevelNumber()];
     customer->setXDestinationTile(pgm_read_byte(&levelEndingPosition[customerDestination * 2]));
     customer->setYDestinationTile(pgm_read_byte(&levelEndingPosition[(customerDestination * 2) + 1]));
-    customer->setDestinationPosition(customerDestination);
 
   }
 
@@ -266,21 +261,6 @@ void checkCollisionWithLevelElements_TestElement(Level *level, Player *player, u
     case SPIKD:
       player->setStatus(PlayerStatus::OutOfFuel_Max);
       break;
-
-    // case SIGN1:
-    //   if (player->isCarryingCustomer() && diffT(customer->getXDestinationTile() - x) < 2 && customer->getYDestinationTile() == y) {
-    //     player->setCarryingCustomer(false);
-    //     player->setScore(player->getScore() + customer->getFare());
-    //     player->incFaresCompleted();
-    //     if (player->getFaresCompleted() >= level->getFaresRequired()) {
-    //       launchCustomer(level, customer, RANDOM_START_POSITION, GO_TO_GATE);
-    //     }
-    //     else {
-    //       launchCustomer(level, customer, RANDOM_START_POSITION, RANDOM_END_POSITION);
-    //     }
-    //     dollarsCount = DOLLARS_COUNT_MAX;
-    //   }
-    //   break;
     
   }
 
@@ -370,7 +350,7 @@ void updateStatus(Player *player, Customer *customer) {
 //  Play the game! 
 //------------------------------------------------------------------------------
 
-void inGame(Level *level, Player *player, Customer *customer) {
+void inGame(Font4x6 *font4x6, Level *level, Player *player, Customer *customer) {
 
   updateTime();
 
@@ -407,7 +387,7 @@ void inGame(Level *level, Player *player, Customer *customer) {
   drawOuch(level, customer);
 
   if (state == GameState::EndOfLevel) {
-    drawLevelStart();
+    drawLevelStart(font4x6, level);
   }
   
   updateStatus(player, customer);

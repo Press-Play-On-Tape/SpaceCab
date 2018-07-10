@@ -187,12 +187,12 @@ struct Level {
               switch (tile) {
 
                 case FUEL1:
-                  updateFuelDetails(x, y, fuelIdx);
+                  updateFuelDetails(x + 1, y, fuelIdx);
                   fuelIdx++;
                   break;
 
                 case GATE1:
-                  updateGateDetails(x, y, gateIdx);
+                  updateGateDetails(x + 1, y, gateIdx);
                   gateIdx++;
                   break;
 

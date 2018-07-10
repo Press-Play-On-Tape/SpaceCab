@@ -87,3 +87,16 @@ bool isTileSolid(uint8_t tileType) {
   }
   
 }
+
+
+const char * getLevelName(uint8_t index)
+{
+	return reinterpret_cast<const char *>(pgm_read_ptr(&levelNames[index]));
+}
+
+const __FlashStringHelper * getLevelName(Level *level) {
+
+  const uint8_t levelNumber = level->getLevelNumber() - 1;
+  return reinterpret_cast<const __FlashStringHelper*>(getLevelName(levelNumber));
+
+}
