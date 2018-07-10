@@ -44,8 +44,9 @@
 - [SH 2018-07-07] ~~When going back to the Title screen, the number on the sign disappears.~~
 - [SH 2018-07-10] ~~Fixed HUD issue on level 2.~~
 - Prevent fuel going down while refuelling.  Not sure if this is actually fixed.
-- The life counter goes to 9 after getting to 0
-- sometimes the gate1 doesn’t open even when the required money is there ( that issue will not be one if we change it to number of customer to complete a level.)
+- The life counter sometimes starts at 0 and then goes to nine when we lose a life, and does it infinitely so can't be gameOver, no idea what causes that.
+- Even when the customer says TO GATE, you can still deliver him to a numbered destination and have money. A fix for that could be to make the GATE a destination like the sign? and going thru the gate with the customer doesn't give money right now ( i think )
+- Player spawn point for level 3 and 4 isn't right. Need to find an easier way to knwo which offset to use or maybe use the same way we position the customers? that would make it easier for me when i design and add new levels.
 
 
 ## Before going live:
