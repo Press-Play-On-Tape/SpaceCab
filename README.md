@@ -6,12 +6,19 @@
 - [SH 2018-07-07] ~~Add next level functionality.~~
 - [SH 2018-07-05] ~~Change fuel functionality to only allow X units of fuel.~~
 - [SH 2018-07-07] ~~Add the deployment of a ramp to actually let the customer get in the cab, would need to deploy it before landing. While the ramp is deployed without a customer in the cab, the thrusters should not be used at all. That way the player can't just have the ramp deployed at all times.~~
-- Make it so that after a certain amount of customers, the last one will ask you to go to the GATE (next level) and in the next level you still need to get that customer to a random destination. **I am going to close this one.  Customers tell you to go to the gate but then you start the new level fresh.  Too complex to add a message 'Go to Gate' followed by another message 'Go to 1' and the level introduction.**
+- Make it so that after a certain amount of customers, the last one will ask you to go to the GATE (next level) and in the next level you still need to get that customer to a random destination. 
+- Check for space savings by removing sound.
+- Check for space savings by compressing some images.
+
+**I am going to close this one.  Customers tell you to go to the gate but then you start the new level fresh.  Too complex to add a message 'Go to Gate' followed by another message 'Go to 1' and the level introduction.**
 
 ## Enhancements:
 
 - [SH 2018-07-05] ~~Make the boot logo stay visible a little longer.~~
 - Review the arrows – stay with lines or move to a single graphic.  My preference is the lines.
+
+**I am going to close this one. **
+
 - [SC 2018-07-05] ~~Design a better ‘Goto ‘ graphic. And made it's position relative to the player~~
 - [SC 2018-07-04] ~~Add detection when crashing into spikes.~~
 - [SC 2018-07-08] ~~Add crash to bottom of screen when fuel runs out.~~
