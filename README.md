@@ -27,6 +27,7 @@
 - [SH 2018-07-10] ~~Change go to gate logic so last fare says 'Go to gate' and gate opens.~~
 - [SH 2018-07-10] ~~Prevent fuel going down while refuelling.~~
 - [SH 2018-07-10] ~~Fare descreases as soon as customer calls for the cab.~~
+- [SH 2018-07-10] ~~Update 'drop off' to ensure player is landed and within 8 - 16 pixels of sign.~~
 
 
 ## Bugs:
