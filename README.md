@@ -26,7 +26,7 @@
 - [SH 2018-07-10] ~~Change logic to count number of fares (not dollars) before next level.~~
 - [SH 2018-07-10] ~~Change go to gate logic so last fare says 'Go to gate' and gate opens.~~
 - [SH 2018-07-10] ~~Prevent fuel going down while refuelling.~~
-- [SH 2018-07-10] ~~Fare descreases as soon as customer calls for the cab.~~
+- [SH 2018-07-10] ~~Fare decreases as soon as customer calls for the cab.~~
 - [SH 2018-07-10] ~~Update 'drop off' to ensure player is landed and within 8 - 16 pixels of sign.~~
 
 
@@ -35,6 +35,9 @@
 - [SH 2018-07-05] ~~Thrusters are still not showing up on the title screen~~
 - [SH 2018-07-05] ~~On highscore screen when entering a name pressing down goes to letter j not Z.~~
 - [SH 2018-07-07] ~~When going back to the Title screen, the number on the sign disappears.~~
+- [SH 2018-07-10] ~~Fixed HUD issue on level 2.~~
+- Prevent fuel going down while refuelling.  Not sure if this is actually fixed.
+
 
 ## Before going live:
 
