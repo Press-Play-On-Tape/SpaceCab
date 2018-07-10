@@ -55,7 +55,7 @@ static const uint16_t FARE_MIN                    = 10;
 static const uint16_t FARE_MAX                    = 20;
 
 static const uint8_t CUSTOMER_NO_STARTING_POS     = 255;
-static const uint8_t CUSTOMER_PICKUP_RANGE        = 16;
+static const uint8_t CUSTOMER_PICKUP_RANGE        = 8;
 
 static const uint8_t GOTO_COUNTER_MAX             = 120;
 static const uint8_t OUCH_COUNTER_MAX             = 120;

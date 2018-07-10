@@ -23,11 +23,15 @@ struct Level {
     uint16_t _width = 0;
     uint16_t _heightInTiles = 0;
     uint16_t _widthInTiles = 0;
-    Fuel *_fuels[FUEL_TILES_MAX];
     uint8_t _levelData[256];
     bool _openGates;
     uint8_t _faresRequired;
 
+    Fuel _fuel0;
+    Fuel _fuel1;
+    Fuel _fuel2;
+    Fuel _fuel3;
+    Fuel _fuel4;
 
     Gate _gate0;
     Gate _gate1;
@@ -35,16 +39,13 @@ struct Level {
     Gate _gate3;
     Gate _gate4;
 
+    Fuel *_fuels[FUEL_TILES_MAX] = { &_fuel0, &_fuel1, &_fuel2, &_fuel3, &_fuel4 };
     Gate *_gates[GATE_TILES_MAX] = { &_gate0, &_gate1, &_gate2, &_gate3, &_gate4 };
 
 
   public:
 
-    Level(Fuel* fuels[]) {
-      
-      for (uint8_t x = 0 ; x < FUEL_TILES_MAX; x++) {
-        _fuels[x] = fuels[x];
-      }
+    Level() {
       
       for (uint8_t x = 0 ; x < GATE_TILES_MAX; x++) {
         _gates[x]->setActive(false);

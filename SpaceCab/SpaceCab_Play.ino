@@ -192,6 +192,8 @@ void checkCollisionWithCustomer(Level *level, Player *player, Customer *customer
 
 void checkCollisionWithLevelElements(Level *level, Player *player, Customer *customer) {
 
+  player->setFuelling(false);
+
   uint8_t tileAlreadyTested[TILE_COUNT];
 
   for (uint8_t i = 0; i < TILE_COUNT; i++)  tileAlreadyTested[i] = 0;
@@ -257,6 +259,7 @@ void checkCollisionWithLevelElements_TestElement(Level *level, Player *player, C
         Fuel *fuel = level->getFuel(x, y);
         if (fuel->getFuelLeft() > 0 && player->getFuel() < PLAYER_FUEL_MAX) {
           player->incFuel();
+          player->setFuelling(true);
           fuel->decFuel();
         }
       }
@@ -303,7 +306,7 @@ void updateStatus(Player *player, Customer *customer) {
 
   // Burn fuel ..
 
-  if (player->getStatus() == PlayerStatus::Active && arduboy.everyXFrames(15)) {
+  if (!player->isFuelling() && player->getStatus() == PlayerStatus::Active && arduboy.everyXFrames(15)) {
 
     player->decFuel();
 
@@ -343,9 +346,12 @@ void updateStatus(Player *player, Customer *customer) {
   }
 
 
-  // Update fare if carrying a passenger ..
+  // // Update fare if carrying a passenger ..
 
-  if (player->isCarryingCustomer()) {
+  // if (player->isCarryingCustomer()) {
+
+
+    // Decrease fare ..
 
     if (arduboy.everyXFrames(FARE_X_FRAMES)) {
 
@@ -358,7 +364,7 @@ void updateStatus(Player *player, Customer *customer) {
 
     }
 
-  }
+  // }
 
 }
 

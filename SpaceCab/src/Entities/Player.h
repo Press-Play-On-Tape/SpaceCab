@@ -20,13 +20,14 @@ struct Player {
     uint8_t _retractLandgingGear = 0; // Counter when moving up.
     uint16_t _fuel = 0;
     uint16_t _score = 0;
+    uint8_t _numberOfLives = 0;
+    PlayerStatus _status;
+    uint8_t _faresCompleted;
     bool _carryingCustomer = false;
     bool _landingGearDown = false;
     bool _justLanded = true;
     bool _pickingUpCustomer = false;
-    uint8_t _numberOfLives = 0;
-    PlayerStatus _status;
-    uint8_t _faresCompleted;
+    bool _isFuelling = false;
 
   public:
 
@@ -42,6 +43,7 @@ struct Player {
     bool isLandingGearDown()                    { return _landingGearDown; }
     bool hasJustLanded()                        { return _justLanded; }
     bool getPickingUpCustomer()                 { return _pickingUpCustomer; }
+    bool isFuelling()                           { return _isFuelling; }
     PlayerStatus getStatus()                    { return _status; }
     uint8_t getRetractLandingGear()             { return _retractLandgingGear; }
     uint8_t getFaresCompleted()                 { return _faresCompleted; }
@@ -58,6 +60,7 @@ struct Player {
     void setLandingGearDown(bool val)           { _landingGearDown = val; }
     void setJustLanded(bool val)                { _justLanded = val; }
     void setPickingUpCustomer(bool val)         { _pickingUpCustomer = val; }
+    void setFuelling(bool val)                  { _isFuelling = val; }
     void setStatus(PlayerStatus val)            { _status = val; }
     void setRetractLandingGear(int8_t val)      { _retractLandgingGear = val; }
     void setFaresCompleted(int8_t val)          { _faresCompleted = val; }
@@ -201,6 +204,7 @@ struct Player {
       _landingGearDown = true;
       _justLanded = true;
       _pickingUpCustomer = false;
+      _isFuelling = false;
       _status = PlayerStatus::Active;
       _faresCompleted = 0;
 

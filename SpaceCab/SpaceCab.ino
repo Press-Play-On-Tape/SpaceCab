@@ -41,14 +41,7 @@ uint8_t bootCounter = 50;
 uint8_t gotoCounter = 0;
 uint8_t ouchCounter = 0;
 
-Fuel fuel0;
-Fuel fuel1;
-Fuel fuel2;
-Fuel fuel3;
-Fuel fuel4;
-
-Fuel *fuels[] = { &fuel0, &fuel1, &fuel2, &fuel3, &fuel4 };
-Level level(fuels);
+Level level;
 
 
 //------------------------------------------------------------------------------
