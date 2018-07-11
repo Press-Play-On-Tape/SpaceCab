@@ -207,11 +207,148 @@ const uint8_t PROGMEM level5EndingPositions[2] = {
 1, 3,
 };
 
-static const uint8_t MAX_NUMBER_OF_LEVELS       = 5;
-const uint8_t *levelMaps[] =                    { level0Map, level1Map, level2Map, level3Map, level4Map, level5Map };
-const uint8_t *levelStartingPositions[] =       { level0StartingPositions, level1StartingPositions, level2StartingPositions, level3StartingPositions, level4StartingPositions, level5StartingPositions };
-const uint8_t *levelEndingPositions[] =         { level0EndingPositions, level1EndingPositions, level2EndingPositions, level3EndingPositions, level4EndingPositions, level5EndingPositions };
-// const uint8_t levelPositionsCount[] =           { 2, 6, 4, 4, 4, 1 }; 
+//-------------------------------------------------------------------------------------
+// Level 6 ..
+//-------------------------------------------------------------------------------------
+
+#define LEVEL_6_WIDTH   34
+#define LEVEL_6_HEIGHT  15
+
+const unsigned char PROGMEM level6Map[LEVEL_6_HEIGHT * LEVEL_6_WIDTH / 2] = {
+
+101	,	85	,	86	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,
+96	,	0	,	6	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,
+208	,	0	,	13	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,
+0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	170	,	170	,	74	,	170	,	0	,
+0	,	0	,	0	,	0	,	0	,	0	,	194	,	34	,	34	,	76	,	0	,	0	,	17	,	17	,	17	,	17	,	0	,
+0	,	0	,	0	,	0	,	0	,	12	,	204	,	204	,	204	,	204	,	192	,	0	,	8	,	136	,	136	,	128	,	0	,
+0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	136	,	136	,	0	,	0	,
+164	,	170	,	160	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,
+17	,	17	,	16	,	0	,	0	,	10	,	10	,	170	,	74	,	170	,	160	,	0	,	0	,	0	,	0	,	0	,	0	,
+136	,	136	,	0	,	0	,	0	,	8	,	136	,	136	,	136	,	136	,	128	,	0	,	0	,	0	,	0	,	0	,	0	,
+136	,	128	,	0	,	0	,	0	,	0	,	136	,	136	,	136	,	136	,	0	,	0	,	0	,	171	,	170	,	0	,	0	,
+128	,	128	,	0	,	0	,	0	,	0	,	8	,	0	,	0	,	128	,	0	,	0	,	0	,	17	,	17	,	0	,	0	,
+131	,	131	,	51	,	51	,	51	,	51	,	56	,	51	,	51	,	131	,	51	,	51	,	51	,	136	,	136	,	51	,	51	,
+128	,	128	,	0	,	0	,	0	,	0	,	8	,	0	,	0	,	128	,	0	,	0	,	0	,	128	,	8	,	0	,	0	,
+142	,	142	,	238	,	238	,	238	,	238	,	232	,	238	,	238	,	142	,	238	,	238	,	238	,	142	,	232	,	238	,	238	,
+};
+
+const uint8_t PROGMEM level6StartingPositions[8] = {
+0, 8,    17, 4,    15, 8,    29,3,
+};
+
+const uint8_t PROGMEM level6EndingPositions[8] = {
+1, 8,    18, 4,    16, 8,    28,3,
+};
+
+//-------------------------------------------------------------------------------------
+// Level 7 ..
+//-------------------------------------------------------------------------------------
+
+#define LEVEL_7_WIDTH   34
+#define LEVEL_7_HEIGHT  15
+
+const unsigned char PROGMEM level7Map[LEVEL_7_HEIGHT * LEVEL_7_WIDTH / 2] = {
+
+102	,	102	,	102	,	102	,	101	,	85	,	86	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,
+0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	10	,	0	,
+0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	168	,	0	,
+0	,	0	,	10	,	0	,	0	,	0	,	0	,	10	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	24	,	170	,
+0	,	0	,	1	,	0	,	0	,	0	,	0	,	8	,	160	,	0	,	0	,	0	,	0	,	0	,	0	,	8	,	17	,
+0	,	0	,	8	,	170	,	0	,	0	,	0	,	8	,	16	,	0	,	0	,	0	,	0	,	170	,	170	,	72	,	0	,
+0	,	10	,	168	,	17	,	0	,	0	,	10	,	168	,	170	,	160	,	0	,	0	,	0	,	17	,	17	,	24	,	0	,
+0	,	1	,	24	,	0	,	0	,	0	,	1	,	24	,	17	,	16	,	0	,	0	,	0	,	0	,	0	,	8	,	0	,
+0	,	0	,	8	,	0	,	0	,	0	,	0	,	8	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	8	,	170	,
+0	,	0	,	8	,	74	,	170	,	0	,	170	,	168	,	0	,	0	,	0	,	0	,	0	,	0	,	171	,	168	,	17	,
+10	,	170	,	72	,	17	,	17	,	0	,	17	,	24	,	74	,	170	,	160	,	0	,	0	,	0	,	17	,	24	,	0	,
+1	,	17	,	24	,	0	,	0	,	0	,	0	,	8	,	17	,	17	,	16	,	0	,	0	,	0	,	0	,	8	,	0	,
+0	,	0	,	8	,	0	,	0	,	0	,	0	,	8	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	8	,	0	,
+170	,	170	,	168	,	170	,	170	,	170	,	170	,	168	,	170	,	170	,	170	,	170	,	170	,	170	,	170	,	168	,	170	,
+102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,
+};
+
+const uint8_t PROGMEM level7StartingPositions[8] = {
+3, 10,    7, 9,    17, 10,    29, 5,
+};
+
+const uint8_t PROGMEM level7EndingPositions[8] = {
+4, 10,    6, 9,    16, 10,    30, 5,
+};
+
+//-------------------------------------------------------------------------------------
+// Level 8 ..
+//-------------------------------------------------------------------------------------
+
+#define LEVEL_8_WIDTH   34
+#define LEVEL_8_HEIGHT  15
+
+const unsigned char PROGMEM level8Map[LEVEL_8_HEIGHT * LEVEL_8_WIDTH / 2] = {
+
+102	,	102	,	102	,	102	,	102	,	102	,	102	,	101	,	85	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,
+96	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	6	,	102	,	102	,	102	,	102	,	102	,
+96	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	102	,	102	,	102	,	102	,	102	,
+100	,	34	,	34	,	32	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	102	,	102	,
+102	,	102	,	102	,	96	,	0	,	0	,	192	,	0	,	0	,	192	,	0	,	0	,	0	,	0	,	0	,	0	,	102	,
+109	,	221	,	221	,	208	,	0	,	0	,	12	,	0	,	12	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	6	,
+96	,	0	,	0	,	0	,	0	,	0	,	204	,	204	,	204	,	192	,	0	,	0	,	0	,	0	,	0	,	0	,	6	,
+96	,	0	,	0	,	0	,	0	,	12	,	192	,	204	,	192	,	204	,	0	,	0	,	4	,	34	,	34	,	0	,	6	,
+98	,	178	,	0	,	0	,	0	,	204	,	204	,	204	,	204	,	204	,	192	,	0	,	6	,	102	,	102	,	0	,	6	,
+102	,	102	,	0	,	6	,	0	,	192	,	204	,	204	,	204	,	192	,	192	,	0	,	6	,	221	,	221	,	0	,	6	,
+109	,	221	,	0	,	6	,	0	,	192	,	192	,	0	,	0	,	192	,	192	,	0	,	6	,	0	,	0	,	0	,	6	,
+96	,	0	,	0	,	6	,	0	,	0	,	12	,	192	,	204	,	0	,	0	,	0	,	102	,	0	,	0	,	0	,	6	,
+96	,	0	,	0	,	6	,	96	,	0	,	0	,	0	,	0	,	0	,	0	,	102	,	102	,	0	,	0	,	0	,	6	,
+98	,	66	,	34	,	38	,	102	,	34	,	34	,	34	,	34	,	34	,	38	,	102	,	102	,	36	,	34	,	34	,	38	,
+102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,	102	,
+};
+
+const uint8_t PROGMEM level8StartingPositions[8] = {
+2, 3,    1, 13,    26, 7,    28, 13,
+};
+
+const uint8_t PROGMEM level8EndingPositions[8] = {
+1, 3,    2, 13,    25, 7,    27, 13,
+};
+
+//-------------------------------------------------------------------------------------
+// Level 9 ..
+//-------------------------------------------------------------------------------------
+
+#define LEVEL_9_WIDTH   34
+#define LEVEL_9_HEIGHT  15
+
+const unsigned char PROGMEM level9Map[LEVEL_9_HEIGHT * LEVEL_9_WIDTH / 2] = {
+
+136	,	136	,	136	,	136	,	136	,	136	,	136	,	136	,	136	,	136	,	136	,	136	,	136	,	136	,	133	,	85	,	88	,
+136	,	221	,	221	,	128	,	0	,	0	,	0	,	0	,	131	,	51	,	51	,	51	,	51	,	56	,	128	,	0	,	8	,
+141	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	8	,	136	,	136	,	136	,	136	,	136	,	128	,	0	,	8	,
+128	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	8	,	128	,	0	,	8	,
+128	,	0	,	0	,	160	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	8	,
+128	,	0	,	10	,	138	,	0	,	4	,	170	,	160	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	168	,
+128	,	0	,	8	,	136	,	0	,	1	,	17	,	16	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,	136	,
+128	,	0	,	8	,	136	,	0	,	8	,	136	,	128	,	0	,	0	,	0	,	0	,	170	,	170	,	164	,	170	,	136	,
+138	,	0	,	0	,	136	,	160	,	13	,	221	,	208	,	0	,	160	,	0	,	0	,	17	,	17	,	17	,	17	,	136	,
+136	,	0	,	0	,	8	,	128	,	0	,	0	,	0	,	0	,	128	,	0	,	0	,	136	,	136	,	136	,	136	,	136	,
+136	,	0	,	0	,	8	,	128	,	0	,	0	,	0	,	0	,	128	,	0	,	0	,	221	,	221	,	221	,	216	,	136	,
+136	,	0	,	0	,	8	,	134	,	0	,	0	,	0	,	0	,	138	,	0	,	0	,	0	,	0	,	0	,	0	,	136	,
+136	,	0	,	0	,	8	,	134	,	43	,	32	,	0	,	0	,	136	,	0	,	0	,	0	,	0	,	0	,	0	,	136	,
+136	,	170	,	170	,	72	,	134	,	102	,	106	,	170	,	170	,	136	,	170	,	170	,	170	,	164	,	170	,	168	,	136	,
+136	,	136	,	136	,	136	,	136	,	136	,	136	,	136	,	136	,	136	,	136	,	136	,	136	,	136	,	136	,	136	,	136	,
+};
+
+const uint8_t PROGMEM level9StartingPositions[8] = {
+5, 13,    12, 5,    26, 13,    28, 7,
+};
+
+const uint8_t PROGMEM level9EndingPositions[8] = {
+6, 13,    11, 5,    27, 13,    29, 7,
+};
+
+
+static const uint8_t MAX_NUMBER_OF_LEVELS       = 9;
+const uint8_t *levelMaps[] =                    { level0Map, level1Map, level2Map, level3Map, level4Map, level5Map, level6Map, level7Map, level8Map, level9Map };
+const uint8_t *levelStartingPositions[] =       { level0StartingPositions, level1StartingPositions, level2StartingPositions, level3StartingPositions, level4StartingPositions, level5StartingPositions, level6StartingPositions, level7StartingPositions, level8StartingPositions, level9StartingPositions };
+const uint8_t *levelEndingPositions[] =         { level0EndingPositions, level1EndingPositions, level2EndingPositions, level3EndingPositions, level4EndingPositions, level5EndingPositions, level6EndingPositions, level7EndingPositions, level8EndingPositions, level9EndingPositions };
+// const uint8_t levelPositionsCount[] =           { 2, 6, 4, 4, 4, 1, 4, 4, 4, 4 }; 
 
 const int8_t levelInit[] = { 
 
@@ -223,6 +360,10 @@ const int8_t levelInit[] = {
   LEVEL_3_WIDTH, LEVEL_3_HEIGHT,     -22,      -72,     22,     29,     2,        10,         4,
   LEVEL_4_WIDTH, LEVEL_4_HEIGHT,     -54,      -56,     56,     45,     2,        12,         4,
   LEVEL_5_WIDTH, LEVEL_5_HEIGHT,     -54,      -56,     56,     45,     0,        16,         1,
+  LEVEL_6_WIDTH, LEVEL_6_HEIGHT,     -54,      -56,     56,     45,     2,        10,         4,
+  LEVEL_7_WIDTH, LEVEL_7_HEIGHT,     -54,      -56,     56,     45,     2,        16,         4,
+  LEVEL_8_WIDTH, LEVEL_8_HEIGHT,     -54,      -56,     56,     45,     2,        10,         4,
+  LEVEL_9_WIDTH, LEVEL_9_HEIGHT,     -54,      -56,     56,     45,     4,        16,         4,
 };
 
 
@@ -231,11 +372,19 @@ char const levelName2[] PROGMEM = "Golden Arches";
 char const levelName3[] PROGMEM = "Shipwreck Rarr";
 char const levelName4[] PROGMEM = "At The Beach";
 char const levelName5[] PROGMEM = "Got Spikes?";
+char const levelName6[] PROGMEM = "Floating Islands";
+char const levelName7[] PROGMEM = "The Forest";
+char const levelName8[] PROGMEM = "Friendly Invader";
+char const levelName9[] PROGMEM = "Rock and Fly";
 
 char const * const levelNames[] PROGMEM = {
   levelName1,
   levelName2,
   levelName3,
   levelName4,
-  levelName5
+  levelName5,
+  levelName6,
+  levelName7,
+  levelName8,
+  levelName9
 };
