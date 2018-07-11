@@ -16,10 +16,7 @@
 ## Enhancements:
 
 - [SH 2018-07-05] ~~Make the boot logo stay visible a little longer.~~
-- Review the arrows – stay with lines or move to a single graphic.  My preference is the lines.
-
-**I am going to close this one. **
-
+- [SH 2018-07-11] ~~Review the arrows – stay with lines or move to a single graphic.  My preference is the lines. **I am going to close this one.**~~
 - [SC 2018-07-05] ~~Design a better ‘Goto ‘ graphic. And made it's position relative to the player~~
 - [SC 2018-07-04] ~~Add detection when crashing into spikes.~~
 - [SC 2018-07-08] ~~Add crash to bottom of screen when fuel runs out.~~
@@ -45,7 +42,9 @@
 - [SH 2018-07-05] ~~On highscore screen when entering a name pressing down goes to letter j not Z.~~
 - [SH 2018-07-07] ~~When going back to the Title screen, the number on the sign disappears.~~
 - [SH 2018-07-10] ~~Fixed HUD issue on level 2.~~
-- Prevent fuel going down while refuelling.  Not sure if this is actually fixed. **(SC 2018-07-10 : not fixed yet)**
+- [SH 2018-07-10] ~~Prevent fuel going down while refuelling.  Not sure if this is actually fixed. 
+   **[SC 2018-07-10] Not fixed yet!**
+   [SH 2018-07-10] Fixed properly this time.~~
 - The life counter sometimes starts at 0 and then goes to nine when we lose a life, and does it infinitely so can't be gameOver, no idea what causes that.
 **This only occurs when you simply fly off the screen on the intro and do not carry a passenger.  Will fix with intro**
 - Even when the customer says TO GATE, you can still deliver him to a numbered destination and have money. A fix for that could be to make the GATE a destination like the sign? and going thru the gate with the customer doesn't give money right now ( i think )
@@ -56,4 +55,5 @@
 ## Before going live:
 
 - Confirm number of levels (MAX_NUMBER_OF_LEVELS)
-- Confirm score to achieve in each level. **(SC 2018-07-10 : it will be a number of customer requirement, some level will have only 1, for exemple in level 5 you only have to get 1 customer to the gate from the start, but the level is a hard one, so faster you can do it, the more money you get, but it's hard.**
+- Confirm score to achieve in each level. 
+  **[SC 2018-07-10] : it will be a number of customer requirement, some level will have only 1, for exemple in level 5 you only have to get 1 customer to the gate from the start, but the level is a hard one, so faster you can do it, the more money you get, but it's hard.**
