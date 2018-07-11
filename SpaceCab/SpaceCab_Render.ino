@@ -2,8 +2,6 @@
 
 
 void drawLevel(Level &level) {
-
-//  const uint8_t *levelMap = levelMaps[level.getLevelNumber()];
   
   for (uint8_t y = 0; y < level.getHeightInTiles(); y++) {
 
@@ -18,7 +16,7 @@ void drawLevel(Level &level) {
       if (bitmapX < -8 || bitmapX >= WIDTH || bitmapY < -8 || bitmapY >= HEIGHT)
         continue;
 
-      uint8_t tile = level.getLevelData(x, y);// pgm_read_byte(&levelMap[(y * level.getWidthInTiles()) + x]);
+      uint8_t tile = level.getLevelData(x, y);
 
       switch (tile) {
 
@@ -366,13 +364,15 @@ void customerDisplay(Level &level, Player &player, Customer &customer) {
 
 void drawLevelStart(Font4x6 &font4x6, Level &level) {
 
-  drawStarfield();
-  blackScanlines();
+  if (!starsInitialised) initialiseStars();
 
-  arduboy.fillRect(18, 23, 94, 16, BLACK);
+  updateStarfield();
+  drawStarfield();
+//  blackScanlines();
+
+  arduboy.fillRect(18, 23, 94, 17, BLACK);
   arduboy.drawFastHLine(19, 25, 92, WHITE);
   arduboy.drawFastHLine(19, 38, 92, WHITE);
-  arduboy.drawFastHLine(19, 39, 92, BLACK);
 
   font4x6.setCursor(22 + level.getLevelNameOffset(), 28);
   font4x6.print(getLevelName(level));

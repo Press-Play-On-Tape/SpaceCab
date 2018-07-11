@@ -180,7 +180,6 @@ void checkCollisionWithCustomer(Level &level, Player &player, Customer &customer
 //  Handle collisions with level elements ..
 //------------------------------------------------------------------------------
 
-//void checkCollisionWithLevelElements(Level &level, Player &player, Customer &customer) {
 void checkCollisionWithLevelElements(Level &level, Player &player) {
 
   player.setFuelling(false);
@@ -198,19 +197,19 @@ void checkCollisionWithLevelElements(Level &level, Player &player) {
   uint8_t tileY1 = (playerYPosition / 8);
   uint8_t tileY2 = (playerYPosition / 8) + 1;
 
-  uint8_t tile = level.getLevelData(tileX1, tileY1);// pgm_read_byte(&levelMap[(tileY1 * level.getWidthInTiles()) + tileX1]);
+  uint8_t tile = level.getLevelData(tileX1, tileY1);
   if (tileAlreadyTested[tile] == 0) {
     checkCollisionWithLevelElements_TestElement(level, player, tileX1, tileY1, tile);
     tileAlreadyTested[tile] = 1;
   }
 
-  tile = level.getLevelData(tileX2, tileY1);// pgm_read_byte(&levelMap[(tileY1 * level.getWidthInTiles()) + tileX2]);
+  tile = level.getLevelData(tileX2, tileY1);
   if (tileAlreadyTested[tile] == 0) {
     checkCollisionWithLevelElements_TestElement(level, player, tileX2, tileY1, tile);
     tileAlreadyTested[tile] = 1;
   }
 
-  tile = level.getLevelData(tileX3, tileY1);// pgm_read_byte(&levelMap[(tileY1 * level.getWidthInTiles()) + tileX3]);
+  tile = level.getLevelData(tileX3, tileY1);
   if (tileAlreadyTested[tile] == 0) {
     checkCollisionWithLevelElements_TestElement(level, player, tileX3, tileY1, tile);
     tileAlreadyTested[tile] = 1;
@@ -218,19 +217,19 @@ void checkCollisionWithLevelElements(Level &level, Player &player) {
 
   if (playerYPosition / 8 != 0) {
 
-    tile = level.getLevelData(tileX1, tileY2);// pgm_read_byte(&levelMap[(tileY2 * level.getWidthInTiles()) + tileX1]);
+    tile = level.getLevelData(tileX1, tileY2);
     if (tileAlreadyTested[tile] == 0) {
       checkCollisionWithLevelElements_TestElement(level, player, tileX1, tileY2, tile);
       tileAlreadyTested[tile] = 1;
     }
 
-    tile = level.getLevelData(tileX2, tileY2);// pgm_read_byte(&levelMap[(tileY2 * level.getWidthInTiles()) + tileX2]);
+    tile = level.getLevelData(tileX2, tileY2);
     if (tileAlreadyTested[tile] == 0) {
       checkCollisionWithLevelElements_TestElement(level, player, tileX2, tileY2, tile);
       tileAlreadyTested[tile] = 1;
     }
 
-    tile = level.getLevelData(tileX3, tileY2);// pgm_read_byte(&levelMap[(tileY2 * level.getWidthInTiles()) + tileX3]);
+    tile = level.getLevelData(tileX3, tileY2);
     if (tileAlreadyTested[tile] == 0) {
       checkCollisionWithLevelElements_TestElement(level, player, tileX3, tileY2, tile);
       tileAlreadyTested[tile] = 1;
@@ -240,17 +239,16 @@ void checkCollisionWithLevelElements(Level &level, Player &player) {
 
 }
 
-//void checkCollisionWithLevelElements_TestElement(Level &level, Player &player, Customer &customer, uint8_t x, uint8_t y, uint8_t element) {
-void checkCollisionWithLevelElements_TestElement(Level &level, Player &player, uint8_t x, uint8_t y, uint8_t element) {
+void checkCollisionWithLevelElements_TestElement(Level &level, Player &player, uint8_t x, uint8_t y, uint8_t tile) {
 
-  switch (element) {
+  switch (tile) {
 
     case FUEL1:
+      player.setFuelling(true);
       if (arduboy.getFrameCount(4) == 0) {
         Fuel *fuel = level.getFuel(x, y);
         if (fuel->getFuelLeft() > 0 && player.getFuel() < PLAYER_FUEL_MAX) {
           player.incFuel();
-          player.setFuelling(true);
           fuel->decFuel();
         }
       }
@@ -267,7 +265,7 @@ void checkCollisionWithLevelElements_TestElement(Level &level, Player &player, u
 
   if (!player.isLandingGearDown() && player.getYDelta() > 0) {
 
-    if (isTileSolid(element)) {
+    if (isTileSolid(tile)) {
 
       player.setStatus(PlayerStatus::OutOfFuel_Max);
 
@@ -279,7 +277,6 @@ void checkCollisionWithLevelElements_TestElement(Level &level, Player &player, u
 
 void updateStatus(Player &player, Customer &customer) {
 
-
   // Burn fuel ..
 
   if (!player.isFuelling() && player.getStatus() == PlayerStatus::Active && arduboy.everyXFrames(15)) {
@@ -288,7 +285,6 @@ void updateStatus(Player &player, Customer &customer) {
 
     if (player.getFuel() == 0) {
 
-//       player.setStatus(PlayerStatus::OutOfFuel_Max);
        player.setLandingGearDown(false);
 
     }
@@ -322,25 +318,18 @@ void updateStatus(Player &player, Customer &customer) {
   }
 
 
-  // // Update fare if carrying a passenger ..
+  // Decrease fare ..
 
-  // if (player.isCarryingCustomer()) {
+  if (arduboy.everyXFrames(FARE_X_FRAMES)) {
 
+    fareCount++;
 
-    // Decrease fare ..
-
-    if (arduboy.everyXFrames(FARE_X_FRAMES)) {
-
-      fareCount++;
-
-      if (fareCount > FARE_COUNT) {
-        fareCount = 0;
-        customer.decFare();
-      }
-
+    if (fareCount > FARE_COUNT) {
+      fareCount = 0;
+      customer.decFare();
     }
 
-  // }
+  }
 
 }
 
@@ -373,7 +362,6 @@ void inGame(Font4x6 &font4x6, Level &level, Player &player, Customer &customer) 
   
     handleInput(player);
     checkCollisionWithCustomer(level, player, customer);
-//    checkCollisionWithLevelElements(level, player, customer);
     checkCollisionWithLevelElements(level, player);
 
   }
