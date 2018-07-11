@@ -6,8 +6,8 @@
 - [SH 2018-07-07] ~~Add next level functionality.~~
 - [SH 2018-07-05] ~~Change fuel functionality to only allow X units of fuel.~~
 - [SH 2018-07-07] ~~Add the deployment of a ramp to actually let the customer get in the cab, would need to deploy it before landing. While the ramp is deployed without a customer in the cab, the thrusters should not be used at all. That way the player can't just have the ramp deployed at all times.~~
-- [SH 2018-07-11]~~Make it so that after a certain amount of customers, the last one will ask you to go to the GATE (next level) and in the next level you still need to get that customer to a random destination. 
-  - **I am going to close this one.  Customers tell you to go to the gate but then you start the new level fresh.  Too complex to add a message 'Go to Gate' followed by another message 'Go to 1' and the level introduction.**~~
+- [SH 2018-07-11]~~Make it so that after a certain amount of customers, the last one will ask you to go to the GATE (next level) and in the next level you still need to get that customer to a random destination.~~ 
+  - ~~**I am going to close this one.  Customers tell you to go to the gate but then you start the new level fresh.  Too complex to add a message 'Go to Gate' followed by another message 'Go to 1' and the level introduction.**~~
 - Check for space savings by removing sound.
 - Check for space savings by compressing some images.
 
@@ -16,7 +16,8 @@
 ## Enhancements:
 
 - [SH 2018-07-05] ~~Make the boot logo stay visible a little longer.~~
-- [SH 2018-07-11] ~~Review the arrows – stay with lines or move to a single graphic.  My preference is the lines. **I am going to close this one.**~~
+- [SH 2018-07-11] ~~Review the arrows – stay with lines or move to a single graphic.  My preference is the lines.~~ 
+  - ~~I am going to close this one.~~
 - [SC 2018-07-05] ~~Design a better ‘Goto ‘ graphic. And made it's position relative to the player~~
 - [SC 2018-07-04] ~~Add detection when crashing into spikes.~~
 - [SC 2018-07-08] ~~Add crash to bottom of screen when fuel runs out.~~
@@ -42,9 +43,9 @@
 - [SH 2018-07-05] ~~On highscore screen when entering a name pressing down goes to letter j not Z.~~
 - [SH 2018-07-07] ~~When going back to the Title screen, the number on the sign disappears.~~
 - [SH 2018-07-10] ~~Fixed HUD issue on level 2.~~
-- [SH 2018-07-10] ~~Prevent fuel going down while refuelling.  Not sure if this is actually fixed. 
-  - **[SC 2018-07-10] Not fixed yet!**
-  - [SH 2018-07-10] Fixed properly this time.~~
+- [SH 2018-07-10] ~~Prevent fuel going down while refuelling.  Not sure if this is actually fixed.~~ 
+  - ~~[SC 2018-07-10] Not fixed yet!~~
+  - ~~[SH 2018-07-11] Fixed properly this time.~~
 - The life counter sometimes starts at 0 and then goes to nine when we lose a life, and does it infinitely so can't be gameOver, no idea what causes that.
   - **This only occurs when you simply fly off the screen on the intro and do not carry a passenger.  Will fix with intro**
 - Even when the customer says TO GATE, you can still deliver him to a numbered destination and have money. A fix for that could be to make the GATE a destination like the sign? and going thru the gate with the customer doesn't give money right now ( i think )
