@@ -10,6 +10,8 @@
   - ~~**I am going to close this one.  Customers tell you to go to the gate but then you start the new level fresh.  Too complex to add a message 'Go to Gate' followed by another message 'Go to 1' and the level introduction.**~~
 - Check for space savings by removing sound.
 - Check for space savings by compressing some images.
+- Make it so that the number of fare (completed) is kept when crashing in a level. We only need to reset the number of fare when entering a new level. If we don't make that change, that means that someone could make lots of point just remaining in level 1 and crashing when out of fuel.
+- Use the current starfield with level name as a transition screen instead of using it when we spawn after a crash (more like in Space Taxi)
 
 
 
