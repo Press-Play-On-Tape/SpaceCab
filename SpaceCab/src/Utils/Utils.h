@@ -39,7 +39,7 @@ void initGame(Player &player) {
 void initLevel(Level &level, Player &player, Customer &customer, uint8_t levelNumber) {
 
   level.reset(levelNumber);
-  player.reset(static_cast<SQ15x16>(levelInit[(levelNumber * 7) + 4]), static_cast<SQ15x16>(levelInit[(levelNumber * 7) + 5]));
+  player.reset(static_cast<SQ15x16>(levelInit[(levelNumber * INIT_RECORD_SIZE) + 4]), static_cast<SQ15x16>(levelInit[(levelNumber * INIT_RECORD_SIZE) + 5]));
   customer.setStartingPosition(CUSTOMER_NO_STARTING_POS);
 
 }

@@ -31,7 +31,7 @@ void drawLevel(Level &level) {
 
           if (flashingCounter < (FLASH_MAX / 2)) {
 
-            const uint8_t numberOfPositions = levelPositionsCount[level.getLevelNumber()];
+            const uint8_t numberOfPositions = level.getNumberOfCustomerPositions();
             const uint8_t *levelEndingPosition = levelEndingPositions[level.getLevelNumber()];
 
             for (uint8_t i = 0; i < numberOfPositions; ++i) {
@@ -374,7 +374,7 @@ void drawLevelStart(Font4x6 &font4x6, Level &level) {
   arduboy.drawFastHLine(19, 38, 92, WHITE);
   arduboy.drawFastHLine(19, 39, 92, BLACK);
 
-  font4x6.setCursor(22, 28);
+  font4x6.setCursor(22 + level.getLevelNameOffset(), 28);
   font4x6.print(getLevelName(level));
 
   if (arduboy.justPressed(A_BUTTON)) { 

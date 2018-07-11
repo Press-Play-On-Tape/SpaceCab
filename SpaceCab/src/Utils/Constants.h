@@ -34,7 +34,6 @@
 #define DOLLARS_COUNT_MULT 8
 #define DOLLARS_COUNT_MAX (DOLLARS_COUNT_MULT * 5) - 1 
 
-static const uint8_t MAX_NUMBER_OF_LEVELS         = 4;
 static const uint8_t MAX_NUMBER_OF_SCORES         = 5;
 static const uint8_t DO_NOT_EDIT_SLOT             = 255;
 static const uint8_t GAME_TIME_MAX                = 10;
@@ -64,6 +63,7 @@ static const uint8_t FUEL_TILES_MAX               = 5;
 static const uint8_t GATE_TILES_MAX               = 5;
 static const uint8_t FUEL_MIN                     = 40;
 static const uint8_t FUEL_MAX                     = 80;
+static const uint8_t INIT_RECORD_SIZE             = 9;
 
 enum class GameState : uint8_t {
 

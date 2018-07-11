@@ -237,6 +237,8 @@ void moveCab(Level &level, Player &player, Customer &customer) {
 
       if (player.getY().getInteger() == 0) {
 
+        player.setScore(player.getScore() + customer.getFare());
+
         if (levelNumber == MAX_NUMBER_OF_LEVELS) {
           //TODO End of GameState
           state = GameState::GameOver;

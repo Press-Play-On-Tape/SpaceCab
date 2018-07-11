@@ -103,7 +103,7 @@ void updateTime() {
 
 void launchCustomer(Level &level, Customer &customer, uint8_t defaultStartPosition, uint8_t defaultEndingPosition) {
 
-  const uint8_t numberOfPositions = levelPositionsCount[level.getLevelNumber()];
+  const uint8_t numberOfPositions = level.getNumberOfCustomerPositions();
   uint8_t customerStartingPos = (defaultStartPosition == RANDOM_START_POSITION ? random(numberOfPositions) : defaultStartPosition);
   uint8_t customerDestination = (defaultEndingPosition == RANDOM_END_POSITION ? random(numberOfPositions) : defaultEndingPosition);
 
@@ -115,7 +115,7 @@ void launchCustomer(Level &level, Customer &customer, uint8_t defaultStartPositi
   }
 
 
-  // Make sure the staryting point and destination are different!
+  // Make sure the starting point and destination are different!
 
   while (defaultStartPosition == RANDOM_START_POSITION && customerStartingPos == customerDestination) {
     customerDestination = random(numberOfPositions);
@@ -189,7 +189,6 @@ void checkCollisionWithLevelElements(Level &level, Player &player) {
 
   for (uint8_t i = 0; i < TILE_COUNT; i++)  tileAlreadyTested[i] = 0;
 
-//  const uint8_t * levelMap = levelMaps[level.getLevelNumber()];
   uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay();
   uint16_t playerYPosition = player.getYDisplay() - level.getYOffsetDisplay();
 

@@ -12,7 +12,7 @@
 #define LEVEL_0_WIDTH 16
 #define LEVEL_0_HEIGHT 8
 
-const unsigned char PROGMEM level0Map[LEVEL_0_HEIGHT * LEVEL_0_WIDTH] = {
+const unsigned char PROGMEM level0Map[LEVEL_0_HEIGHT * LEVEL_0_WIDTH / 2] = {
 
 0, 0, 0, 0, 0, 0, 0, 0,
 0, 0, 0, 0, 0, 0, 0, 0,
@@ -22,6 +22,7 @@ const unsigned char PROGMEM level0Map[LEVEL_0_HEIGHT * LEVEL_0_WIDTH] = {
 0, 0, 0, 0, 0, 0, 0, 0,
 0, 10, 170, 170, 170, 164, 160, 0,
 51, 49, 17, 17, 17, 17, 19, 51,
+
 };
 
 const uint8_t PROGMEM level0StartingPositions[4] = {
@@ -206,30 +207,30 @@ const uint8_t PROGMEM level5EndingPositions[2] = {
 1, 3,
 };
 
-
+static const uint8_t MAX_NUMBER_OF_LEVELS       = 5;
 const uint8_t *levelMaps[] =                    { level0Map, level1Map, level2Map, level3Map, level4Map, level5Map };
 const uint8_t *levelStartingPositions[] =       { level0StartingPositions, level1StartingPositions, level2StartingPositions, level3StartingPositions, level4StartingPositions, level5StartingPositions };
 const uint8_t *levelEndingPositions[] =         { level0EndingPositions, level1EndingPositions, level2EndingPositions, level3EndingPositions, level4EndingPositions, level5EndingPositions };
-const uint8_t levelPositionsCount[] =           { 2, 6, 4, 4, 4, 1 }; 
+// const uint8_t levelPositionsCount[] =           { 2, 6, 4, 4, 4, 1 }; 
 
 const int8_t levelInit[] = { 
 
-// Level width   Level Height,   Level     Level     Player  Player   Fares
-//                               X Offset  Y Offset  X Pos   Y Pos   Required
-  LEVEL_0_WIDTH, LEVEL_0_HEIGHT,       0,        0,     28,     45,     0,
-  LEVEL_1_WIDTH, LEVEL_1_HEIGHT,     -54,      -56,     56,     45,     2,
-  LEVEL_2_WIDTH, LEVEL_2_HEIGHT,     -54,      -56,     56,     45,     2,
-  LEVEL_3_WIDTH, LEVEL_3_HEIGHT,     -22,      -72,     22,     29,     2,
-  LEVEL_4_WIDTH, LEVEL_4_HEIGHT,     -54,      -56,     56,     45,     2,
-  LEVEL_5_WIDTH, LEVEL_5_HEIGHT,     -54,      -56,     56,     45,     0,
+// Level width   Level Height,   Level     Level     Player  Player   Fares      Name     Number Of
+//                               X Offset  Y Offset  X Pos   Y Pos   Required   Offset    Positions
+  LEVEL_0_WIDTH, LEVEL_0_HEIGHT,       0,        0,     28,     45,     0,         0,         2,
+  LEVEL_1_WIDTH, LEVEL_1_HEIGHT,     -54,      -56,     56,     45,     2,        16,         6,
+  LEVEL_2_WIDTH, LEVEL_2_HEIGHT,     -54,      -56,     56,     45,     2,        12,         4,
+  LEVEL_3_WIDTH, LEVEL_3_HEIGHT,     -22,      -72,     22,     29,     2,        10,         4,
+  LEVEL_4_WIDTH, LEVEL_4_HEIGHT,     -54,      -56,     56,     45,     2,        12,         4,
+  LEVEL_5_WIDTH, LEVEL_5_HEIGHT,     -54,      -56,     56,     45,     0,        16,         1,
 };
 
 
-char const levelName1[] PROGMEM = "   Underground";
-char const levelName2[] PROGMEM = "  Golden Arches";
-char const levelName3[] PROGMEM = "  Shipwreck Rarr";
-char const levelName4[] PROGMEM = "   At The Beach";
-char const levelName5[] PROGMEM = "    Got Spikes?";
+char const levelName1[] PROGMEM = "Underground";
+char const levelName2[] PROGMEM = "Golden Arches";
+char const levelName3[] PROGMEM = "Shipwreck Rarr";
+char const levelName4[] PROGMEM = "At The Beach";
+char const levelName5[] PROGMEM = "Got Spikes?";
 
 char const * const levelNames[] PROGMEM = {
   levelName1,

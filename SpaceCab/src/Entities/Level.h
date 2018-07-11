@@ -26,6 +26,8 @@ struct Level {
     uint8_t _levelData[256];
     bool _openGates;
     uint8_t _faresRequired;
+    uint8_t _levelNameOffset;
+    uint8_t _numberOfPositions;
 
     Fuel _fuel0;
     Fuel _fuel1;
@@ -62,6 +64,8 @@ struct Level {
     uint16_t getHeightInTiles()               const { return _heightInTiles; }
     uint16_t getWidthInTiles()                const { return _widthInTiles; }
     uint16_t getFaresRequired()               const { return _faresRequired; }
+    uint8_t getLevelNameOffset()              const { return _levelNameOffset; }
+    uint8_t getNumberOfCustomerPositions()    const { return _numberOfPositions; }
 
     Fuel * getFuel(uint8_t idx)               const { return _fuels[idx]; }
 
@@ -123,14 +127,16 @@ struct Level {
       _number = levelNumber; 
       _openGates = false;
 
-      _widthInTiles = levelInit[levelNumber * 7];
-      _heightInTiles = levelInit[(levelNumber * 7) + 1];
+      _widthInTiles = levelInit[levelNumber * INIT_RECORD_SIZE];
+      _heightInTiles = levelInit[(levelNumber * INIT_RECORD_SIZE) + 1];
       _width = _widthInTiles * TILE_SIZE;
       _height = _heightInTiles * TILE_SIZE;
 
-      xOffset = static_cast<SQ15x16>(levelInit[(levelNumber * 7) + 2]);
-      yOffset = static_cast<SQ15x16>(levelInit[(levelNumber * 7) + 3]);
-      _faresRequired = levelInit[(levelNumber * 7) + 6];
+      xOffset = static_cast<SQ15x16>(levelInit[(levelNumber * INIT_RECORD_SIZE) + 2]);
+      yOffset = static_cast<SQ15x16>(levelInit[(levelNumber * INIT_RECORD_SIZE) + 3]);
+      _faresRequired = levelInit[(levelNumber * INIT_RECORD_SIZE) + 6];
+      _levelNameOffset = levelInit[(levelNumber * INIT_RECORD_SIZE) + 7];
+      _numberOfPositions = levelInit[(levelNumber * INIT_RECORD_SIZE) + 8];
 
 
       // Parse level for fuel tiles ..
