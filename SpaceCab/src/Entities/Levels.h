@@ -235,10 +235,10 @@ const uint8_t PROGMEM level8EndingPositions[8] = {
 };
 
 //-------------------------------------------------------------------------------------
-// Level 9 Rock and Fly
+// Level 9 Rock And Fly
 //-------------------------------------------------------------------------------------
 
-char const level9Name[] PROGMEM = "Rock and Fly";
+char const level9Name[] PROGMEM = "Rock And Fly";
 
 #define LEVEL_9_WIDTH   34
 #define LEVEL_9_HEIGHT  15
