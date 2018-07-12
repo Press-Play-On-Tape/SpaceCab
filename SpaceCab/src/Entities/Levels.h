@@ -28,8 +28,10 @@ const uint8_t PROGMEM level0EndingPositions[4] = {
 
 
 //-------------------------------------------------------------------------------------
-// Level 1 ..
+// Level 1 - Underground
 //-------------------------------------------------------------------------------------
+
+char const level1Name[] PROGMEM = "Underground";
 
 #define LEVEL_1_WIDTH   34
 #define LEVEL_1_HEIGHT  15
@@ -52,8 +54,10 @@ const uint8_t PROGMEM level1EndingPositions[12] = {
 
 
 //-------------------------------------------------------------------------------------
-// Level 2 ..
+// Level 2 - Golden Arches
 //-------------------------------------------------------------------------------------
+
+char const level2Name[] PROGMEM = "Golden Arches";
 
 #define LEVEL_2_WIDTH   34
 #define LEVEL_2_HEIGHT  15
@@ -77,8 +81,10 @@ const uint8_t PROGMEM level2EndingPositions[8] = {
 
 
 //-------------------------------------------------------------------------------------
-// Level 3 ..
+// Level 3 Shipwreck Rarr
 //-------------------------------------------------------------------------------------
+
+char const level3Name[] PROGMEM = "Shipwreck Rarr";
 
 #define LEVEL_3_WIDTH   34
 #define LEVEL_3_HEIGHT  15
@@ -100,8 +106,10 @@ const uint8_t PROGMEM level3EndingPositions[8] = {
 
 
 //-------------------------------------------------------------------------------------
-// Level 4 ..
+// Level 4 - At The Beach
 //-------------------------------------------------------------------------------------
+
+char const level4Name[] PROGMEM = "At The Beach";
 
 #define LEVEL_4_WIDTH   34
 #define LEVEL_4_HEIGHT  15
@@ -124,8 +132,10 @@ const uint8_t PROGMEM level4EndingPositions[8] = {
 
 
 //-------------------------------------------------------------------------------------
-// Level 5 ..
+// Level 5 - Got Spikes?
 //-------------------------------------------------------------------------------------
+
+char const level5Name[] PROGMEM = "Got Spikes?";
 
 #define LEVEL_5_WIDTH   34
 #define LEVEL_5_HEIGHT  15
@@ -147,8 +157,10 @@ const uint8_t PROGMEM level5EndingPositions[2] = {
 
 
 //-------------------------------------------------------------------------------------
-// Level 6 ..
+// Level 6 - Floating Islands
 //-------------------------------------------------------------------------------------
+
+char const level6Name[] PROGMEM = "Floating Islands";
 
 #define LEVEL_6_WIDTH   34
 #define LEVEL_6_HEIGHT  15
@@ -171,8 +183,10 @@ const uint8_t PROGMEM level6EndingPositions[8] = {
 
 
 //-------------------------------------------------------------------------------------
-// Level 7 ..
+// Level 7 - The Forest
 //-------------------------------------------------------------------------------------
+
+char const level7Name[] PROGMEM = "The Forest";
 
 #define LEVEL_7_WIDTH   34
 #define LEVEL_7_HEIGHT  15
@@ -195,8 +209,10 @@ const uint8_t PROGMEM level7EndingPositions[8] = {
 };
 
 //-------------------------------------------------------------------------------------
-// Level 8 ..
+// Level 8 - Friendly Invader
 //-------------------------------------------------------------------------------------
+
+char const level8Name[] PROGMEM = "Friendly Invader";
 
 #define LEVEL_8_WIDTH   34
 #define LEVEL_8_HEIGHT  15
@@ -219,8 +235,10 @@ const uint8_t PROGMEM level8EndingPositions[8] = {
 };
 
 //-------------------------------------------------------------------------------------
-// Level 9 ..
+// Level 9 Rock and Fly
 //-------------------------------------------------------------------------------------
+
+char const level9Name[] PROGMEM = "Rock and Fly";
 
 #define LEVEL_9_WIDTH   34
 #define LEVEL_9_HEIGHT  15
@@ -265,25 +283,14 @@ const int8_t levelInit[] = {
   LEVEL_9_WIDTH, LEVEL_9_HEIGHT,     -54,      -56,     56,     45,     0,        16,         4,
 };
 
-
-char const levelName1[] PROGMEM = "Underground";
-char const levelName2[] PROGMEM = "Golden Arches";
-char const levelName3[] PROGMEM = "Shipwreck Rarr";
-char const levelName4[] PROGMEM = "At The Beach";
-char const levelName5[] PROGMEM = "Got Spikes?";
-char const levelName6[] PROGMEM = "Floating Islands";
-char const levelName7[] PROGMEM = "The Forest";
-char const levelName8[] PROGMEM = "Friendly Invader";
-char const levelName9[] PROGMEM = "Rock and Fly";
-
 char const * const levelNames[] PROGMEM = {
-  levelName1,
-  levelName2,
-  levelName3,
-  levelName4,
-  levelName5,
-  levelName6,
-  levelName7,
-  levelName8,
-  levelName9
+  level1Name,
+  level2Name,
+  level3Name,
+  level4Name,
+  level5Name,
+  level6Name,
+  level7Name,
+  level8Name,
+  level9Name,
 };
