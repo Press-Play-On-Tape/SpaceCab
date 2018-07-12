@@ -52,7 +52,7 @@
   - This only occurs when you simply fly off the screen on the intro and do not carry a passenger.  Will fix with intro.
 - Even when the customer says TO GATE, you can still deliver him to a numbered destination and have money. A fix for that could be to make the GATE a destination like the sign? and going thru the gate with the customer doesn't give money right now ( i think )
   - [SH 2018-07-12] I have ensured you get the fare as you progress through the gate to another level.  Have not checked the 'any' gate issue yet.
-- Player spawn point for level 3 and 4 isn't right. Need to find an easier way to knwo which offset to use or maybe use the same way we position the customers? that would make it easier for me when i design and add new levels.
+- [SC 2018-07-12]~~Player spawn point for level 3 and 4 isn't right. Need to find an easier way to knwo which offset to use or maybe use the same way we position the customers? that would make it easier for me when i design and add new levels.~~
 - [SH 2018-07-11] ~~Added level 5 but it's not loading after level 4 for some reason.~~  
   - [SH 2018-07-11] ~~Altered MAX_NUMBER_OF_LEVELS to 5 and moved this setting into the Levels.h so it is obvious.~~
 - Game freezes when trying to go through the gate on level 4
