@@ -7,10 +7,10 @@
 - [SH 2018-07-05] ~~Change fuel functionality to only allow X units of fuel.~~
 - [SH 2018-07-07] ~~Add the deployment of a ramp to actually let the customer get in the cab, would need to deploy it before landing. While the ramp is deployed without a customer in the cab, the thrusters should not be used at all. That way the player can't just have the ramp deployed at all times.~~
 - [SH 2018-07-11]~~Make it so that after a certain amount of customers, the last one will ask you to go to the GATE (next level) and in the next level you still need to get that customer to a random destination.~~ 
-  - ~~**I am going to close this one.  Customers tell you to go to the gate but then you start the new level fresh.  Too complex to add a message 'Go to Gate' followed by another message 'Go to 1' and the level introduction.**~~
+  - ~~I am going to close this one.  Customers tell you to go to the gate but then you start the new level fresh.  Too complex to add a message 'Go to Gate' followed by another message 'Go to 1' and the level introduction.~~
 - Check for space savings by removing sound.
 - Check for space savings by compressing some images.
-- [SH 2018-07-12]~~Make it so that the number of fare (completed) is kept when crashing in a level. We only need to reset the number of fare when entering a new level. If we don't make that change, that means that someone could make lots of point just remaining in level 1 and crashing when out of fuel.~~
+- [SH 2018-07-12] Make it so that the number of fare (completed) is kept when crashing in a level. We only need to reset the number of fare when entering a new level. If we don't make that change, that means that someone could make lots of point just remaining in level 1 and crashing when out of fuel.~~
 - Use the current starfield with level name as a transition screen instead of using it when we spawn after a crash (more like in Space Taxi)
 
 
@@ -53,8 +53,8 @@
 - Even when the customer says TO GATE, you can still deliver him to a numbered destination and have money. A fix for that could be to make the GATE a destination like the sign? and going thru the gate with the customer doesn't give money right now ( i think )
   - [SH 2018-07-12] I have ensured you get the fare as you progress through the gate to another level.  Have not checked the 'any' gate issue yet.
 - Player spawn point for level 3 and 4 isn't right. Need to find an easier way to knwo which offset to use or maybe use the same way we position the customers? that would make it easier for me when i design and add new levels.
-- [SH 2018-07-11] ~~Added level 5 but it's not loading after level 4 for some reason.  
-  - **Altered MAX_NUMBER_OF_LEVELS to 5 and moved this setting into the Levels.h so it is obvious.**~~
+- [SH 2018-07-11] ~~Added level 5 but it's not loading after level 4 for some reason.~~  
+  - [SH 2018-07-11] ~~Altered MAX_NUMBER_OF_LEVELS to 5 and moved this setting into the Levels.h so it is obvious.~~
 - Game freezes when trying to go through the gate on level 4
   - I haven't investigated this but I would assume that if the player positions and so forth are not set correctly for level 5 then this may occur.  Also does this occur now that you have 9 levels or only peviously when you had 5 (and MAX_NUMBER_OF_LEVELS was equal to 4)?
 - A customer can walk through tiles to get to the player, i noticed that issue on level 4
