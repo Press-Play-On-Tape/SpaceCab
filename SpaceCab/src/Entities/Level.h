@@ -152,64 +152,6 @@ struct Level {
 
       {
   
-        // const uint8_t *levelMap = levelMaps[_number];
-        // uint8_t fuelIdx = 0;
-        // uint8_t gateIdx = 0;
-        
-        // for (uint8_t y = 0; y < _heightInTiles; y++) {
-
-        //   for (uint8_t x = 0; x < _widthInTiles; x = x + 2) {
-
-        //     uint8_t tileIndex = ((y * _widthInTiles) / 2) + (x / 2);
-        //     uint8_t tiles = pgm_read_byte(&levelMap[tileIndex]);
-
-        //     _levelData[tileIndex] = tiles;
-
-        //     {
-
-        //       // Left hand side tile ..
-
-        //       uint8_t tile = (tiles & 0xf0) >> 4;
-
-        //       switch (tile) {
-
-        //         case FUEL1:
-        //           updateFuelDetails(x, y, fuelIdx);
-        //           fuelIdx++;
-        //           break;
-
-        //         case GATE1:
-        //           updateGateDetails(x, y, gateIdx);
-        //           gateIdx++;
-        //           break;
-
-        //       }
-
-
-        //       // Right hand side tile ..
-
-        //       tile = (tiles & 0x0f);
-
-        //       switch (tile) {
-
-        //         case FUEL1:
-        //           updateFuelDetails(x + 1, y, fuelIdx);
-        //           fuelIdx++;
-        //           break;
-
-        //         case GATE1:
-        //           updateGateDetails(x + 1, y, gateIdx);
-        //           gateIdx++;
-        //           break;
-
-        //       }
-
-        //     }
-
-        //   }
-
-        // }
-
         const uint8_t *levelMap = levelMaps[_number];
         uint8_t fuelIdx = 0;
         uint8_t gateIdx = 0;
