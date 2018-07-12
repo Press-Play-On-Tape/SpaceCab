@@ -57,7 +57,7 @@ template<typename T> T absT(const T & v) {
 
 
 // ----------------------------------------------------------------------------
-//  Return the absolut difference between values .. 
+//  Return the absolute difference between values .. 
 //
 template<typename T> T diffT(const T & v, const T & u) {
   
