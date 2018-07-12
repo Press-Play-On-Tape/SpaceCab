@@ -152,60 +152,112 @@ struct Level {
 
       {
   
+        // const uint8_t *levelMap = levelMaps[_number];
+        // uint8_t fuelIdx = 0;
+        // uint8_t gateIdx = 0;
+        
+        // for (uint8_t y = 0; y < _heightInTiles; y++) {
+
+        //   for (uint8_t x = 0; x < _widthInTiles; x = x + 2) {
+
+        //     uint8_t tileIndex = ((y * _widthInTiles) / 2) + (x / 2);
+        //     uint8_t tiles = pgm_read_byte(&levelMap[tileIndex]);
+
+        //     _levelData[tileIndex] = tiles;
+
+        //     {
+
+        //       // Left hand side tile ..
+
+        //       uint8_t tile = (tiles & 0xf0) >> 4;
+
+        //       switch (tile) {
+
+        //         case FUEL1:
+        //           updateFuelDetails(x, y, fuelIdx);
+        //           fuelIdx++;
+        //           break;
+
+        //         case GATE1:
+        //           updateGateDetails(x, y, gateIdx);
+        //           gateIdx++;
+        //           break;
+
+        //       }
+
+
+        //       // Right hand side tile ..
+
+        //       tile = (tiles & 0x0f);
+
+        //       switch (tile) {
+
+        //         case FUEL1:
+        //           updateFuelDetails(x + 1, y, fuelIdx);
+        //           fuelIdx++;
+        //           break;
+
+        //         case GATE1:
+        //           updateGateDetails(x + 1, y, gateIdx);
+        //           gateIdx++;
+        //           break;
+
+        //       }
+
+        //     }
+
+        //   }
+
+        // }
+
         const uint8_t *levelMap = levelMaps[_number];
         uint8_t fuelIdx = 0;
         uint8_t gateIdx = 0;
-        
-        for (uint8_t y = 0; y < _heightInTiles; y++) {
+        uint16_t dataOffset = 0;
+        uint16_t cursor = 0;
 
-          for (uint8_t x = 0; x < _widthInTiles; x = x + 2) {
+        while (true) {
 
-            uint8_t tileIndex = ((y * _widthInTiles) / 2) + (x / 2);
-            uint8_t tiles = pgm_read_byte(&levelMap[tileIndex]);
+          uint8_t data = pgm_read_byte(&levelMap[dataOffset]);
+          uint8_t tile = (data & 0xF0) >> 4;
+          uint8_t run = data & 0x0F;
 
-            _levelData[tileIndex] = tiles;
+          if (run > 0) {
 
-            {
+            dataOffset++;
 
-              // Left hand side tile ..
-
-              uint8_t tile = (tiles & 0xf0) >> 4;
+            for (uint8_t x = 0; x < run; x++) {
+              
+              if (cursor % 2 == 0) {
+                _levelData[cursor / 2] = (_levelData[cursor / 2] & 0x0f) | (tile << 4);
+              }
+              else {
+                _levelData[cursor / 2] = (_levelData[cursor / 2] & 0xF0) | tile;
+              }
 
               switch (tile) {
 
                 case FUEL1:
-                  updateFuelDetails(x, y, fuelIdx);
+                  updateFuelDetails(cursor % _widthInTiles, cursor / _widthInTiles, fuelIdx);
                   fuelIdx++;
                   break;
 
                 case GATE1:
-                  updateGateDetails(x, y, gateIdx);
+                  updateGateDetails(cursor % _widthInTiles, cursor / _widthInTiles, gateIdx);
                   gateIdx++;
                   break;
 
               }
 
-
-              // Right hand side tile ..
-
-              tile = (tiles & 0x0f);
-
-              switch (tile) {
-
-                case FUEL1:
-                  updateFuelDetails(x + 1, y, fuelIdx);
-                  fuelIdx++;
-                  break;
-
-                case GATE1:
-                  updateGateDetails(x + 1, y, gateIdx);
-                  gateIdx++;
-                  break;
-
-              }
+              cursor++;
 
             }
 
+          }
+          else {
+          
+            break;
+          
           }
 
         }
