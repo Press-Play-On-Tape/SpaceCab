@@ -49,7 +49,7 @@
   - ~~[SC 2018-07-10] Not fixed yet!~~
   - ~~[SH 2018-07-11] Fixed properly this time.~~
 - The life counter sometimes starts at 0 and then goes to nine when we lose a life, and does it infinitely so can't be gameOver, no idea what causes that.
-  - **This only occurs when you simply fly off the screen on the intro and do not carry a passenger.  Will fix with intro**
+  - This only occurs when you simply fly off the screen on the intro and do not carry a passenger.  Will fix with intro.
 - Even when the customer says TO GATE, you can still deliver him to a numbered destination and have money. A fix for that could be to make the GATE a destination like the sign? and going thru the gate with the customer doesn't give money right now ( i think )
   - [SH 2018-07-12] I have ensured you get the fare as you progress through the gate to another level.  Have not checked the 'any' gate issue yet.
 - Player spawn point for level 3 and 4 isn't right. Need to find an easier way to knwo which offset to use or maybe use the same way we position the customers? that would make it easier for me when i design and add new levels.
@@ -66,4 +66,4 @@
 
 - Confirm number of levels (MAX_NUMBER_OF_LEVELS)
 - Confirm score to achieve in each level. 
-  - **[SC 2018-07-10] : It will be a number of customer requirement, some level will have only 1, for exemple in level 5 you only have to get 1 customer to the gate from the start, but the level is a hard one, so faster you can do it, the more money you get, but it's hard.**
+  - [SC 2018-07-10] ~~It will be a number of customer requirement, some level will have only 1, for exemple in level 5 you only have to get 1 customer to the gate from the start, but the level is a hard one, so faster you can do it, the more money you get, but it's hard.~~
