@@ -242,6 +242,7 @@ void moveCab(Level &level, Player &player, Customer &customer) {
         else {
           state = GameState::PlayGame_InitLevel;
           levelNumber++;
+          player.setFaresCompleted(0);
         }
 
       }

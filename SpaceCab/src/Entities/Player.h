@@ -206,7 +206,6 @@ struct Player {
       _pickingUpCustomer = false;
       _isFuelling = false;
       _status = PlayerStatus::Active;
-      _faresCompleted = 0;
 
       _x = x; 
       _y = y; 
