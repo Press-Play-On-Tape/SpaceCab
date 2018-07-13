@@ -48,7 +48,7 @@ void titleScreen(Level &level, Player &player, Customer &customer) {
 
   }
 
-  Sprites::drawOverwrite(0, 9, SpaceCabSplash, 0);
+  Sprites::drawOverwrite(0, 7, SpaceCabSplash, 0);
   drawLevel_Intro(level, gateToRender);
 
   playerDisplay(player);
