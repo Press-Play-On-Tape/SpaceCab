@@ -143,12 +143,12 @@ const uint8_t PROGMEM level5Map[] = {
 0x67, 0xD9, 0x68, 0x04, 0x63, 0x0F, 0x05, 0x66, 0x05, 0x63, 0x0F, 0x0F, 0x64, 0x0E, 0xB1, 0x0E, 0x65, 
 0xE9, 0x6A, 0x09, 0x6F, 0x6B, 0xE7, 0x6F, 0x6F, 0x6A, 0x00};
 
-const uint8_t PROGMEM level5StartingPositions[2] = {
-2, 3,
+const uint8_t PROGMEM level5StartingPositions[4] = {
+2, 3,    3, 3,
 };
 
-const uint8_t PROGMEM level5EndingPositions[2] = {
-1, 3,
+const uint8_t PROGMEM level5EndingPositions[4] = {
+1, 3,    1, 2,
 };
 
 
@@ -170,11 +170,11 @@ const uint8_t PROGMEM level6Map[] = {
 0x02, 0x81, 0x04, 0x81, 0xE1, 0x81, 0xEA, 0x81, 0xE4, 0x81, 0xE7, 0x81, 0xE2, 0x81, 0xE4, 0x00};
 
 const uint8_t PROGMEM level6StartingPositions[8] = {
-0, 8,    17, 4,    15, 8,    29,3,
+0, 7,    17, 4,    15, 8,    29,3,
 };
 
 const uint8_t PROGMEM level6EndingPositions[8] = {
-1, 8,    18, 4,    16, 8,    28,3,
+1, 7,    18, 4,    16, 8,    28,3,
 };
 
 
@@ -271,11 +271,11 @@ const int8_t levelInit[] = {
   LEVEL_1_WIDTH, LEVEL_1_HEIGHT,    -107,      0,     56,     21,     3,        16,         6,
   LEVEL_2_WIDTH, LEVEL_2_HEIGHT,       0,     -56,     24,     37,     4,        12,         4,
   LEVEL_3_WIDTH, LEVEL_3_HEIGHT,    -107,   -56,     56,     29,     4,        10,         4,
-  LEVEL_4_WIDTH, LEVEL_4_HEIGHT,      -36,    -41,    56,     28,     4,        12,         4,
-  LEVEL_5_WIDTH, LEVEL_5_HEIGHT,       0,        0,      29,     21,     0,        16,         2,
-  LEVEL_6_WIDTH, LEVEL_6_HEIGHT,     -39,     -33,    56,     28,     4,          9,         4,
+  LEVEL_4_WIDTH, LEVEL_4_HEIGHT,      -36,    -41,    56,     28,     3,        12,         4,
+  LEVEL_5_WIDTH, LEVEL_5_HEIGHT,       0,        0,      29,     21,     0,        16,         4,
+  LEVEL_6_WIDTH, LEVEL_6_HEIGHT,     -39,     -33,    56,     28,     4,          8,         4,
   LEVEL_7_WIDTH, LEVEL_7_HEIGHT,     -144,      -56,     59,     45,     5,     16,         4,
-  LEVEL_8_WIDTH, LEVEL_8_HEIGHT,       -58,      -1,     56,     28,     4,       10,         4,
+  LEVEL_8_WIDTH, LEVEL_8_HEIGHT,       -58,      -1,     56,     28,     4,       8,         4,
   LEVEL_9_WIDTH, LEVEL_9_HEIGHT,     -140,      -25,     56,     28,     5,      16,         4,
 };
 
