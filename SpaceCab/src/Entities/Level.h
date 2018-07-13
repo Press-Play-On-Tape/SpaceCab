@@ -97,6 +97,8 @@ struct Level {
 
       uint8_t tile = EMPTY;
 
+      if (y > _heightInTiles) return BRICK;
+
       if ((x % 2) == 0) {
         tile = (_levelData[((y * _widthInTiles) / 2) + (x / 2)] >> 4);
       }

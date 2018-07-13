@@ -36,29 +36,40 @@ void vsBoot() {
 
 void titleScreen(Level &level, Player &player, Customer &customer) {
 
-  int16_t customerXVal = customer.getX() + level.xOffset.getInteger();
-  int16_t customerYVal = customer.getY() + level.yOffset.getInteger();
-  int16_t logoXVal = 0 + level.xOffset.getInteger();
-  int16_t logoYVal = 6 + level.yOffset.getInteger();  
-  
-  Rect playerRect = {static_cast<int16_t>(player.getXDisplay()), static_cast<int16_t>(player.getYDisplay()), PLAYER_WIDTH, player.getHeight()};
-  Rect customerRect = {customerXVal, customerYVal, CUSTOMER_WIDTH, CUSTOMER_HEIGHT};
+  if (gotoCounter != 0)   gotoCounter--;
 
-  Sprites::drawOverwrite(logoXVal, logoYVal, SpaceCabSplash, 0);
-  drawLevel(level);
+  if (ouchCounter != 0) { 
+
+    ouchCounter--;
+    if (ouchCounter == 0) {
+      gateToRender = (gateToRender == 0 ? 1 : 0);
+      launchCustomer(level, customer, gateToRender, GO_TO_GATE);
+    }
+
+  }
+
+  Sprites::drawOverwrite(0, 9, SpaceCabSplash, 0);
+  drawLevel_Intro(level, gateToRender);
 
   playerDisplay(player);
   customerDisplay(level, player, customer);
   handleInput(player);
 
+
+  checkCollisionWithCustomer(level, player, customer);
+//  checkCollisionWithLevelElements(level, player);
+
+  drawGoto(level, player, customer);
+  drawOuch(level, customer);
+
   if (player.getY() >= 41 && player.getYDelta()> 0) {
     player.setLandingGearDown(true);
   } 
 
-  if (arduboy.collide(playerRect, customerRect)){
-    arduboy.initRandomSeed();
-    sound.tone(NOTE_C5,50, NOTE_D4,50, NOTE_E3,50);
-    state = GameState::PlayGame_InitGame;
-  }
+  // if (arduboy.collide(playerRect, customerRect)){
+  //   arduboy.initRandomSeed();
+  //   sound.tone(NOTE_C5,50, NOTE_D4,50, NOTE_E3,50);
+  //   state = GameState::PlayGame_InitGame;
+  // }
   
 }

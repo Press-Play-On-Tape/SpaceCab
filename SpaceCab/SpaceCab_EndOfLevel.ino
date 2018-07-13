@@ -60,7 +60,7 @@ void drawStarfield() {
 
 void blackScanlines() {
 
-  for(uint8_t i = 0; i < (HEIGHT); i+=8) {
+  for (uint8_t i = 0; i < (HEIGHT); i+=8) {
     
     arduboy.drawFastHLine(0, i, WIDTH, BLACK);
 

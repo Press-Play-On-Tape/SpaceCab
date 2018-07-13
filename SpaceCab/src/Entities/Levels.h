@@ -13,15 +13,15 @@
 #define LEVEL_0_HEIGHT 8
 
 const uint8_t PROGMEM level0Map[] = {
-0x5F, 0x51, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x08, 0xA8, 0x41, 0xA1, 0x03, 0x33, 0x8A, 0x33, 0x00
+0x5F, 0x51, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x06, 0xA2, 0x41, 0xAA, 0x41, 0xA2, 0x00
 };
 
 const uint8_t PROGMEM level0StartingPositions[4] = {
-0, 0, 12, 6, 
+4, 7, 11, 7, 
 };
 
 const uint8_t PROGMEM level0EndingPositions[4] = {
-0, 0, 11, 6, 
+2, 7, 13, 7, 
 };
 
 
@@ -269,7 +269,7 @@ const int8_t levelInit[] = {
 
 // Level width   Level Height,   Level     Level     Player  Player   Fares      Name     Number Of
 //                               X Offset  Y Offset  X Pos   Y Pos   Required   Offset    Positions
-  LEVEL_0_WIDTH, LEVEL_0_HEIGHT,       0,        0,     28,     45,     0,         0,         2,
+  LEVEL_0_WIDTH, LEVEL_0_HEIGHT,       0,        0,     18,     53,     0,         0,         2,
   LEVEL_1_WIDTH, LEVEL_1_HEIGHT,     -54,      -56,     56,     45,     1,        16,         6,
   LEVEL_2_WIDTH, LEVEL_2_HEIGHT,     -54,      -56,     56,     45,     0,        12,         4,
   LEVEL_3_WIDTH, LEVEL_3_HEIGHT,     127,      -56,     56,     29,     0,        10,         4,

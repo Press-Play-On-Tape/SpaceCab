@@ -40,6 +40,7 @@ uint8_t flashingCounter = 0;
 uint8_t bootCounter = 50;
 uint8_t gotoCounter = 0;
 uint8_t ouchCounter = 0;
+uint8_t gateToRender = 1; // For introduction.
 
 Level level;
 
@@ -78,7 +79,7 @@ void loop() {
     case GameState::SplashScreen_Init:
       levelNumber = 0;
       initLevel(level, player, customer, levelNumber);
-      launchCustomer(level, customer, 1, GO_TO_GATE);
+      launchCustomer(level, customer, gateToRender, GO_TO_GATE);
       player.setFrame(0);
       state = GameState::SplashScreen;
       fadeInEffect.reset(0, HEIGHT, 1);

@@ -136,10 +136,15 @@ bool canMoveDown(Level &level, Player &player, uint8_t size) {
   uint16_t playerYPosition = player.getYDisplay() - level.getYOffsetDisplay() + size;
 
 
-  // We are not yet at the bottom edge of tile so movement is possible ,,
+  // We are not yet at the bottom edge of tile so movement is possible ..
 
   //if (playerYPosition % TILE_SIZE != TILE_SIZE - 1) return true;
   if (playerYPosition % TILE_SIZE != 0) return true;
+
+
+  // We are at the bottom of the level so no further movement is possible ..
+
+  if (playerYPosition == level.getHeight()) return false;
 
 
   // The player is 17 pixels wide so always straddles 3 tiles .. 
@@ -150,7 +155,7 @@ bool canMoveDown(Level &level, Player &player, uint8_t size) {
   uint8_t tileX3 = (playerXPosition / 8) + 2;
 
 
-  // Retrieve the the three tiles and test them in order ..
+  // Retrieve the three tiles and test them in order ..
 
   uint8_t tile1 = level.getLevelData(tileX1, tileY);
   if (isTileSolid(tile1)) return false;

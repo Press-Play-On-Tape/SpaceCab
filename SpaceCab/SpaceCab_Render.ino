@@ -1,5 +1,60 @@
 #include "src/utils/Arduboy2Ext.h"
 
+void drawLevel_Intro(Level &level, uint8_t gateToRender) {
+
+  for (uint8_t y = 0; y < level.getHeightInTiles(); y++) {
+
+    for (uint8_t x = 0; x < level.getWidthInTiles(); x++) {
+
+      const int16_t bitmapX = (x * TILE_SIZE);
+      const int16_t bitmapY = (y * TILE_SIZE);
+
+      uint8_t tile = level.getLevelData(x, y);
+
+      switch (tile) {
+
+        case EMPTY: break;
+
+        case SIGN1:
+          {
+            bool found = false;
+            const uint8_t numberOfPositions = level.getNumberOfCustomerPositions();
+            const uint8_t *levelEndingPosition = levelEndingPositions[level.getLevelNumber()];
+
+            for (uint8_t i = 0; i < numberOfPositions; ++i) {
+
+              const uint8_t startPosX = pgm_read_byte(&levelEndingPosition[i * 2]);
+              const uint8_t startPosY = pgm_read_byte(&levelEndingPosition[(i * 2) + 1]);
+
+              if (x == startPosX && y == startPosY && gateToRender == i) {
+
+                Sprites::drawOverwrite(bitmapX, bitmapY, tiles, tile);
+                arduboy.fillRect(bitmapX + 2, bitmapY - 2, 5, 7, WHITE);
+                Sprites::drawErase(bitmapX + 3, bitmapY - 1, font3x5_Numbers, (i + 1));
+                found = true;
+
+              }
+
+            }
+
+            if (!found) Sprites::drawOverwrite(bitmapX, bitmapY, tiles, GRASS);
+            
+          }
+
+          break;
+
+        default:
+          Sprites::drawOverwrite(bitmapX, bitmapY, tiles, tile);
+          break;
+          
+      }
+
+    }
+
+  }
+
+}
+
 
 void drawLevel(Level &level) {
   
