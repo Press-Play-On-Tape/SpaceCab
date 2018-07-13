@@ -29,7 +29,7 @@
 - Add an 'End of Game' sound or splash screen when you have completed the last level.
 - Add a Space Cop that shows up sometimes. We need to avoid him while he's on the screen.
 - Add switches mechanics to open/close parts of the level. In some cases to bring a customer you would need to open certain spots.
-- If you fly off the top off the screen on the intro, you automatically end up at the next level. Note: waiting on decision regarding intro screen before fixing.
+- [SH 2018-07-13] ~~If you fly off the top off the screen on the intro, you automatically end up at the next level. Note: waiting on decision regarding intro screen before fixing.~~
 - [SC 2018-07-09] ~~Update the customer run animation to look more natural.~~
 - [SH 2018-07-10] ~~Change logic to count number of fares (not dollars) before next level.~~
 - [SH 2018-07-10] ~~Change go to gate logic so last fare says 'Go to gate' and gate opens.~~
@@ -48,14 +48,14 @@
 - [SH 2018-07-10] ~~Prevent fuel going down while refuelling.  Not sure if this is actually fixed.~~ 
   - ~~[SC 2018-07-10] Not fixed yet!~~
   - ~~[SH 2018-07-11] Fixed properly this time.~~
-- The life counter sometimes starts at 0 and then goes to nine when we lose a life, and does it infinitely so can't be gameOver, no idea what causes that.
-  - This only occurs when you simply fly off the screen on the intro and do not carry a passenger.  Will fix with intro.
+- [SH 2018-07-10]~~The life counter sometimes starts at 0 and then goes to nine when we lose a life, and does it infinitely so can't be gameOver, no idea what causes that.
+  - This only occurs when you simply fly off the screen on the intro and do not carry a passenger.  Will fix with intro.~~
 - Even when the customer says TO GATE, you can still deliver him to a numbered destination and have money. A fix for that could be to make the GATE a destination like the sign? and going thru the gate with the customer doesn't give money right now ( i think )
-  - [SH 2018-07-12] I have ensured you get the fare as you progress through the gate to another level.  Have not checked the 'any' gate issue yet.
+  - [SH 2018-07-12] ~~I have ensured you get the fare as you progress through the gate to another level.  Have not checked the 'any' gate issue yet.~~
 - [SC 2018-07-12]~~Player spawn point for level 3 and 4 isn't right. Need to find an easier way to knwo which offset to use or maybe use the same way we position the customers? that would make it easier for me when i design and add new levels.~~
 - [SH 2018-07-11] ~~Added level 5 but it's not loading after level 4 for some reason.~~  
   - [SH 2018-07-11] ~~Altered MAX_NUMBER_OF_LEVELS to 5 and moved this setting into the Levels.h so it is obvious.~~
-- Game freezes when trying to go through the gate on level 4
+- [SC 2018-07-13] ~~Game freezes when trying to go through the gate on level 4~~
   - I haven't investigated this but I would assume that if the player positions and so forth are not set correctly for level 5 then this may occur.  Also does this occur now that you have 9 levels or only peviously when you had 5 (and MAX_NUMBER_OF_LEVELS was equal to 4)?
 - A customer can walk through tiles to get to the player, i noticed that issue on level 4
  - [SH 2018-07-12] Customers will only walk 16 pixels (or thereabouts) to a player.  I could add logic to prevent this but it would be better to ensure that there are no locations where this can actually occur.  If the customer location is too close to a wall that a player can land on the other side of then this can occur.
