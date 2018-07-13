@@ -28,10 +28,11 @@ HighScore highScore;
 // Global Variables now --------------------------------------------------------
 
 GameState state = GameState::VSBoot;
+GameState nextState = GameState::VSBoot;
 
 uint8_t levelNumber = 0;
 uint8_t thrusterFrame = 0;
-uint8_t gameTime = GAME_TIME_MAX;
+//uint8_t gameTime = GAME_TIME_MAX;
 int16_t backdropx = 0;
 uint8_t alternate = 0;
 uint8_t fareCount = 0;
@@ -41,6 +42,7 @@ uint8_t bootCounter = 50;
 uint8_t gotoCounter = 0;
 uint8_t ouchCounter = 0;
 uint8_t gateToRender = 1; // For introduction.
+bool starsInitialised = false;
 
 Level level;
 
@@ -93,20 +95,27 @@ void loop() {
     case GameState::PlayGame_InitGame:
       levelNumber = 1;
       initGame(player);
-      state = GameState::PlayGame_InitLevel;
+      state = GameState::PlayGame_LevelIntroduction_Init;
       // break;  -- Fall through intentional.
+
+    case GameState::PlayGame_LevelIntroduction_Init:
+      level.reset(levelNumber);
+      // break;  -- Fall through intentional.
+
+    case GameState::PlayGame_LevelIntroduction:
+      drawLevelStart(font4x6, level);
+      nextState = GameState::PlayGame_FlashingCar;
+      break;
 
     case GameState::PlayGame_InitLevel:
       thrusterFrame = 0;
-      gameTime = GAME_TIME_MAX;
       initLevel(level, player, customer, levelNumber);
       launchCustomer(level, customer, RANDOM_START_POSITION, RANDOM_END_POSITION);
-      state = GameState::PlayGame;
+      state = nextState;
       // break;  -- Fall through intentional.
         
+    case GameState::PlayGame_FlashingCar:
     case GameState::PlayGame:
-    case GameState::EndOfLevel:
-
       #ifdef DEBUG
       Serial.print("PX: ");
       Serial.print(player.getX().getInteger());
@@ -141,7 +150,17 @@ void loop() {
   }
 
   arduboy.display();
-  moveCab(level, player, customer);
+
+  switch (state) {
+
+    case GameState::SplashScreen:
+    case GameState::PlayGame:
+      moveCab(level, player, customer);
+      break;
+
+    default: break;
+
+  }
 
 }
 

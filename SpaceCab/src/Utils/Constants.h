@@ -2,6 +2,7 @@
 
 #define _DEBUG
 
+
 // --------------------------------------------------------------------------
 
 #define PLAYER_WIDTH 17
@@ -73,16 +74,18 @@ enum class GameState : uint8_t {
   SplashScreen_Init,
   SplashScreen,
   PlayGame_InitGame,
+  PlayGame_LevelIntroduction_Init,
+  PlayGame_LevelIntroduction,
   PlayGame_InitLevel,
+  PlayGame_FlashingCar,
   PlayGame,
-  EndOfLevel,
   GameOver,
   SaveScore,
   HighScore
 
 };
 
-enum class PlayerStatus : uint16_t {
+enum class PlayerStatus : uint8_t {
 
   Active,
   Inactive,

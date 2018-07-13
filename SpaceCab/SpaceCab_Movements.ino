@@ -245,8 +245,13 @@ void moveCab(Level &level, Player &player, Customer &customer) {
           state = GameState::GameOver;
         }
         else {
-          state = GameState::PlayGame_InitLevel;
-          levelNumber++;
+          if(state == GameState::SplashScreen) {
+            state = GameState::PlayGame_InitGame;
+          }
+          else {
+            state = GameState::PlayGame_LevelIntroduction_Init;
+            levelNumber++;
+          }
           player.setFaresCompleted(0);
         }
 
