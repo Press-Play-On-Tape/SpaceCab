@@ -254,15 +254,15 @@ const int8_t levelInit[] = {
 // Level width   Level Height,   Level     Level     Player  Player   Fares      Name     Number Of
 //                               X Offset  Y Offset  X Pos   Y Pos   Required   Offset    Positions
   LEVEL_0_WIDTH, LEVEL_0_HEIGHT,       0,        0,     28,     45,     0,         0,         2,
-  LEVEL_1_WIDTH, LEVEL_1_HEIGHT,     -54,      -56,     56,     45,     2,        16,         6,
-  LEVEL_2_WIDTH, LEVEL_2_HEIGHT,     -54,      -56,     56,     45,     2,        12,         4,
-  LEVEL_3_WIDTH, LEVEL_3_HEIGHT,     -22,      -72,     22,     29,     2,        10,         4,
-  LEVEL_4_WIDTH, LEVEL_4_HEIGHT,     -54,      -56,     56,     45,     2,        12,         4,
+  LEVEL_1_WIDTH, LEVEL_1_HEIGHT,     -54,      -56,     56,     45,     0,        16,         6,
+  LEVEL_2_WIDTH, LEVEL_2_HEIGHT,     -54,      -56,     56,     45,     0,        12,         4,
+  LEVEL_3_WIDTH, LEVEL_3_HEIGHT,     128,     -56,     56,     29,     0,        10,         4,
+  LEVEL_4_WIDTH, LEVEL_4_HEIGHT,     -32,      -56,     56,     13,     0,        12,         4,
   LEVEL_5_WIDTH, LEVEL_5_HEIGHT,     -54,      -56,     56,     45,     0,        16,         1,
-  LEVEL_6_WIDTH, LEVEL_6_HEIGHT,     -54,      -56,     56,     45,     2,        10,         4,
-  LEVEL_7_WIDTH, LEVEL_7_HEIGHT,     -54,      -56,     56,     45,     2,        16,         4,
-  LEVEL_8_WIDTH, LEVEL_8_HEIGHT,     -54,      -56,     56,     45,     2,        10,         4,
-  LEVEL_9_WIDTH, LEVEL_9_HEIGHT,     -54,      -56,     56,     45,     4,        16,         4,
+  LEVEL_6_WIDTH, LEVEL_6_HEIGHT,     -54,      -56,     56,     45,     0,        10,         4,
+  LEVEL_7_WIDTH, LEVEL_7_HEIGHT,     -54,      -56,     56,     45,     0,        16,         4,
+  LEVEL_8_WIDTH, LEVEL_8_HEIGHT,     -54,      -56,     56,     45,     0,        10,         4,
+  LEVEL_9_WIDTH, LEVEL_9_HEIGHT,     -54,      -56,     56,     45,     0,        16,         4,
 };
 
 
