@@ -82,8 +82,18 @@ void drawHUD(Player &player, Customer &customer) {
   Sprites::drawOverwrite(0, 56, SpaceCabHUD, 0);
   font4x6.setCursor(13, 57);
   extractDigits(digits, player.getScore());
-  for(uint8_t i = 5; i > 0; --i) 
-  font4x6.print(digits[i - 1]);
+
+// Pharap here!
+  for (uint8_t i = 5; i > 0; --i) {
+    font4x6.print(digits[i - 1]);
+#ifndef DEBUG
+Serial.print("digits[");
+Serial.print(i - 1);
+Serial.print("] ");
+Serial.print(digits[i - 1]);
+Serial.println(" ");
+#endif
+  }
 
   if (player.getFuel() > 0 && player.getFuel() < PLAYER_FUEL_MIN_BLINK && flashingCounter < (FLASH_MAX / 2)) {
   
@@ -272,7 +282,7 @@ void customerDisplay(Level &level, Player &player, Customer &customer) {
 
             player.setCarryingCustomer(true);
             player.setPickingUpCustomer(false);
-            if (player.getFaresCompleted() >= level.getFaresRequired()) { level.openGates(); }
+            if (player.getFaresCompleted() >= level.getFaresRequired())  level.openGates(); 
 
             sound.tone(NOTE_E6, 50, NOTE_E3, 50, NOTE_E2, 50);
 

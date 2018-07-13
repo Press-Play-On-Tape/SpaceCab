@@ -85,16 +85,6 @@ void handleInput(Player &player) {
 }
 
 
-void updateTime() {
-
-  if (arduboy.everyXFrames(60)) {
-//    if (gameTime >= 1)    --gameTime;
-    if (gameTime == 0 )   state = GameState::GameOver;
-  }
-
-}
-
-
 //------------------------------------------------------------------------------
 //  Launch a new customer.
 //
@@ -353,7 +343,7 @@ void updateStatus(Player &player, Customer &customer) {
 
 void inGame(Font4x6 &font4x6, Level &level, Player &player, Customer &customer) {
 
-  updateTime();
+//  updateTime();
 
   flashingCounter++;
   flashingCounter = flashingCounter % FLASH_MAX;

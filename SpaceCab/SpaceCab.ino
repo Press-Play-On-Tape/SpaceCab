@@ -114,7 +114,8 @@ void loop() {
       Serial.print(" - LX: ");
       Serial.print(level.xOffset.getInteger());
       Serial.print(", LY: ");
-      Serial.println(level.yOffset.getInteger());
+      Serial.print(level.yOffset.getInteger());
+      Serial.println(", Fuel: ");
       #endif
 
       inGame(font4x6, level, player, customer);

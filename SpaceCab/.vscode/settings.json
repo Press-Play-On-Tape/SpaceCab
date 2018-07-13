@@ -17,7 +17,8 @@
         "string": "cpp",
         "string_view": "cpp",
         "vector": "cpp",
-        "array": "cpp"
+        "array": "cpp",
+        "limits": "cpp"
     },
     "C_Cpp.intelliSenseEngine": "Tag Parser",
     "C_Cpp.intelliSenseEngineFallback": "Disabled"

@@ -123,7 +123,7 @@ struct Level {
     }
 
     void reset(uint8_t levelNumber) { 
-      
+     
       _number = levelNumber; 
       _openGates = false;
 
@@ -137,9 +137,9 @@ struct Level {
       _faresRequired = levelInit[(levelNumber * INIT_RECORD_SIZE) + 6];
       _levelNameOffset = levelInit[(levelNumber * INIT_RECORD_SIZE) + 7];
       _numberOfPositions = levelInit[(levelNumber * INIT_RECORD_SIZE) + 8];
+  
 
-
-      // Parse level for fuel tiles ..
+      // Clear fuel locations ..
 
       for (uint8_t y = 0; y < FUEL_TILES_MAX; y++) {
 
@@ -150,6 +150,7 @@ struct Level {
 
       }
 
+      // Read map data ..
       {
   
         const uint8_t *levelMap = levelMaps[_number];
