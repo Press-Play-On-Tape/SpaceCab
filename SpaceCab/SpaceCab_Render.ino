@@ -127,27 +127,16 @@ void drawLevel(Level &level) {
 #define HUD_OFFSET 10
 #define HUD_WIDTH 66
 
-void drawHUD(Player &player, Customer &customer) {
-
-  uint8_t digits[5];
-  uint8_t digitsFare[2];
-  uint8_t digitsFuel[3];
-  uint8_t digitsLives[1];
+__attribute__((noinline)) void drawHUD(Player &player, Customer &customer) {
 
   Sprites::drawOverwrite(0, 56, SpaceCabHUD, 0);
   font4x6.setCursor(13, 57);
-  extractDigits(digits, player.getScore());
 
-// Pharap here!
-  for (uint8_t i = 5; i > 0; --i) {
+  {
+    uint8_t digits[5];
+    extractDigits(digits, player.getScore());
+    for (uint8_t i = 5; i > 0; --i) 
     font4x6.print(digits[i - 1]);
-#ifndef DEBUG
-Serial.print("digits[");
-Serial.print(i - 1);
-Serial.print("] ");
-Serial.print(digits[i - 1]);
-Serial.println(" ");
-#endif
   }
 
   if (player.getFuel() > 0 && player.getFuel() < PLAYER_FUEL_MIN_BLINK && flashingCounter < (FLASH_MAX / 2)) {
@@ -156,7 +145,8 @@ Serial.println(" ");
   
   }
   else {
-   
+
+    uint8_t digitsFuel[3];
     font4x6.setCursor(57, 57);
     extractDigits(digitsFuel, player.getFuel());
     for(uint8_t i = 3; i > 0; --i) 
@@ -164,15 +154,21 @@ Serial.println(" ");
 
   }
 
-  font4x6.setCursor(94, 57);
-  extractDigits(digitsLives, player.getNumberOfLives());
-  for(uint8_t i = 1; i > 0; --i) 
-  font4x6.print(digitsLives[i - 1]);
+  {
+    uint8_t digitsLives[1];
+    font4x6.setCursor(94, 57);
+    extractDigits(digitsLives, player.getNumberOfLives());
+    for(uint8_t i = 1; i > 0; --i) 
+    font4x6.print(digitsLives[i - 1]);
+  }
 
-  font4x6.setCursor(115, 57);
-  extractDigits(digitsFare, customer.getFare());
-  for(uint8_t i = 2; i > 0; --i)
-  font4x6.print(digitsFare[i - 1]);
+  {
+    uint8_t digitsFare[2];
+    font4x6.setCursor(115, 57);
+    extractDigits(digitsFare, customer.getFare());
+    for(uint8_t i = 2; i > 0; --i)
+    font4x6.print(digitsFare[i - 1]);
+  }
 
 }
 

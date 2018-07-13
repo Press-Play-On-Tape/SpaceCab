@@ -308,7 +308,10 @@ void updateStatus(Player &player, Customer &customer) {
       player.decNumberOfLives();
 
       if (player.getNumberOfLives() > 0) {
-        state = GameState::EndOfLevel;
+        level.reset(level.getLevelNumber());
+        player.setStatus(PlayerStatus::Active);
+        state = GameState::PlayGame_InitLevel;
+        nextState = GameState::PlayGame_FlashingCar;
       }
       else {
         state = GameState::GameOver;
@@ -343,8 +346,6 @@ void updateStatus(Player &player, Customer &customer) {
 
 void inGame(Font4x6 &font4x6, Level &level, Player &player, Customer &customer) {
 
-//  updateTime();
-
   flashingCounter++;
   flashingCounter = flashingCounter % FLASH_MAX;
 
@@ -365,21 +366,34 @@ void inGame(Font4x6 &font4x6, Level &level, Player &player, Customer &customer) 
   
     handleInput(player);
     checkCollisionWithCustomer(level, player, customer);
-    checkCollisionWithLevelElements(level, player);
+
+    if (state == GameState::PlayGame) {
+      checkCollisionWithLevelElements(level, player);
+    }
 
   }
 
-  playerDisplay(player);
+  if (state != GameState::PlayGame_FlashingCar || flashingCounter < (FLASH_MAX / 2)) {
+    playerDisplay(player);
+  }
+
   drawDollars(player);
   customerDisplay(level, player, customer);
   drawHUD(player, customer);
   drawGoto(level, player, customer);
   drawOuch(level, customer);
 
-  if (state == GameState::EndOfLevel) {
-    drawLevelStart(font4x6, level);
+  if (state == GameState::PlayGame_FlashingCar) {
+
+    if (arduboy.justPressed(A_BUTTON)) {
+      state = GameState::PlayGame;
+    }
+
+  }
+  else {
+ 
+    updateStatus(player, customer);
+
   }
   
-  updateStatus(player, customer);
-
 }

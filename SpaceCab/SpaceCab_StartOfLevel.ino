@@ -24,8 +24,6 @@ const Vector2 offsets[16] PROGMEM = {
 	Vector2(0.9239, -0.3827),
 };
 
-bool starsInitialised = false;
-
 void initialiseStars(void) {
 
 	for(uint8_t i = 0; i < 16; ++i) stars[i] = centreScreen;
@@ -58,12 +56,12 @@ void drawStarfield() {
   
 }
 
-void blackScanlines() {
+// void blackScanlines() {
 
-  for (uint8_t i = 0; i < (HEIGHT); i+=8) {
+//   for (uint8_t i = 0; i < (HEIGHT); i+=8) {
     
-    arduboy.drawFastHLine(0, i, WIDTH, BLACK);
+//     arduboy.drawFastHLine(0, i, WIDTH, BLACK);
 
-  }
+//   }
 
-}
+// }

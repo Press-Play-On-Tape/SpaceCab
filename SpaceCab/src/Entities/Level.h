@@ -58,7 +58,7 @@ struct Level {
     int16_t getXOffsetDisplay()               const { return xOffset.getInteger(); }
     int16_t getYOffsetDisplay()               const { return yOffset.getInteger(); }
 
-    uint16_t getLevelNumber()                 const { return _number; }
+    uint8_t getLevelNumber()                  const { return _number; }
     uint16_t getHeight()                      const { return _height; }
     uint16_t getWidth()                       const { return _width; }
     uint16_t getHeightInTiles()               const { return _heightInTiles; }
@@ -69,6 +69,7 @@ struct Level {
 
     Fuel * getFuel(uint8_t idx)               const { return _fuels[idx]; }
 
+    void setLevelNumber(uint8_t val)          { _number = val; }
     void setHeight(uint16_t val)              { _height = val; }
     void setWidth(uint16_t val)               { _width = val; }
     void setHeightInTiles(uint16_t val)       { _heightInTiles = val; _height = val * TILE_SIZE; }
