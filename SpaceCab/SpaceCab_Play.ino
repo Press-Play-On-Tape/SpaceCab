@@ -104,21 +104,34 @@ void updateTime() {
 void launchCustomer(Level &level, Customer &customer, uint8_t defaultStartPosition, uint8_t defaultEndingPosition) {
 
   const uint8_t numberOfPositions = level.getNumberOfCustomerPositions();
-  uint8_t customerStartingPos = (defaultStartPosition == RANDOM_START_POSITION ? random(numberOfPositions) : defaultStartPosition);
-  uint8_t customerDestination = (defaultEndingPosition == RANDOM_END_POSITION ? random(numberOfPositions) : defaultEndingPosition);
+  uint8_t customerStartingPos = 0;
+  uint8_t customerDestination = 0;
+
+  if (numberOfPositions > 1) {
+
+    customerStartingPos = (defaultStartPosition == RANDOM_START_POSITION ? random(numberOfPositions) : defaultStartPosition);
+    customerDestination = (defaultEndingPosition == RANDOM_END_POSITION ? random(numberOfPositions) : defaultEndingPosition);
 
 
-  // Ensure new customer is not placed in the location the last customer was dropped at ..
+    // Ensure new customer is not placed in the location the last customer was dropped at ..
 
-  while (defaultStartPosition == RANDOM_START_POSITION && (customerStartingPos == customer.getStartingPosition() || customerStartingPos == customer.getDestinationPosition())) {
-      customerStartingPos = random(numberOfPositions);
+    while (defaultStartPosition == RANDOM_START_POSITION && (customerStartingPos == customer.getStartingPosition() || customerStartingPos == customer.getDestinationPosition())) {
+        customerStartingPos = random(numberOfPositions);
+    }
+
+
+    // Make sure the starting point and destination are different!
+
+    while (defaultStartPosition == RANDOM_START_POSITION && customerStartingPos == customerDestination) {
+      customerDestination = random(numberOfPositions);
+    }
+
   }
+  else {
 
+    customerStartingPos = 0;
+    customerDestination = GO_TO_GATE;
 
-  // Make sure the starting point and destination are different!
-
-  while (defaultStartPosition == RANDOM_START_POSITION && customerStartingPos == customerDestination) {
-    customerDestination = random(numberOfPositions);
   }
 
   const uint8_t *levelStartingPosition = levelStartingPositions[level.getLevelNumber()];

@@ -105,6 +105,18 @@ void loop() {
         
     case GameState::PlayGame:
     case GameState::EndOfLevel:
+
+      #ifdef DEBUG
+      Serial.print("PX: ");
+      Serial.print(player.getX().getInteger());
+      Serial.print(", PY: ");
+      Serial.print(player.getY().getInteger());
+      Serial.print(" - LX: ");
+      Serial.print(level.xOffset.getInteger());
+      Serial.print(", LY: ");
+      Serial.println(level.yOffset.getInteger());
+      #endif
+
       inGame(font4x6, level, player, customer);
       break;
 
