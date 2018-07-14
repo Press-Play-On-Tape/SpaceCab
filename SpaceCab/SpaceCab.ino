@@ -80,6 +80,7 @@ void loop() {
 
     case GameState::SplashScreen_Init:
       levelNumber = 0;
+      gateToRender = 1;
       initLevel(level, player, customer, levelNumber);
       launchCustomer(level, customer, gateToRender, GO_TO_GATE);
       player.setFrame(0);
