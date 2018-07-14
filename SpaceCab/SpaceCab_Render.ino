@@ -462,7 +462,7 @@ void drawDollars(Player &player) {
 
 void drawGoto(Level &level, Player &player, Customer &customer) {
 
-  if (gotoCounter > 0 && flashingCounter < (FLASH_MAX / 2)) {
+  if (gotoCounter > 0 /* && flashingCounter < (FLASH_MAX / 2) */) {
 
     int16_t customerXVal = customer.getX() + level.xOffset.getInteger() + 1 + customer.getXWalkingOffset();
     int16_t customerYVal = customer.getY() + level.yOffset.getInteger() - 13;
@@ -481,7 +481,7 @@ void drawGoto(Level &level, Player &player, Customer &customer) {
 
 void drawOuch(Level &level, Customer &customer) {
 
-  if (ouchCounter > 0 && flashingCounter < (FLASH_MAX / 2)) {
+  if (ouchCounter > 0 /* && flashingCounter < (FLASH_MAX / 2) */) {
 
     int16_t customerXVal = customer.getX() + level.xOffset.getInteger() + 1 + customer.getXWalkingOffset();
     int16_t customerYVal = customer.getY() + level.yOffset.getInteger() - 13;
