@@ -5,68 +5,68 @@
 
 // --------------------------------------------------------------------------
 
-#define PLAYER_WIDTH 17
-#define PLAYER_WIDTH_HALF PLAYER_WIDTH / 2
-#define PLAYER_HEIGHT 8
-#define PLAYER_HEIGHT_HALF PLAYER_HEIGHT / 2
+constexpr uint8_t PLAYER_WIDTH = 17;
+constexpr uint8_t PLAYER_WIDTH_HALF = PLAYER_WIDTH / 2;
+constexpr uint8_t PLAYER_HEIGHT = 8;
+constexpr uint8_t PLAYER_HEIGHT_HALF = PLAYER_HEIGHT / 2;
 
-#define CUSTOMER_WIDTH 7
-#define CUSTOMER_WIDTH_HALF CUSTOMER_WIDTH / 2
-#define CUSTOMER_HEIGHT 8
+constexpr uint8_t CUSTOMER_WIDTH = 7;
+constexpr uint8_t CUSTOMER_WIDTH_HALF = CUSTOMER_WIDTH / 2;
+constexpr uint8_t CUSTOMER_HEIGHT = 8;
 
-#define EMPTY 0
-#define PLAT1 1
-#define EDGE1 2
-#define WATER 3
-#define SIGN1 4
-#define GATE1 5
-#define METAL 6
-#define SHADE 7
-#define ROCKS 8
-#define BRICK 9
-#define GRASS 10
-#define FUEL1 11
-#define SAND1 12
-#define SPIKU 13
-#define SPIKD 14
+constexpr uint8_t EMPTY = 0;
+constexpr uint8_t PLAT1 = 1;
+constexpr uint8_t EDGE1 = 2;
+constexpr uint8_t WATER = 3;
+constexpr uint8_t SIGN1 = 4;
+constexpr uint8_t GATE1 = 5;
+constexpr uint8_t METAL = 6;
+constexpr uint8_t SHADE = 7;
+constexpr uint8_t ROCKS = 8;
+constexpr uint8_t BRICK = 9;
+constexpr uint8_t GRASS = 10;
+constexpr uint8_t FUEL1 = 11;
+constexpr uint8_t SAND1 = 12;
+constexpr uint8_t SPIKU = 13;
+constexpr uint8_t SPIKD = 14;
 
-#define TILE_COUNT 15
-#define TILE_SIZE 8
-#define NO_TILE 255
+constexpr uint8_t TILE_COUNT = 15;
+constexpr uint8_t TILE_SIZE = 8;
+constexpr uint8_t NO_TILE = 255;
 
-#define DOLLARS_COUNT_MULT 8
-#define DOLLARS_COUNT_MAX (DOLLARS_COUNT_MULT * 5) - 1 
+constexpr uint8_t DOLLARS_COUNT_MULT = 8;
+constexpr uint8_t DOLLARS_COUNT_MAX = (DOLLARS_COUNT_MULT * 5) - 1;
 
-static const uint8_t MAX_NUMBER_OF_SCORES         = 5;
-static const uint8_t DO_NOT_EDIT_SLOT             = 255;
-static const uint8_t GAME_TIME_MAX                = 10;
-static const uint8_t FLASH_MAX                    = 40;
-static const uint8_t ARROW_DO_NOT_SHOW            = 255;
-static const uint8_t RANDOM_START_POSITION        = 255;
-static const uint8_t RANDOM_END_POSITION          = 255;
-static const uint8_t GO_TO_GATE                   = 254;
+constexpr uint8_t MAX_NUMBER_OF_SCORES         = 5;
+constexpr uint8_t DO_NOT_EDIT_SLOT             = 255;
+constexpr uint8_t GAME_TIME_MAX                = 10;
+constexpr uint8_t FLASH_MAX                    = 40;
+constexpr uint8_t ARROW_DO_NOT_SHOW            = 255;
+constexpr uint8_t RANDOM_START_POSITION        = 255;
+constexpr uint8_t RANDOM_END_POSITION          = 255;
+constexpr uint8_t GO_TO_GATE                   = 254;
 
-static const uint16_t PLAYER_FUEL_MAX             = 200;
-static const uint16_t PLAYER_FUEL_MIN_BLINK       = 20; 
-static const uint8_t PLAYER_NUMBER_OF_LIVES_MAX   = 3;
-static const uint8_t PLAYER_RETRACT_LANDING_GEAR  = 20;
+constexpr uint16_t PLAYER_FUEL_MAX             = 200;
+constexpr uint16_t PLAYER_FUEL_MIN_BLINK       = 20; 
+constexpr uint8_t PLAYER_NUMBER_OF_LIVES_MAX   = 3;
+constexpr uint8_t PLAYER_RETRACT_LANDING_GEAR  = 20;
 
-static const uint16_t FARE_X_FRAMES               = 15;
-static const uint16_t FARE_COUNT                  = 10;
-static const uint16_t FARE_MIN                    = 10;
-static const uint16_t FARE_MAX                    = 20;
+constexpr uint16_t FARE_X_FRAMES               = 15;
+constexpr uint16_t FARE_COUNT                  = 10;
+constexpr uint16_t FARE_MIN                    = 10;
+constexpr uint16_t FARE_MAX                    = 20;
 
-static const uint8_t CUSTOMER_NO_STARTING_POS     = 255;
-static const uint8_t CUSTOMER_PICKUP_RANGE        = 8;
+constexpr uint8_t CUSTOMER_NO_STARTING_POS     = 255;
+constexpr uint8_t CUSTOMER_PICKUP_RANGE        = 8;
 
-static const uint8_t GOTO_COUNTER_MAX             = 120;
-static const uint8_t OUCH_COUNTER_MAX             = 120;
+constexpr uint8_t GOTO_COUNTER_MAX             = 120;
+constexpr uint8_t OUCH_COUNTER_MAX             = 120;
 
-static const uint8_t FUEL_TILES_MAX               = 5;
-static const uint8_t GATE_TILES_MAX               = 5;
-static const uint8_t FUEL_MIN                     = 40;
-static const uint8_t FUEL_MAX                     = 80;
-static const uint8_t INIT_RECORD_SIZE             = 9;
+constexpr uint8_t FUEL_TILES_MAX               = 5;
+constexpr uint8_t GATE_TILES_MAX               = 5;
+constexpr uint8_t FUEL_MIN                     = 40;
+constexpr uint8_t FUEL_MAX                     = 80;
+constexpr uint8_t INIT_RECORD_SIZE             = 9;
 
 enum class GameState : uint8_t {
 
