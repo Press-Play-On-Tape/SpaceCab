@@ -2,6 +2,7 @@
 
 #include "Arduboy2Ext.h"
 #include "Constants.h"
+#include <avr/pgmspace.h>
 
 uint8_t fadeWidth;
 
@@ -39,7 +40,7 @@ void initGame(Player &player) {
 void initLevel(Level &level, Player &player, Customer &customer, uint8_t levelNumber) {
 
   level.reset(levelNumber);
-  player.reset(static_cast<SQ15x16>(levelInit[(levelNumber * INIT_RECORD_SIZE) + 4]), static_cast<SQ15x16>(levelInit[(levelNumber * INIT_RECORD_SIZE) + 5]));
+  player.reset(level);
   customer.setStartingPosition(CUSTOMER_NO_STARTING_POS);
 
 }
@@ -100,3 +101,4 @@ const __FlashStringHelper * getLevelName(Level &level) {
   return reinterpret_cast<const __FlashStringHelper*>(getLevelName(levelNumber));
 
 }
+

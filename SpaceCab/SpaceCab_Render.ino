@@ -127,7 +127,7 @@ void drawLevel(Level &level) {
 #define HUD_OFFSET 10
 #define HUD_WIDTH 66
 
-__attribute__((noinline)) void drawHUD(Player &player, Customer &customer) {
+__attribute__((noinline)) void drawHUD(Font4x6 &font4x6, Player &player, Customer &customer) {
 
   Sprites::drawOverwrite(0, 56, SpaceCabHUD, 0);
   font4x6.setCursor(13, 57);

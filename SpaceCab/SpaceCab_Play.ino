@@ -379,7 +379,7 @@ void inGame(Font4x6 &font4x6, Level &level, Player &player, Customer &customer) 
 
   drawDollars(player);
   customerDisplay(level, player, customer);
-  drawHUD(player, customer);
+  drawHUD(font4x6, player, customer);
   drawGoto(level, player, customer);
   drawOuch(level, customer);
 

@@ -9,6 +9,14 @@
 #include "FixedPoints.h"
 #include "FixedPointsCommon.h"
 
+
+
+template<typename T>
+inline T * ProgmemCopy(T & object, T const * const progmem)
+{
+	return reinterpret_cast<T *>(memcpy_P(&object, progmem, sizeof(T)));
+}
+
 struct Level {
 
   public:
@@ -130,16 +138,19 @@ struct Level {
       _number = levelNumber; 
       _openGates = false;
 
-      _widthInTiles = levelInit[levelNumber * INIT_RECORD_SIZE];
-      _heightInTiles = levelInit[(levelNumber * INIT_RECORD_SIZE) + 1];
-      _width = _widthInTiles * TILE_SIZE;
-      _height = _heightInTiles * TILE_SIZE;
+      LevelDefinition levelDefinition;
+      ProgmemCopy(levelDefinition, &levelInit[levelNumber]);//* INIT_RECORD_SIZE]);
 
-      xOffset = static_cast<SQ15x16>(levelInit[(levelNumber * INIT_RECORD_SIZE) + 2]);
-      yOffset = static_cast<SQ15x16>(levelInit[(levelNumber * INIT_RECORD_SIZE) + 3]);
-      _faresRequired = levelInit[(levelNumber * INIT_RECORD_SIZE) + 6];
-      _levelNameOffset = levelInit[(levelNumber * INIT_RECORD_SIZE) + 7];
-      _numberOfPositions = levelInit[(levelNumber * INIT_RECORD_SIZE) + 8];
+      _widthInTiles = levelDefinition.levelWidth;
+      _heightInTiles = levelDefinition.levelHeight;
+      _width = levelDefinition.levelWidth * TILE_SIZE;
+      _height = levelDefinition.levelHeight * TILE_SIZE;
+
+      xOffset = static_cast<SQ15x16>(levelDefinition.levelXOffset);
+      yOffset = static_cast<SQ15x16>(levelDefinition.levelYOffset);
+      _faresRequired = levelDefinition.faresRequired;
+      _levelNameOffset = levelDefinition.levelNameOffset;
+      _numberOfPositions = levelDefinition.numberOfPositions;
   
 
       // Clear fuel locations ..

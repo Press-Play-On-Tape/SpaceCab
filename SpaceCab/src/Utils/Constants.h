@@ -85,6 +85,18 @@ enum class GameState : uint8_t {
 
 };
 
+struct LevelDefinition {
+  uint8_t levelWidth;
+  uint8_t levelHeight;
+  int16_t levelXOffset;
+  int16_t levelYOffset;
+  uint8_t playerXOffset;
+  uint8_t playerYOffset;
+  uint8_t faresRequired;
+  uint8_t levelNameOffset;
+  uint8_t numberOfPositions;
+};
+
 enum class PlayerStatus : uint8_t {
 
   Active,
