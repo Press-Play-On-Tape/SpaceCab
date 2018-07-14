@@ -8,10 +8,12 @@
 - [SH 2018-07-07] ~~Add the deployment of a ramp to actually let the customer get in the cab, would need to deploy it before landing. While the ramp is deployed without a customer in the cab, the thrusters should not be used at all. That way the player can't just have the ramp deployed at all times.~~
 - [SH 2018-07-11]~~Make it so that after a certain amount of customers, the last one will ask you to go to the GATE (next level) and in the next level you still need to get that customer to a random destination.~~ 
   - ~~I am going to close this one.  Customers tell you to go to the gate but then you start the new level fresh.  Too complex to add a message 'Go to Gate' followed by another message 'Go to 1' and the level introduction.~~
-- Check for space savings by removing sound.
-- Check for space savings by compressing some images.
-- [SH 2018-07-12] Make it so that the number of fare (completed) is kept when crashing in a level. We only need to reset the number of fare when entering a new level. If we don't make that change, that means that someone could make lots of point just remaining in level 1 and crashing when out of fuel.~~
-- Use the current starfield with level name as a transition screen instead of using it when we spawn after a crash (more like in Space Taxi)
+- [SH 2018-07-13] ~~Check for space savings by removing sound.~~
+  - ~~Closing this as there is no need.~~
+- [SH 2018-07-13] ~~Check for space savings by compressing some images.~~
+  - ~~Closing this as there is no need.~~
+- [SH 2018-07-12] ~~Make it so that the number of fare (completed) is kept when crashing in a level. We only need to reset the number of fare when entering a new level. If we don't make that change, that means that someone could make lots of point just remaining in level 1 and crashing when out of fuel.~~
+- [SH 2018-07-12] ~~Use the current starfield with level name as a transition screen instead of using it when we spawn after a crash (more like in Space Taxi)~~
 
 
 
