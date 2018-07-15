@@ -19,7 +19,16 @@
         "vector": "cpp",
         "array": "cpp",
         "limits": "cpp",
-        "*.tcc": "cpp"
+        "*.tcc": "cpp",
+        "__bit_reference": "cpp",
+        "atomic": "cpp",
+        "chrono": "cpp",
+        "deque": "cpp",
+        "__memory": "cpp",
+        "functional": "cpp",
+        "ratio": "cpp",
+        "system_error": "cpp",
+        "type_traits": "cpp"
     },
     "C_Cpp.intelliSenseEngine": "Tag Parser",
     "C_Cpp.intelliSenseEngineFallback": "Disabled"

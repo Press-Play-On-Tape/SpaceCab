@@ -2,14 +2,19 @@
 
 #include "../Utils/Arduboy2Ext.h"
 #include "../Utils/Constants.h"
+#include "../Utils/WrappedValue.h"
+#include "../Utils/ClampedValue.h"
+
+using ScoreChar = WrappedValue<uint8_t, 0, 25>;
+using CharIndex = ClampedValue<uint8_t, 0, 2>;
 
 struct HighScore {
 
   private:
    
     uint8_t _slotNumber;
-    uint8_t _charIndex;
-    uint8_t _chars[3];
+    CharIndex _charIndex;
+    ScoreChar _chars[3];
 
   public: 
 
@@ -33,33 +38,19 @@ struct HighScore {
 
 
     void incCharIndex() {
-      if (_charIndex < 2) _charIndex++;
+      ++_charIndex;
     }
 
     void decCharIndex() {
-      if (_charIndex > 0) _charIndex--;
+      --_charIndex;
     }
 
-    void incChar(uint8_t idx) {
-      
-      if (_chars[idx] == 26) {
-        _chars[idx] = 0; 
-      } 
-      else { 
-        _chars[idx]++;
-      } 
-
+    void incChar(uint8_t idx) {      
+      ++_chars[idx]; 
     }
 
     void decChar(uint8_t idx) {
-      
-      if (_chars[idx] == 0) {
-        _chars[idx] = 25; 
-      } 
-      else { 
-        _chars[idx]--;
-      } 
-
+      --_chars[idx];
     }
 
     void disableEditting() {
@@ -68,7 +59,7 @@ struct HighScore {
 
     void reset() {
 
-      _slotNumber = 255;
+      _slotNumber = DO_NOT_EDIT_SLOT;
       _charIndex = 0;
       _chars[0] = 0;
       _chars[1] = 0;
