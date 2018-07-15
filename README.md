@@ -28,7 +28,7 @@
 - Add crash when you hit an obstacle at high velocity.
 - Make the physics more floaty for the left/right movement so that we really need to adjust our velocity to land.
 - Crash cab if you land half on / half off a landing.
-- Add an 'End of Game' sound or splash screen when you have completed the last level.
+- [SH 2018-07-15] ~~Add an 'End of Game' sound or splash screen when you have completed the last level.~~
 - Add a Space Cop that shows up sometimes. We need to avoid him while he's on the screen.
 - Add switches mechanics to open/close parts of the level. In some cases to bring a customer you would need to open certain spots.
 - [SH 2018-07-13] ~~If you fly off the top off the screen on the intro, you automatically end up at the next level. Note: waiting on decision regarding intro screen before fixing.~~
