@@ -32,7 +32,6 @@ GameState nextState = GameState::VSBoot;
 
 uint8_t levelNumber = 0;
 uint8_t thrusterFrame = 0;
-//uint8_t gameTime = GAME_TIME_MAX;
 int16_t backdropx = 0;
 uint8_t alternate = 0;
 uint8_t fareCount = 0;
@@ -132,6 +131,10 @@ void loop() {
       #endif
 
       inGame(font4x6, level, player, customer);
+      break;
+
+    case GameState::MaxLevelCompleted:
+      drawMaxLevelCompleted(font4x6, level);
       break;
 
     case GameState::GameOver:

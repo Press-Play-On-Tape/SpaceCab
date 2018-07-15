@@ -79,6 +79,7 @@ enum class GameState : uint8_t {
   PlayGame_InitLevel,
   PlayGame_FlashingCar,
   PlayGame,
+  MaxLevelCompleted,
   GameOver,
   SaveScore,
   HighScore

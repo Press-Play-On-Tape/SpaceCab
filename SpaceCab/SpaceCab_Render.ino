@@ -425,28 +425,6 @@ void customerDisplay(Level &level, Player &player, Customer &customer) {
 
 }
 
-void drawLevelStart(Font4x6 &font4x6, Level &level) {
-
-  if (!starsInitialised) initialiseStars();
-
-  updateStarfield();
-  drawStarfield();
-//  blackScanlines();
-
-  arduboy.fillRect(18, 23, 94, 17, BLACK);
-  arduboy.drawFastHLine(19, 25, 92, WHITE);
-  arduboy.drawFastHLine(19, 38, 92, WHITE);
-
-  font4x6.setCursor(22 + level.getLevelNameOffset(), 28);
-  font4x6.print(getLevelName(level));
-
-  if (arduboy.justPressed(A_BUTTON)) { 
-    
-    state = GameState::PlayGame_InitLevel; 
-    
-  }
-
-}
 
 void drawDollars(Player &player) {
 

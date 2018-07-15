@@ -56,12 +56,49 @@ void drawStarfield() {
   
 }
 
-// void blackScanlines() {
+void drawLevelStart(Font4x6 &font4x6, Level &level) {
 
-//   for (uint8_t i = 0; i < (HEIGHT); i+=8) {
+  if (!starsInitialised) initialiseStars();
+
+  updateStarfield();
+  drawStarfield();
+
+  arduboy.fillRect(18, 23, 94, 17, BLACK);
+  arduboy.drawFastHLine(19, 25, 92, WHITE);
+  arduboy.drawFastHLine(19, 38, 92, WHITE);
+
+  font4x6.setCursor(22 + level.getLevelNameOffset(), 28);
+  font4x6.print(getLevelName(level));
+
+  if (arduboy.justPressed(A_BUTTON)) { 
     
-//     arduboy.drawFastHLine(0, i, WIDTH, BLACK);
+    state = GameState::PlayGame_InitLevel; 
+    
+  }
 
-//   }
+}
 
-// }
+void drawMaxLevelCompleted(Font4x6 &font4x6, Level &level) {
+
+  if (!starsInitialised) initialiseStars();
+
+  updateStarfield();
+  drawStarfield();
+
+  arduboy.fillRect(15, 18, 98, 30, BLACK);
+  arduboy.drawFastHLine(16, 19, 96, WHITE);
+  arduboy.drawFastHLine(16, 46, 96, WHITE);
+
+  font4x6.setCursor(43, 24);
+  font4x6.print(F("You completed"));
+  font4x6.setCursor(49, 34);
+  font4x6.print(F("all levels!"));
+	Sprites::drawOverwrite(18, 21, EndOfGameBadge, 0);
+
+  if (arduboy.justPressed(A_BUTTON)) { 
+    
+    state = GameState::GameOver; 
+    
+  }
+
+}

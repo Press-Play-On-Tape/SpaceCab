@@ -242,10 +242,10 @@ void moveCab(Level &level, Player &player, Customer &customer) {
 
         if (levelNumber == MAX_NUMBER_OF_LEVELS) {
           //TODO End of GameState
-          state = GameState::GameOver;
+          state = GameState::MaxLevelCompleted;
         }
         else {
-          if(state == GameState::SplashScreen) {
+          if (state == GameState::SplashScreen) {
             state = GameState::PlayGame_InitGame;
           }
           else {
