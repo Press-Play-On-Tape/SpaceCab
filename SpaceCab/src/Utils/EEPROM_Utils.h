@@ -17,7 +17,7 @@ class EEPROM_Utils {
     EEPROM_Utils(){};
         
     static void initEEPROM(bool forceClear);
-    static void getSlot(uint8_t x, Slot &slot);
+    static Slot getSlot(uint8_t x);
     static uint8_t saveScore(uint16_t score);
     static void writeChars(uint8_t slotIndex, HighScore &highScore);
 
@@ -42,7 +42,7 @@ void EEPROM_Utils::initEEPROM(bool forceClear) {
 
   if (forceClear || c1 != letter1 || c2 != letter2) { 
 
-    const uint16_t score = 0;
+    uint16_t score = 10;
 
     EEPROM.update(EEPROM_START_C1, letter1);
     EEPROM.update(EEPROM_START_C2, letter2);
@@ -54,6 +54,7 @@ void EEPROM_Utils::initEEPROM(bool forceClear) {
       EEPROM.update(EEPROM_TOP_START + (EEPROM_ENTRY_SIZE * x) + 2, 0);
 
       EEPROM.put(EEPROM_TOP_START + (EEPROM_ENTRY_SIZE * x) + 3, score);
+      score = score - 2;
 
     }
 
@@ -65,7 +66,10 @@ void EEPROM_Utils::initEEPROM(bool forceClear) {
 /* -----------------------------------------------------------------------------
  *   Get slot details. 
  */
-void EEPROM_Utils::getSlot(uint8_t x, Slot &slot) {
+Slot EEPROM_Utils::getSlot(uint8_t x) {
+
+  Slot slot;
+
 
   slot.setChar0(EEPROM.read(EEPROM_TOP_START + (EEPROM_ENTRY_SIZE * x)));
   slot.setChar1(EEPROM.read(EEPROM_TOP_START + (EEPROM_ENTRY_SIZE * x) + 1));
@@ -74,6 +78,9 @@ void EEPROM_Utils::getSlot(uint8_t x, Slot &slot) {
   uint16_t score = 0;
   EEPROM.get(EEPROM_TOP_START + (EEPROM_ENTRY_SIZE * x) + 3, score);
   slot.setScore(score);
+
+
+    return slot;
 
 }
 
@@ -87,10 +94,9 @@ uint8_t EEPROM_Utils::saveScore(uint16_t score) {
 
   for (uint8_t x = 0; x < MAX_NUMBER_OF_SCORES; x++) {
 
-    uint16_t slotScore = 0;
-    EEPROM.get(EEPROM_TOP_START + (EEPROM_ENTRY_SIZE * x) + 3, slotScore);
+    Slot slot = getSlot(x);
 
-    if (slotScore < score) {
+    if (slot.getScore() < score) {
 
       idx = x;
       break;
@@ -99,12 +105,11 @@ uint8_t EEPROM_Utils::saveScore(uint16_t score) {
 
   }
 
-  if (idx < 255) {
+  if (idx < DO_NOT_EDIT_SLOT) {
 
     for (uint8_t x = MAX_NUMBER_OF_SCORES - 1; x > idx; x--) {
 
-      Slot slot;
-      getSlot(x - 1, slot);
+      Slot slot = getSlot(x - 1);
 
       EEPROM.update(EEPROM_TOP_START + (EEPROM_ENTRY_SIZE * x), slot.getChar0());
       EEPROM.update(EEPROM_TOP_START + (EEPROM_ENTRY_SIZE * x) + 1, slot.getChar1());
@@ -120,20 +125,13 @@ uint8_t EEPROM_Utils::saveScore(uint16_t score) {
 
   }
 
-  for (uint8_t x = 0; x < MAX_NUMBER_OF_SCORES; x++) {
-
-      Slot slot;
-      getSlot(x - 1, slot);
-
-  }
-
   return idx;
 
 }
 
 
 /* -----------------------------------------------------------------------------
- *   Save score and return index.  255 not good enough! 
+ *   Save characters in the nominated slot index. 
  */
 void EEPROM_Utils::writeChars(uint8_t slotIndex, HighScore &highScore) {
 

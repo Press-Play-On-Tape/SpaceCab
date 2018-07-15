@@ -57,7 +57,6 @@ void titleScreen(Level &level, Player &player, Customer &customer) {
 
 
   checkCollisionWithCustomer(level, player, customer);
-//  checkCollisionWithLevelElements(level, player);
 
   drawGoto(level, player, customer);
   drawOuch(level, customer);
@@ -65,11 +64,5 @@ void titleScreen(Level &level, Player &player, Customer &customer) {
   if (player.getY() >= 41 && player.getYDelta()> 0) {
     player.setLandingGearDown(true);
   } 
-
-  // if (arduboy.collide(playerRect, customerRect)){
-  //   arduboy.initRandomSeed();
-  //   sound.tone(NOTE_C5,50, NOTE_D4,50, NOTE_E3,50);
-  //   state = GameState::PlayGame_InitGame;
-  // }
   
 }

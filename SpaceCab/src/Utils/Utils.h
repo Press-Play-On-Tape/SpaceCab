@@ -34,6 +34,8 @@ void initGame(Player &player) {
 
   player.setNumberOfLives(PLAYER_NUMBER_OF_LIVES_MAX);
   player.setScore(0);
+  // player.setNumberOfLives(1);
+  // player.setScore(random(11, 20));
 
 }
 

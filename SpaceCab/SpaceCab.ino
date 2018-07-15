@@ -79,6 +79,8 @@ void loop() {
       break;
 
     case GameState::SplashScreen_Init:
+      gotoCounter = 0;
+      ouchCounter = 0;
       levelNumber = 0;
       gateToRender = 1;
       initLevel(level, player, customer, levelNumber);

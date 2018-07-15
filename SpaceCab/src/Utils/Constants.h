@@ -54,7 +54,7 @@ constexpr uint8_t PLAYER_RETRACT_LANDING_GEAR  = 20;
 constexpr uint16_t FARE_X_FRAMES               = 15;
 constexpr uint16_t FARE_COUNT                  = 10;
 constexpr uint16_t FARE_MIN                    = 10;
-constexpr uint16_t FARE_MAX                    = 20;
+constexpr uint16_t FARE_MAX                    = 30;
 
 constexpr uint8_t CUSTOMER_NO_STARTING_POS     = 255;
 constexpr uint8_t CUSTOMER_PICKUP_RANGE        = 8;

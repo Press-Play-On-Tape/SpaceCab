@@ -8,7 +8,7 @@ void handleInput(Player &player) {
 
   if (player.getPickingUpCustomer()) return;
 
-  if (arduboy.justPressed(B_BUTTON) && player.getFuel() != 0) {
+  if (state != GameState::PlayGame_FlashingCar && arduboy.justPressed(B_BUTTON) && player.getFuel() != 0) {
 
       player.setLandingGearDown(!player.isLandingGearDown());
 

@@ -22,8 +22,7 @@ void renderHighScore(HighScore &highScore) {
   
   for (uint8_t x =0; x < MAX_NUMBER_OF_SCORES; x++) {
 
-    Slot slot;
-    EEPROM_Utils::getSlot(x, slot);
+    Slot slot = EEPROM_Utils::getSlot(x);
 
     Sprites::drawOverwrite(xOffset, yOffset, font4x6_Full, slot.getChar0());
     Sprites::drawOverwrite(xOffset + 6, yOffset, font4x6_Full, slot.getChar1());

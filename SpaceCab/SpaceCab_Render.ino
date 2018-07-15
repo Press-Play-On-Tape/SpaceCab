@@ -67,7 +67,9 @@ void drawLevel(Level &level) {
       const int16_t bitmapX = tileX + level.getXOffsetDisplay();
       const int16_t bitmapY = tileY + level.getYOffsetDisplay();
       
+
       // Do we really need to render the tile?
+
       if (bitmapX < -8 || bitmapX >= WIDTH || bitmapY < -8 || bitmapY >= HEIGHT)
         continue;
 
