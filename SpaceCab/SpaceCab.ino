@@ -40,6 +40,7 @@ uint8_t flashingCounter = 0;
 uint8_t bootCounter = 50;
 uint8_t gotoCounter = 0;
 uint8_t ouchCounter = 0;
+uint16_t gateCounter = 0;
 uint8_t gateToRender = 1; // For introduction.
 bool starsInitialised = false;
 

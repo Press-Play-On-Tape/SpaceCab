@@ -82,7 +82,8 @@ bool isTileSolid(uint8_t tileType) {
     case METAL:
     case SAND1:
     case GATE1:
-    case LEVER:
+    case LEVE1:
+    case LEVE2:
       return true;
 
     default:
@@ -93,9 +94,10 @@ bool isTileSolid(uint8_t tileType) {
 }
 
 
-const char * getLevelName(uint8_t index)
-{
+const char * getLevelName(uint8_t index) {
+
 	return reinterpret_cast<const char *>(pgm_read_ptr(&levelNames[index]));
+  
 }
 
 const __FlashStringHelper * getLevelName(Level &level) {
