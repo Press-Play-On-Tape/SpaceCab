@@ -32,25 +32,30 @@ struct Level {
     uint16_t _heightInTiles = 0;
     uint16_t _widthInTiles = 0;
     uint8_t _levelData[256];
-    bool _openGates;
     uint8_t _faresRequired;
     uint8_t _levelNameOffset;
     uint8_t _numberOfPositions;
+    uint8_t _levelGateLeft;
+    uint8_t _levelGateRight;
+    GateMode _internalGateMode = GateMode::Closed;
 
     Fuel _fuel0;
     Fuel _fuel1;
     Fuel _fuel2;
-    Fuel _fuel3;
-    Fuel _fuel4;
 
     Gate _gate0;
     Gate _gate1;
     Gate _gate2;
     Gate _gate3;
     Gate _gate4;
+    Gate _gate5;
+    Gate _gate6;
+    Gate _gate7;
+    Gate _gate8;
+    Gate _gate9;
 
-    Fuel *_fuels[FUEL_TILES_MAX] = { &_fuel0, &_fuel1, &_fuel2, &_fuel3, &_fuel4 };
-    Gate *_gates[GATE_TILES_MAX] = { &_gate0, &_gate1, &_gate2, &_gate3, &_gate4 };
+    Fuel *_fuels[FUEL_TILES_MAX] = { &_fuel0, &_fuel1, &_fuel2 };
+    Gate *_gates[GATE_TILES_MAX] = { &_gate0, &_gate1, &_gate2, &_gate3, &_gate4, &_gate5, &_gate6, &_gate7, &_gate8, &_gate9 };
 
 
   public:
@@ -101,45 +106,73 @@ struct Level {
 
     }
 
-
     uint8_t getLevelData(uint8_t x, uint8_t y) {
 
-      uint8_t tile = EMPTY;
+      uint8_t tile = getTile(x, y);
 
-      if (y > _heightInTiles) return BRICK;
 
-      if ((x % 2) == 0) {
-        tile = (_levelData[((y * _widthInTiles) / 2) + (x / 2)] >> 4);
+      // If we have gate tiles and they are not the level (y != 0) check to  
+      // see if the tiles need to be rendered vertically ot horizontally ..
+
+      if (tile == GATE1 && y > 0 && (getTile(x, y - 1) == GATE1 || getTile(x, y + 1) == GATE1)) {
+        return TILE2;
       }
-      else {
-        tile = (_levelData[((y * _widthInTiles) / 2) + (x / 2)] & 0x0f);
+
+      if (tile == LEVE1) {
+        return (_internalGateMode == GateMode::Closed ? LEVE1 : LEVE2);
       }
 
-      switch (tile) {
+      return tile;
 
-        case GATE1:
+    }
 
-          if (_openGates) return EMPTY;
-          return GATE1;
+    void openLevelGates() {
 
-        default:  
-          return tile;
+      for (uint8_t x = _levelGateLeft; x <= _levelGateRight; x++) {
+
+        if (x % 2 == 0) {
+          _levelData[x / 2] = (_levelData[x / 2] & 0x0F);
+        }
+        else {
+          _levelData[x / 2] = (_levelData[x / 2] & 0xF0);
+        }
 
       }
 
     }
 
-    void openGates() {
-      _openGates = true;
+
+    void changeInternalGate(GateMode mode) {
+
+      for (uint8_t i = 0; i < GATE_TILES_MAX; i++) {
+
+        Gate *gate = _gates[i];
+
+        if (gate->isActive()) {
+
+          if (gate->getXTile() % 2 == 0) {
+            _levelData[((gate->getYTile() * _widthInTiles) + gate->getXTile()) / 2] = (_levelData[((gate->getYTile() * _widthInTiles) + gate->getXTile()) / 2] & 0x0F) | (mode == GateMode::Closed ? GATE1 << 4 : EMPTY);
+          }
+          else {
+            _levelData[((gate->getYTile() * _widthInTiles) + gate->getXTile()) / 2] = (_levelData[((gate->getYTile() * _widthInTiles) + gate->getXTile()) / 2] & 0xF0) | (mode == GateMode::Closed ? GATE1 : EMPTY);
+          }
+
+        }
+
+      }
+
+      _internalGateMode = mode;
+
     }
+
 
     void reset(uint8_t levelNumber) { 
      
       _number = levelNumber; 
-      _openGates = false;
+      _internalGateMode = GateMode::Closed;
 
       LevelDefinition levelDefinition;
-      ProgmemCopy(levelDefinition, &levelInit[levelNumber]);//* INIT_RECORD_SIZE]);
+      ProgmemCopy(levelDefinition, &levelInit[levelNumber]);
 
       _widthInTiles = levelDefinition.levelWidth;
       _heightInTiles = levelDefinition.levelHeight;
@@ -151,6 +184,8 @@ struct Level {
       _faresRequired = levelDefinition.faresRequired;
       _levelNameOffset = levelDefinition.levelNameOffset;
       _numberOfPositions = levelDefinition.numberOfPositions;
+      _levelGateLeft = levelDefinition.levelGateLeft;
+      _levelGateRight = levelDefinition.levelGateRight;
   
 
       // Clear fuel locations ..
@@ -200,8 +235,10 @@ struct Level {
                   break;
 
                 case GATE1:
-                  updateGateDetails(cursor % _widthInTiles, cursor / _widthInTiles, gateIdx);
-                  gateIdx++;
+                  if (cursor / 2 > _widthInTiles) {
+                    updateGateDetails(cursor % _widthInTiles, cursor / _widthInTiles, gateIdx);
+                    gateIdx++;
+                  }
                   break;
 
               }
@@ -239,6 +276,25 @@ struct Level {
       gate->setYTile(y);
       gate->setActive(true);
  
+    }
+
+  private:
+
+    uint8_t getTile(uint8_t x, uint8_t y) {
+
+      uint8_t tile = EMPTY;
+
+      if (y > _heightInTiles) return BRICK;
+
+      if ((x % 2) == 0) {
+        tile = (_levelData[((y * _widthInTiles) + x) / 2] >> 4);
+      }
+      else {
+        tile = (_levelData[((y * _widthInTiles) + x) / 2] & 0x0f);
+      }
+
+      return tile;
+
     }
 
 };

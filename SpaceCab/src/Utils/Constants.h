@@ -29,10 +29,14 @@ constexpr uint8_t FUEL1 = 11;
 constexpr uint8_t SAND1 = 12;
 constexpr uint8_t SPIKU = 13;
 constexpr uint8_t SPIKD = 14;
+constexpr uint8_t LEVE1 = 15;
+constexpr uint8_t TILE2 = 16;
+constexpr uint8_t LEVE2 = 17;
 
 constexpr uint8_t TILE_COUNT = 15;
 constexpr uint8_t TILE_SIZE = 8;
 constexpr uint8_t NO_TILE = 255;
+constexpr uint8_t END_OF_SEQUENCE = 255;
 
 constexpr uint8_t DOLLARS_COUNT_MULT = 8;
 constexpr uint8_t DOLLARS_COUNT_MAX = (DOLLARS_COUNT_MULT * 5) - 1;
@@ -61,9 +65,10 @@ constexpr uint8_t CUSTOMER_PICKUP_RANGE        = 8;
 
 constexpr uint8_t GOTO_COUNTER_MAX             = 120;
 constexpr uint8_t OUCH_COUNTER_MAX             = 120;
+constexpr uint16_t GATE_COUNTER_MAX            = 500;
 
-constexpr uint8_t FUEL_TILES_MAX               = 5;
-constexpr uint8_t GATE_TILES_MAX               = 5;
+constexpr uint8_t FUEL_TILES_MAX               = 3;
+constexpr uint8_t GATE_TILES_MAX               = 10;
 constexpr uint8_t FUEL_MIN                     = 40;
 constexpr uint8_t FUEL_MAX                     = 80;
 constexpr uint8_t INIT_RECORD_SIZE             = 9;
@@ -96,6 +101,8 @@ struct LevelDefinition {
   uint8_t faresRequired;
   uint8_t levelNameOffset;
   uint8_t numberOfPositions;
+  uint8_t levelGateLeft;
+  uint8_t levelGateRight;
 };
 
 enum class PlayerStatus : uint8_t {
@@ -177,6 +184,12 @@ enum class CustomerStatus : uint8_t {
 
 };
 
+enum class GateMode : uint8_t {
+
+  Open,
+  Closed
+
+};
 
 inline PlayerStatus operator++( PlayerStatus & c ) {
 

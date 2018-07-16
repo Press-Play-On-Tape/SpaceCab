@@ -335,7 +335,7 @@ void customerDisplay(Level &level, Player &player, Customer &customer) {
 
             player.setCarryingCustomer(true);
             player.setPickingUpCustomer(false);
-            if (player.getFaresCompleted() >= level.getFaresRequired())  level.openGates(); 
+            if (player.getFaresCompleted() >= level.getFaresRequired())  level.openLevelGates(); 
 
             sound.tone(NOTE_E6, 50, NOTE_E3, 50, NOTE_E2, 50);
 
