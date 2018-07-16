@@ -30,7 +30,7 @@ constexpr uint8_t SAND1 = 12;
 constexpr uint8_t SPIKU = 13;
 constexpr uint8_t SPIKD = 14;
 constexpr uint8_t LEVE1 = 15;
-constexpr uint8_t TILE2 = 16;
+constexpr uint8_t GATE2 = 16;
 constexpr uint8_t LEVE2 = 17;
 
 constexpr uint8_t TILE_COUNT = 15;

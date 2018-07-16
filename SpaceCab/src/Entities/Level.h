@@ -115,7 +115,7 @@ struct Level {
       // see if the tiles need to be rendered vertically ot horizontally ..
 
       if (tile == GATE1 && y > 0 && (getTile(x, y - 1) == GATE1 || getTile(x, y + 1) == GATE1)) {
-        return TILE2;
+        return GATE2;
       }
 
       if (tile == LEVE1) {
