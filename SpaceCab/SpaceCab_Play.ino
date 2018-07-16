@@ -207,6 +207,7 @@ void checkCollisionWithLevelElements(Level &level, Player &player) {
     uint8_t tileY2 = (playerYPosition / 8) + 1;
 
     uint8_t tile = level.getLevelData(tileX1, tileY1);
+    
     if (tileAlreadyTested[tile] == 0) {
       checkCollisionWithLevelElements_TestElement_UpDown(level, player, tileX1, tileY1, tile);
       tileAlreadyTested[tile] = 1;
@@ -248,54 +249,50 @@ void checkCollisionWithLevelElements(Level &level, Player &player) {
 
   }
 
-  if (player.getXDelta() < 0 && playerXPosition % 8 == 0) {
- 
-    uint8_t tileX1 = (playerXPosition / 8) - 1;
-    uint8_t tileY1 = (playerYPosition / 8);
-    uint8_t tileY2 = (playerYPosition / 8) + 1;
 
-    uint8_t tile = level.getLevelData(tileX1, tileY1);
-    if (tileAlreadyTested[tile] == 0) {
-      checkCollisionWithLevelElements_TestElement_LeftRight(level, player, tileX1, tileY1, tile);
-      tileAlreadyTested[tile] = 1;
-    }
+  // Left and right movements ..
 
-    if (playerYPosition / 8 != 0) {
+  { 
 
-      tile = level.getLevelData(tileX1, tileY2);
-      if (tileAlreadyTested[tile] == 0) {
-        checkCollisionWithLevelElements_TestElement_LeftRight(level, player, tileX1, tileY2, tile);
-        tileAlreadyTested[tile] = 1;
-      }
-
-    } 
-
-  }
-
-  if (player.getXDelta() > 0 && (playerXPosition + PLAYER_WIDTH) % 8 == 7) {
- 
-    uint8_t tileX1 = ((playerXPosition + PLAYER_WIDTH) / 8) + 1;
-    uint8_t tileY1 = ((playerXPosition + PLAYER_WIDTH) / 8);
-    uint8_t tileY2 = ((playerXPosition + PLAYER_WIDTH) / 8) + 1;
-
-    uint8_t tile = level.getLevelData(tileX1, tileY1);
-    if (tileAlreadyTested[tile] == 0) {
-      checkCollisionWithLevelElements_TestElement_LeftRight(level, player, tileX1, tileY1, tile);
-      tileAlreadyTested[tile] = 1;
-    }
-
-    if (playerYPosition / 8 != 0) {
-
-      tile = level.getLevelData(tileX1, tileY2);
-      if (tileAlreadyTested[tile] == 0) {
-        checkCollisionWithLevelElements_TestElement_LeftRight(level, player, tileX1, tileY2, tile);
-        tileAlreadyTested[tile] = 1;
-      }
-
-    } 
-
-  }
+    uint8_t tileX1 = NO_TILE;
   
+    if (player.getXDelta() < 0 && playerXPosition % 8 == 0) {
+ 
+      tileX1 = (playerXPosition / 8) - 1;
+
+    }
+
+    if (player.getXDelta() > 0 && (playerXPosition + PLAYER_WIDTH) % 8 == 0) {
+
+      tileX1 = ((playerXPosition + PLAYER_WIDTH) / 8) + 1;
+
+    }
+
+    if (tileX1 != NO_TILE) {
+
+      uint8_t tileY1 = (playerYPosition / 8);
+      uint8_t tileY2 = (playerYPosition / 8) + 1;
+      uint8_t tile = level.getLevelData(tileX1, tileY1);
+
+      if (tileAlreadyTested[tile] == 0) {
+        checkCollisionWithLevelElements_TestElement_LeftRight(level, player, tileX1, tileY1, tile);
+        tileAlreadyTested[tile] = 1;
+      }
+
+      if (playerYPosition / 8 != 0) {
+
+        tile = level.getLevelData(tileX1, tileY2);
+        if (tileAlreadyTested[tile] == 0) {
+          checkCollisionWithLevelElements_TestElement_LeftRight(level, player, tileX1, tileY2, tile);
+          tileAlreadyTested[tile] = 1;
+        }
+
+      }
+
+    } 
+
+  }
+
 }
 
 void checkCollisionWithLevelElements_TestElement_UpDown(Level &level, Player &player, uint8_t x, uint8_t y, uint8_t tile) {
