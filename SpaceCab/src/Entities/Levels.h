@@ -22,6 +22,13 @@ const uint8_t PROGMEM level0EndingPositions[4] = {
 3, 6, 12, 6, 
 };
 
+const uint8_t PROGMEM level0LevelGates[2] = { // Assume gate is at y = 0, left and right X coordinates ..
+0, 33,
+};
+
+const uint8_t PROGMEM level0InternalGates[6] = { // X, Y coordinates ..
+};
+
 
 //-------------------------------------------------------------------------------------
 // Level 1 - Underground
@@ -34,11 +41,12 @@ char const level1Name[] PROGMEM = "Underground";
 
 const uint8_t PROGMEM level1Map[] = {
 0x6F, 0x53, 0x6F, 0x61, 0x0F, 0x0F, 0x0F, 0x0F, 0x08, 0xA4, 0x41, 0xAA, 0x03, 0xA7, 0x41, 0xA2, 0x03, 
-0xA3, 0x1F, 0x03, 0x1A, 0x33, 0x13, 0x8F, 0x03, 0x8F, 0x82, 0x08, 0x85, 0x05, 0x86, 0x08, 0x82, 0x09, 
-0x84, 0x0F, 0x04, 0x82, 0x09, 0x84, 0x0D, 0xA2, 0x04, 0x82, 0xA1, 0x41, 0xA3, 0x05, 0x82, 0x0E, 0x82, 
-0x04, 0x87, 0xA1, 0x0B, 0xA1, 0x03, 0xA2, 0x41, 0xA2, 0x82, 0x04, 0x88, 0x0B, 0x81, 0x03, 0x87, 0x04, 
-0x88, 0x0B, 0x81, 0x01, 0xB1, 0x01, 0x87, 0x04, 0x88, 0xA5, 0x41, 0xA5, 0x81, 0x63, 0x87, 0xA1, 0x41, 
-0xA2, 0x8F, 0x85, 0x63, 0x8C, 0x00};
+0xA3, 0x1F, 0x03, 0x1A, 0x33, 0x13, 0x8F, 0x03, 0x8F, 0x82, 0x04, 0x51, 0x03, 0x85, 0x05, 0x86, 0x08, 
+0x82, 0x04, 0x51, 0x04, 0x83, 0xF1, 0x0F, 0x04, 0x82, 0x04, 0x51, 0x04, 0x84, 0x0D, 0xA2, 0x04, 0x82, 
+0xA1, 0x41, 0xA3, 0x05, 0x82, 0x0E, 0x82, 0x04, 0x87, 0xA1, 0x0B, 0xA1, 0x03, 0xA2, 0x41, 0xA2, 0x82, 
+0x04, 0x88, 0x0B, 0x81, 0x03, 0x87, 0x04, 0x88, 0x0B, 0x81, 0x01, 0xB1, 0x01, 0x87, 0x04, 0x88, 0xA5, 
+0x41, 0xA5, 0x81, 0x63, 0x87, 0xA1, 0x41, 0xA2, 0x8F, 0x85, 0x63, 0x8C, 0x00
+};
 
 const uint8_t PROGMEM level1StartingPositions[12] = {
 3, 3,    1, 9,   11, 13,    24, 3,    23, 10,    29, 13,
@@ -48,6 +56,13 @@ const uint8_t PROGMEM level1EndingPositions[12] = {
 4, 3,    2, 9,   12, 13,    25, 3,    24, 10,    30, 13,
 };
 
+const uint8_t PROGMEM level1LevelGates[2] = { // Assume gate is at y = 0, left and right X coordinates ..
+15, 17
+};
+
+const uint8_t PROGMEM level1InternalGates[6] = { // X, Y coordinates ..
+5, 30,     5, 31,    5, 32
+};
 
 //-------------------------------------------------------------------------------------
 // Level 2 - Golden Arches
@@ -74,6 +89,7 @@ const uint8_t PROGMEM level2StartingPositions[8] = {
 const uint8_t PROGMEM level2EndingPositions[8] = {
 1, 12,    16, 8,   27, 8,    31,13,
 };
+
 
 
 //-------------------------------------------------------------------------------------
@@ -261,7 +277,7 @@ static const uint8_t MAX_NUMBER_OF_LEVELS       = 9;
 const uint8_t *levelMaps[] =                    { level0Map, level1Map, level2Map, level3Map, level4Map, level5Map, level6Map, level7Map, level8Map, level9Map };
 const uint8_t *levelStartingPositions[] =       { level0StartingPositions, level1StartingPositions, level2StartingPositions, level3StartingPositions, level4StartingPositions, level5StartingPositions, level6StartingPositions, level7StartingPositions, level8StartingPositions, level9StartingPositions };
 const uint8_t *levelEndingPositions[] =         { level0EndingPositions, level1EndingPositions, level2EndingPositions, level3EndingPositions, level4EndingPositions, level5EndingPositions, level6EndingPositions, level7EndingPositions, level8EndingPositions, level9EndingPositions };
-// const uint8_t levelPositionsCount[] =           { 2, 6, 4, 4, 4, 1, 4, 4, 4, 4 }; 
+const uint8_t *levelLevelGates[] =              { level0LevelGates, level1LevelGates };
 
 const LevelDefinition PROGMEM levelInit[MAX_NUMBER_OF_LEVELS + 1] = { 
 
