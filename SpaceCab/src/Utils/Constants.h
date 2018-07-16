@@ -29,6 +29,7 @@ constexpr uint8_t FUEL1 = 11;
 constexpr uint8_t SAND1 = 12;
 constexpr uint8_t SPIKU = 13;
 constexpr uint8_t SPIKD = 14;
+constexpr uint8_t LEVER = 15;
 
 constexpr uint8_t TILE_COUNT = 15;
 constexpr uint8_t TILE_SIZE = 8;

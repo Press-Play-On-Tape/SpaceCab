@@ -23,10 +23,10 @@ const uint8_t PROGMEM level0EndingPositions[4] = {
 };
 
 const uint8_t PROGMEM level0LevelGates[2] = { // Assume gate is at y = 0, left and right X coordinates ..
-0, 33,
+6, 9,
 };
 
-const uint8_t PROGMEM level0InternalGates[6] = { // X, Y coordinates ..
+const uint8_t PROGMEM level0InternalGates[0] = { // X, Y coordinates ..
 };
 
 
@@ -284,7 +284,7 @@ const LevelDefinition PROGMEM levelInit[MAX_NUMBER_OF_LEVELS + 1] = {
 // Level width   Level Height,   Level     Level     Player  Player   Fares      Name     Number Of
 //                               X Offset  Y Offset  X Pos   Y Pos   Required   Offset    Positions
 { LEVEL_0_WIDTH, LEVEL_0_HEIGHT,       0,        0,     28,     45,     0,         0,         2,    },
-{ LEVEL_1_WIDTH, LEVEL_1_HEIGHT,     -99,        0,     56,     21,     3,        16,         6,    },
+{ LEVEL_1_WIDTH, LEVEL_1_HEIGHT,     -99,        0,     56,     21,     1,        16,         6,    },
 { LEVEL_2_WIDTH, LEVEL_2_HEIGHT,       0,      -56,     24,     37,     4,        12,         4,    },
 { LEVEL_3_WIDTH, LEVEL_3_HEIGHT,    -107,      -56,     56,     29,     4,        10,         4,    },
 { LEVEL_4_WIDTH, LEVEL_4_HEIGHT,     -36,      -41,     56,     28,     3,        12,         4,    },

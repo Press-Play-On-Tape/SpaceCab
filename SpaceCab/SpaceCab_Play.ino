@@ -193,7 +193,7 @@ void checkCollisionWithLevelElements(Level &level, Player &player) {
 
   uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay();
   uint16_t playerYPosition = player.getYDisplay() - level.getYOffsetDisplay();
-
+SJH
   uint8_t tileX1 = (playerXPosition / 8);
   uint8_t tileX2 = (playerXPosition / 8) + 1;
   uint8_t tileX3 = (playerXPosition / 8) + 2;
@@ -261,7 +261,11 @@ void checkCollisionWithLevelElements_TestElement(Level &level, Player &player, u
     case SPIKD:
       player.setStatus(PlayerStatus::OutOfFuel_Max);
       break;
-    
+
+    case LEVER:
+      Serial.println("Lever pressed");
+      break;
+   
   }
 
   // Going down?

@@ -115,22 +115,29 @@ struct Level {
         tile = (_levelData[((y * _widthInTiles) / 2) + (x / 2)] & 0x0f);
       }
 
-      switch (tile) {
-
-        case GATE1:
-
-          if (_openGates) return EMPTY;
-          return GATE1;
-
-        default:  
-          return tile;
-
-      }
+      return tile;
 
     }
 
     void openGates() {
+      
       _openGates = true;
+
+      const uint8_t *levelLevelGateCoords = levelLevelGates[_number];
+      uint8_t left = pgm_read_byte(&levelLevelGateCoords[0]);
+      uint8_t right = pgm_read_byte(&levelLevelGateCoords[1]);
+
+      for (uint8_t x = left; x <= right; x++) {
+
+        if (x % 2 == 0) {
+          _levelData[x / 2] = (_levelData[x / 2] & 0x0F);
+        }
+        else {
+          _levelData[x / 2] = (_levelData[x / 2] & 0xF0);
+        }
+
+      }
+
     }
 
     void reset(uint8_t levelNumber) { 
