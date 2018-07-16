@@ -26,11 +26,11 @@
 - [SC 2018-07-04] ~~Add detection when crashing into spikes.~~
 - [SC 2018-07-08] ~~Add crash to bottom of screen when fuel runs out.~~
 - Add crash when you hit an obstacle at high velocity.
-- Make the physics more floaty for the left/right movement so that we really need to adjust our velocity to land.
+- [SH 2018-07-16] ~~Make the physics more floaty for the left/right movement so that we really need to adjust our velocity to land.~~
 - Crash cab if you land half on / half off a landing.
 - [SH 2018-07-15] ~~Add an 'End of Game' sound or splash screen when you have completed the last level.~~
 - Add a Space Cop that shows up sometimes. We need to avoid him while he's on the screen.
-- Add switches mechanics to open/close parts of the level. In some cases to bring a customer you would need to open certain spots.
+- [SH 2018-07-16] ~~Add switches mechanics to open/close parts of the level. In some cases to bring a customer you would need to open certain spots.~~
 - [SH 2018-07-13] ~~If you fly off the top off the screen on the intro, you automatically end up at the next level. Note: waiting on decision regarding intro screen before fixing.~~
 - [SC 2018-07-09] ~~Update the customer run animation to look more natural.~~
 - [SH 2018-07-10] ~~Change logic to count number of fares (not dollars) before next level.~~
