@@ -83,8 +83,9 @@ bool isTileSolid(uint8_t tileType) {
     case SAND1:
     case GATE1:
     case GATE2:
-    case LEVE1:
-    case LEVE2:
+    //case LEVE1:
+    //case LEVE2:
+    case SHADE:
       return true;
 
     default:
