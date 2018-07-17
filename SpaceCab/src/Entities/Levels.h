@@ -151,12 +151,12 @@ const uint8_t PROGMEM level5Map[] = {
 0x67, 0xD9, 0x68, 0x04, 0x63, 0x0F, 0x05, 0x66, 0x05, 0x63, 0x0F, 0x0F, 0x64, 0x0E, 0xB1, 0x0E, 0x65, 
 0xE9, 0x6A, 0x09, 0x6F, 0x6B, 0xE7, 0x6F, 0x6F, 0x6A, 0x00};
 
-const uint8_t PROGMEM level5StartingPositions[4] = {
-2, 3,    3, 3,
+const uint8_t PROGMEM level5StartingPositions[2] = {
+2, 3,  
 };
 
-const uint8_t PROGMEM level5EndingPositions[4] = {
-1, 3,    1, 2,
+const uint8_t PROGMEM level5EndingPositions[2] = {
+1, 3,    
 };
 
 
@@ -276,18 +276,18 @@ const uint8_t *levelEndingPositions[] =         { level0EndingPositions, level1E
 
 const LevelDefinition PROGMEM levelInit[MAX_NUMBER_OF_LEVELS + 1] = { 
 
-// Level width   Level Height,   Level     Level     Player  Player   Fares      Name     Number Of     Level      Level
-//                               X Offset  Y Offset  X Pos   Y Pos   Required   Offset    Positions     Gate L     Gate R
-{ LEVEL_0_WIDTH, LEVEL_0_HEIGHT,       0,        0,     28,     45,     0,         0,         2,           6,         9,    },
-{ LEVEL_1_WIDTH, LEVEL_1_HEIGHT,     -99,        0,     56,     21,     1,        16,         6,          15,        17,    }, // Fares s/b 3.
-{ LEVEL_2_WIDTH, LEVEL_2_HEIGHT,       0,      -56,     24,     37,     4,        12,         4,          15,        18,    },
-{ LEVEL_3_WIDTH, LEVEL_3_HEIGHT,    -107,      -56,     56,     29,     4,        10,         4,          30,        32,    },
-{ LEVEL_4_WIDTH, LEVEL_4_HEIGHT,     -36,      -41,     56,     28,     3,        12,         4,          15,        18,    },
-{ LEVEL_5_WIDTH, LEVEL_5_HEIGHT,       0,        0,     29,     21,     0,        16,         4,          15,        18,    },
-{ LEVEL_6_WIDTH, LEVEL_6_HEIGHT,     -39,      -33,     56,     28,     4,         8,         4,           1,         4,    },
-{ LEVEL_7_WIDTH, LEVEL_7_HEIGHT,    -144,      -56,     59,     45,     5,        16,         4,           9,        12,    },
-{ LEVEL_8_WIDTH, LEVEL_8_HEIGHT,     -58,       -1,     56,     28,     4,         8,         4,          15,        17,    },
-{ LEVEL_9_WIDTH, LEVEL_9_HEIGHT,    -140,      -25,     56,     28,     5,        16,         4,          29,        32,    },
+// Level width   Level Height,   Level     Level       Player     Player    Player     Fares      Name     Number Of     Level      Level       Internal 
+//                               X Offset  Y Offset    X Pos      Y Pos    Init Fuel  Required   Offset    Positions     Gate L     Gate R    Gate Interval
+{ LEVEL_0_WIDTH, LEVEL_0_HEIGHT,       0,        0,       28,       45,       200,       0,         0,         2,           6,         9,          0    },
+{ LEVEL_1_WIDTH, LEVEL_1_HEIGHT,     -99,        0,       56,       21,       200,       3,        16,         6,          15,        17,        500    }, 
+{ LEVEL_2_WIDTH, LEVEL_2_HEIGHT,       0,      -56,       24,       37,       200,       4,        12,         4,          15,        18,          0    },
+{ LEVEL_3_WIDTH, LEVEL_3_HEIGHT,    -107,      -56,       56,       29,       200,       4,        10,         4,          30,        32,          0    },
+{ LEVEL_4_WIDTH, LEVEL_4_HEIGHT,     -36,      -41,       56,       28,       200,       3,        12,         4,          15,        18,          0    },
+{ LEVEL_5_WIDTH, LEVEL_5_HEIGHT,       0,        0,       29,       21,       200,       0,        16,         1,          15,        18,          0    },
+{ LEVEL_6_WIDTH, LEVEL_6_HEIGHT,     -39,      -33,       56,       28,       200,       4,         8,         4,           1,         4,          0    },
+{ LEVEL_7_WIDTH, LEVEL_7_HEIGHT,    -144,      -56,       59,       45,       200,       5,        16,         4,           9,        12,          0    },
+{ LEVEL_8_WIDTH, LEVEL_8_HEIGHT,     -58,       -1,       56,       28,       200,       4,         8,         4,          15,        17,          0    },
+{ LEVEL_9_WIDTH, LEVEL_9_HEIGHT,    -140,      -25,       56,       28,       200,       5,        16,         4,          29,        32,          0    },
 };
 
 char const * const levelNames[] PROGMEM = {

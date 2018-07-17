@@ -37,6 +37,9 @@ struct Level {
     uint8_t _numberOfPositions;
     uint8_t _levelGateLeft;
     uint8_t _levelGateRight;
+    uint16_t _fuelMax = 0;
+    uint16_t _internalGateInterval = 0;             // Period of time internal gate is open.
+    uint16_t _internalGateCounter = 0;              // Gate open countdown.
     GateMode _internalGateMode = GateMode::Closed;
 
     Fuel _fuel0;
@@ -79,6 +82,7 @@ struct Level {
     uint16_t getFaresRequired()               const { return _faresRequired; }
     uint8_t getLevelNameOffset()              const { return _levelNameOffset; }
     uint8_t getNumberOfCustomerPositions()    const { return _numberOfPositions; }
+    uint16_t getFuelMax()                     const { return _fuelMax; }
 
     Fuel * getFuel(uint8_t idx)               const { return _fuels[idx]; }
 
@@ -141,6 +145,21 @@ struct Level {
 
     }
 
+    void decInternalGateCounter() {
+
+      if (_internalGateCounter > 0) {
+
+        _internalGateCounter--;
+
+        if (_internalGateCounter == 0) {
+
+          changeInternalGate(GateMode::Closed);
+
+        }
+
+      }
+
+    }
 
     void changeInternalGate(GateMode mode) {
 
@@ -162,9 +181,9 @@ struct Level {
       }
 
       _internalGateMode = mode;
+      _internalGateCounter = (mode == GateMode::Open ? _internalGateInterval : 0);
 
     }
-
 
     void reset(uint8_t levelNumber) { 
      
@@ -186,7 +205,9 @@ struct Level {
       _numberOfPositions = levelDefinition.numberOfPositions;
       _levelGateLeft = levelDefinition.levelGateLeft;
       _levelGateRight = levelDefinition.levelGateRight;
-  
+      _fuelMax = levelDefinition.playerInitialFuel;
+      _internalGateInterval = levelDefinition.internalGateInterval;
+
 
       // Clear fuel locations ..
 

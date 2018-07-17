@@ -197,18 +197,18 @@ struct Player {
     void reset(Level &level) {
 
       LevelDefinition levelDefinition;
-      ProgmemCopy(levelDefinition, &levelInit[level.getLevelNumber()]);// * INIT_RECORD_SIZE]);
+      ProgmemCopy(levelDefinition, &levelInit[level.getLevelNumber()]);
 
       _xDelta = 0;
       _yDelta = 0;
       _frame = 0;
-      _fuel = PLAYER_FUEL_MAX;
       _carryingCustomer = false;
       _landingGearDown = true;
       _justLanded = true;
       _pickingUpCustomer = false;
       _isFuelling = false;
       _status = PlayerStatus::Active;
+      _fuel = levelDefinition.playerInitialFuel;
 
       _x = static_cast<SQ15x16>(levelDefinition.playerXOffset); 
       _y = static_cast<SQ15x16>(levelDefinition.playerYOffset); 

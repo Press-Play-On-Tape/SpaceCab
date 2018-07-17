@@ -60,6 +60,7 @@ void handleInput(Player &player) {
 
       if (arduboy.everyXFrames(8)) {
 
+
         // If the A Button is not being pressed, then we should start falling ..
 
         if (arduboy.notPressed(A_BUTTON) || player.getFuel() == 0) {
@@ -294,7 +295,7 @@ bool checkCollisionWithLevelElements_TestElement_UpDown(Level &level, Player &pl
       player.setFuelling(true);
       if (arduboy.getFrameCount(4) == 0) {
         Fuel *fuel = level.getFuel(x, y);
-        if (fuel->getFuelLeft() > 0 && player.getFuel() < PLAYER_FUEL_MAX) {
+        if (fuel->getFuelLeft() > 0 && player.getFuel() < level.getFuelMax()) {
           player.incFuel();
           fuel->decFuel();
           return true;
@@ -334,7 +335,6 @@ bool checkCollisionWithLevelElements_TestElement_LeftRight(Level &level, uint8_t
 
     case LEVE1:
       level.changeInternalGate(GateMode::Open);
-      gateCounter = GATE_COUNTER_MAX;
       return true;
    
   }
@@ -345,15 +345,23 @@ bool checkCollisionWithLevelElements_TestElement_LeftRight(Level &level, uint8_t
 
 void updateStatus(Player &player, Customer &customer) {
 
+
   // Burn fuel ..
 
-  if (!player.isFuelling() && player.getStatus() == PlayerStatus::Active && arduboy.everyXFrames(15)) {
+  if (!player.isFuelling() && player.getStatus() == PlayerStatus::Active) {
 
-    player.decFuel();
 
-    if (player.getFuel() == 0) {
+    // If we are thrusting (yDelta < 0) then burn fuel proportionally to the speed.  Otherwsae burn slowly ..
 
-       player.setLandingGearDown(false);
+    if ((player.getYDelta() < 0 && arduboy.everyXFrames(FUEL_BURN_RATE_DIV / -player.getYDelta())) || arduboy.everyXFrames(FUEL_BURN_RATE_MIN)) {
+
+      player.decFuel();
+
+      if (player.getFuel() == 0) {
+
+        player.setLandingGearDown(false);
+
+      }
 
     }
 
@@ -424,10 +432,8 @@ void inGame(Font4x6 &font4x6, Level &level, Player &player, Customer &customer) 
     if (ouchCounter == 0)   launchCustomer(level, customer, RANDOM_START_POSITION, RANDOM_END_POSITION);
   }
   
-  if (gateCounter != 0) { 
-    gateCounter--;
-    if (gateCounter == 0)   level.changeInternalGate(GateMode::Closed);
-  }
+  level.decInternalGateCounter();
+  
 
 
   // Render level,player and customers ..
