@@ -330,7 +330,7 @@ bool checkCollisionWithLevelElements_TestElement_UpDown(Level &level, Player &pl
 
 // returns true if this is a monitored tile.
 bool checkCollisionWithLevelElements_TestElement_LeftRight(Level &level, uint8_t x, uint8_t y, uint8_t tile) {
-if (tile = LEVE1) { Serial.println("Vampirics"); }
+
   switch (tile) {
 
     case LEVE1:
