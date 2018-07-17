@@ -78,7 +78,7 @@ void drawLevelStart(Font4x6 &font4x6, Level &level) {
 
 }
 
-void drawMaxLevelCompleted(Font4x6 &font4x6, Level &level) {
+void drawMaxLevelCompleted(Font4x6 &font4x6) {
 
   if (!starsInitialised) initialiseStars();
 

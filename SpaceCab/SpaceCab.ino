@@ -135,7 +135,7 @@ void loop() {
       break;
 
     case GameState::MaxLevelCompleted:
-      drawMaxLevelCompleted(font4x6, level);
+      drawMaxLevelCompleted(font4x6);
       break;
 
     case GameState::GameOver:

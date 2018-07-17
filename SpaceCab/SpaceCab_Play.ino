@@ -207,42 +207,35 @@ void checkCollisionWithLevelElements(Level &level, Player &player) {
     uint8_t tileY2 = (playerYPosition / 8) + 1;
 
     uint8_t tile = level.getLevelData(tileX1, tileY1);
-    
     if (tileAlreadyTested[tile] == 0) {
-      checkCollisionWithLevelElements_TestElement_UpDown(level, player, tileX1, tileY1, tile);
-      tileAlreadyTested[tile] = 1;
+      if (checkCollisionWithLevelElements_TestElement_UpDown(level, player, tileX1, tileY1, tile)) tileAlreadyTested[tile] = 1;
     }
 
     tile = level.getLevelData(tileX2, tileY1);
     if (tileAlreadyTested[tile] == 0) {
-      checkCollisionWithLevelElements_TestElement_UpDown(level, player, tileX2, tileY1, tile);
-      tileAlreadyTested[tile] = 1;
+      if (checkCollisionWithLevelElements_TestElement_UpDown(level, player, tileX2, tileY1, tile)) tileAlreadyTested[tile] = 1;
     }
 
     tile = level.getLevelData(tileX3, tileY1);
     if (tileAlreadyTested[tile] == 0) {
-      checkCollisionWithLevelElements_TestElement_UpDown(level, player, tileX3, tileY1, tile);
-      tileAlreadyTested[tile] = 1;
+      if (checkCollisionWithLevelElements_TestElement_UpDown(level, player, tileX3, tileY1, tile)) tileAlreadyTested[tile] = 1;
     }
 
     if (playerYPosition / 8 != 0) {
 
       tile = level.getLevelData(tileX1, tileY2);
       if (tileAlreadyTested[tile] == 0) {
-        checkCollisionWithLevelElements_TestElement_UpDown(level, player, tileX1, tileY2, tile);
-        tileAlreadyTested[tile] = 1;
+        if (checkCollisionWithLevelElements_TestElement_UpDown(level, player, tileX1, tileY2, tile)) tileAlreadyTested[tile] = 1;
       }
 
       tile = level.getLevelData(tileX2, tileY2);
       if (tileAlreadyTested[tile] == 0) {
-        checkCollisionWithLevelElements_TestElement_UpDown(level, player, tileX2, tileY2, tile);
-        tileAlreadyTested[tile] = 1;
+        if (checkCollisionWithLevelElements_TestElement_UpDown(level, player, tileX2, tileY2, tile)) tileAlreadyTested[tile] = 1;
       }
 
       tile = level.getLevelData(tileX3, tileY2);
       if (tileAlreadyTested[tile] == 0) {
-        checkCollisionWithLevelElements_TestElement_UpDown(level, player, tileX3, tileY2, tile);
-        tileAlreadyTested[tile] = 1;
+        if (checkCollisionWithLevelElements_TestElement_UpDown(level, player, tileX3, tileY2, tile)) tileAlreadyTested[tile] = 1;
       }
 
     } 
@@ -253,9 +246,8 @@ void checkCollisionWithLevelElements(Level &level, Player &player) {
   // Left and right movements ..
 
   { 
-
     uint8_t tileX1 = NO_TILE;
-  
+
     if (player.getXDelta() < 0 && playerXPosition % 8 == 0) {
  
       tileX1 = (playerXPosition / 8) - 1;
@@ -272,19 +264,17 @@ void checkCollisionWithLevelElements(Level &level, Player &player) {
 
       uint8_t tileY1 = (playerYPosition / 8);
       uint8_t tileY2 = (playerYPosition / 8) + 1;
-      uint8_t tile = level.getLevelData(tileX1, tileY1);
 
+      uint8_t tile = level.getLevelData(tileX1, tileY1);
       if (tileAlreadyTested[tile] == 0) {
-        checkCollisionWithLevelElements_TestElement_LeftRight(level, player, tileX1, tileY1, tile);
-        tileAlreadyTested[tile] = 1;
+        if (checkCollisionWithLevelElements_TestElement_LeftRight(level, tileX1, tileY1, tile)) tileAlreadyTested[tile] = 1;
       }
 
       if (playerYPosition / 8 != 0) {
 
         tile = level.getLevelData(tileX1, tileY2);
         if (tileAlreadyTested[tile] == 0) {
-          checkCollisionWithLevelElements_TestElement_LeftRight(level, player, tileX1, tileY2, tile);
-          tileAlreadyTested[tile] = 1;
+          if (checkCollisionWithLevelElements_TestElement_LeftRight(level, tileX1, tileY2, tile)) tileAlreadyTested[tile] = 1;
         }
 
       }
@@ -295,7 +285,8 @@ void checkCollisionWithLevelElements(Level &level, Player &player) {
 
 }
 
-void checkCollisionWithLevelElements_TestElement_UpDown(Level &level, Player &player, uint8_t x, uint8_t y, uint8_t tile) {
+// returns true if this is a monitored tile.
+bool checkCollisionWithLevelElements_TestElement_UpDown(Level &level, Player &player, uint8_t x, uint8_t y, uint8_t tile) {
 
   switch (tile) {
 
@@ -306,6 +297,7 @@ void checkCollisionWithLevelElements_TestElement_UpDown(Level &level, Player &pl
         if (fuel->getFuelLeft() > 0 && player.getFuel() < PLAYER_FUEL_MAX) {
           player.incFuel();
           fuel->decFuel();
+          return true;
         }
       }
       break;
@@ -313,7 +305,7 @@ void checkCollisionWithLevelElements_TestElement_UpDown(Level &level, Player &pl
     case SPIKU:
     case SPIKD:
       player.setStatus(PlayerStatus::OutOfFuel_Max);
-      break;
+      return true;
    
   }
 
@@ -324,24 +316,30 @@ void checkCollisionWithLevelElements_TestElement_UpDown(Level &level, Player &pl
     if (isTileSolid(tile)) {
 
       player.setStatus(PlayerStatus::OutOfFuel_Max);
+      return true;
 
     }
 
   }
 
+  return false;
+
 }
 
 
-void checkCollisionWithLevelElements_TestElement_LeftRight(Level &level, Player &player, uint8_t x, uint8_t y, uint8_t tile) {
+// returns true if this is a monitored tile.
+bool checkCollisionWithLevelElements_TestElement_LeftRight(Level &level, uint8_t x, uint8_t y, uint8_t tile) {
 
   switch (tile) {
 
     case LEVE1:
       level.changeInternalGate(GateMode::Open);
       gateCounter = GATE_COUNTER_MAX;
-      break;
+      return true;
    
   }
+
+  return false;
 
 }
 
