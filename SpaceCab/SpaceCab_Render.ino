@@ -77,7 +77,7 @@ void drawLevel(Level &level) {
 
       switch (tile) {
 
-        case EMPTY: break;
+        //case EMPTY: break;
 
         case SIGN1:
 
