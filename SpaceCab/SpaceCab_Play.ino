@@ -223,7 +223,7 @@ void checkCollisionWithLevelElements(Level &level, Player &player) {
     tileAlreadyTested[tile] = 1;
   }
 
-  if (playerYPosition % 8 != 0) {
+  if (playerYPosition / 8 != 0) {
 
     tile = level.getLevelData(tileX1, tileY2);
     if (tileAlreadyTested[tile] == 0) {
@@ -248,7 +248,7 @@ void checkCollisionWithLevelElements(Level &level, Player &player) {
 }
 
 void checkCollisionWithLevelElements_TestElement(Level &level, Player &player, uint8_t x, uint8_t y, uint8_t tile) {
-  
+
   switch (tile) {
 
     case FUEL1:
@@ -258,19 +258,18 @@ void checkCollisionWithLevelElements_TestElement(Level &level, Player &player, u
         if (fuel->getFuelLeft() > 0 && player.getFuel() < level.getFuelMax()) {
           player.incFuel();
           fuel->decFuel();
-          return true;
         }
       }
       break;
     
     case LEVE1:
       level.changeInternalGate(GateMode::Open);
-      return true;
+      break;
 
     case SPIKU:
     case SPIKD:
       player.setStatus(PlayerStatus::OutOfFuel_Max);
-      return true;
+      break;
    
   }
 
@@ -281,13 +280,10 @@ void checkCollisionWithLevelElements_TestElement(Level &level, Player &player, u
     if (isTileSolid(tile)) {
 
       player.setStatus(PlayerStatus::OutOfFuel_Max);
-      return true;
 
     }
 
   }
-
-  return false;
 
 }
 

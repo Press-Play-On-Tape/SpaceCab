@@ -324,8 +324,8 @@ const LevelDefinition PROGMEM levelInit[MAX_NUMBER_OF_LEVELS + 1] = {
 // Level width   Level Height,   Level     Level       Player     Player    Player     Fares      Name     Number Of     Level      Level       Internal 
 //                               X Offset  Y Offset    X Pos      Y Pos    Init Fuel  Required   Offset    Positions     Gate L     Gate R    Gate Interval
 { LEVEL_0_WIDTH, LEVEL_0_HEIGHT,       0,        0,       28,       45,       200,       0,         0,         2,           6,         9,          0    },
-{ LEVEL_1_WIDTH, LEVEL_1_HEIGHT,       -83,        -1,       56,       28,       200,       3,         6,         3,           14,         18,          0    },
-{ LEVEL_2_WIDTH, LEVEL_2_HEIGHT,     -99,        0,       56,       21,       200,       3,        16,         6,          15,        17,        500    }, 
+{ LEVEL_1_WIDTH, LEVEL_1_HEIGHT,     -83,       -1,       56,       28,       200,       0,         6,         3,          14,        18,          0    },//3
+{ LEVEL_2_WIDTH, LEVEL_2_HEIGHT,     -99,        0,       56,       21,       200,       0,        16,         6,          15,        17,        500    }, //3
 { LEVEL_3_WIDTH, LEVEL_3_HEIGHT,       0,      -56,       24,       37,       200,       4,        12,         4,          15,        18,          0    },
 { LEVEL_4_WIDTH, LEVEL_4_HEIGHT,    -107,      -56,       56,       29,       200,       4,        10,         4,          30,        32,          0    },
 { LEVEL_5_WIDTH, LEVEL_5_HEIGHT,     -36,      -41,       56,       28,       200,       3,        12,         4,          15,        18,          0    },
@@ -333,7 +333,7 @@ const LevelDefinition PROGMEM levelInit[MAX_NUMBER_OF_LEVELS + 1] = {
 { LEVEL_7_WIDTH, LEVEL_7_HEIGHT,     -39,      -33,       56,       28,       200,       4,         5,         4,           1,         4,          0    },
 { LEVEL_8_WIDTH, LEVEL_8_HEIGHT,    -144,      -56,       59,       45,       200,       5,        16,         4,           9,        12,          0    },
 { LEVEL_9_WIDTH, LEVEL_9_HEIGHT,     -58,       -1,       56,       28,       200,       4,         5,         4,          15,        17,          0    },
-{ LEVEL_10_WIDTH, LEVEL_10_HEIGHT,     -75,        0,       56,       13,       200,       1,         6,         5,          15,        17,          0    },
+{ LEVEL_10_WIDTH, LEVEL_10_HEIGHT,   -75,        0,       56,       13,       200,       1,         6,         5,          15,        17,          0    },
 { LEVEL_11_WIDTH, LEVEL_11_HEIGHT,  -140,      -25,       56,       28,       200,       5,        16,         4,          29,        32,          0    },
 };
 
