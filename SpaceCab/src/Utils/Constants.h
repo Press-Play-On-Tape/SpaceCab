@@ -49,7 +49,7 @@ constexpr uint8_t RANDOM_END_POSITION          = 255;
 constexpr uint8_t GO_TO_GATE                   = 254;
 
 constexpr uint16_t PLAYER_FUEL_MIN_BLINK       = 20; 
-constexpr uint8_t PLAYER_NUMBER_OF_LIVES_MAX   = 3;
+constexpr uint8_t PLAYER_NUMBER_OF_LIVES_MAX   = 5;
 constexpr uint8_t PLAYER_RETRACT_LANDING_GEAR  = 20;
 
 constexpr uint16_t FARE_X_FRAMES               = 15;
