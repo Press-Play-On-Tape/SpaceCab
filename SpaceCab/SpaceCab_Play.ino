@@ -336,7 +336,7 @@ void updateStatus(Player &player, Customer &customer) {
         nextState = GameState::PlayGame_FlashingCar;
       }
       else {
-        state = GameState::GameOver;
+        state = GameState::GameOver_Init;
       }
       
       break;

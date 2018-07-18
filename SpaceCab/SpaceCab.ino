@@ -11,6 +11,7 @@
 #include <FixedPointsCommon.h>
 #include "src/Fonts/Font4x6.h"
 #include "src/Utils/HighScoreEditor.h"
+#include "src/Sounds/Themes.h"
 
 Arduboy2Ext arduboy;
 ArduboyTones sound(arduboy.audio.enabled);
@@ -103,6 +104,8 @@ void loop() {
 
     case GameState::PlayGame_LevelIntroduction_Init:
       level.reset(levelNumber);
+      sound.tones(LevelTransition_Theme);
+      state = GameState::PlayGame_LevelIntroduction;
       // break;  -- Fall through intentional.
 
     case GameState::PlayGame_LevelIntroduction:
@@ -137,6 +140,11 @@ void loop() {
     case GameState::MaxLevelCompleted:
       drawMaxLevelCompleted(font4x6);
       break;
+
+    case GameState::GameOver_Init:
+      sound.tones(GameOver_Theme);
+      state = GameState::GameOver;
+      // break;  -- Fall through intentional.
 
     case GameState::GameOver:
       gameoverScreen();

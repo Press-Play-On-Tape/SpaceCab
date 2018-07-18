@@ -97,7 +97,7 @@ void drawMaxLevelCompleted(Font4x6 &font4x6) {
 
   if (arduboy.justPressed(A_BUTTON)) { 
     
-    state = GameState::GameOver; 
+    state = GameState::GameOver_Init; 
     
   }
 
