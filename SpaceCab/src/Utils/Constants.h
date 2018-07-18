@@ -33,10 +33,9 @@ constexpr uint8_t LEVE1 = 15;
 constexpr uint8_t GATE2 = 16;
 constexpr uint8_t LEVE2 = 17;
 
-constexpr uint8_t TILE_COUNT = 15;
+constexpr uint8_t TILE_COUNT = 18;
 constexpr uint8_t TILE_SIZE = 8;
 constexpr uint8_t NO_TILE = 255;
-constexpr uint8_t END_OF_SEQUENCE = 255;
 
 constexpr uint8_t DOLLARS_COUNT_MULT = 8;
 constexpr uint8_t DOLLARS_COUNT_MAX = (DOLLARS_COUNT_MULT * 5) - 1;

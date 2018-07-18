@@ -2,7 +2,7 @@
 
 #include "Arduboy2Ext.h"
 #include "../Entities/Slot.h"
-#include "../Entities/HighScore.h"
+#include "HighScoreEditor.h"
 
 #define EEPROM_START                  EEPROM_STORAGE_SPACE_START + 150
 #define EEPROM_START_C1               EEPROM_START

@@ -10,6 +10,7 @@
 #include <FixedPoints.h>
 #include <FixedPointsCommon.h>
 #include "src/Fonts/Font4x6.h"
+#include "src/Utils/HighScoreEditor.h"
 
 Arduboy2Ext arduboy;
 ArduboyTones sound(arduboy.audio.enabled);

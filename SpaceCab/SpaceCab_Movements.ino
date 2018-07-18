@@ -315,7 +315,7 @@ void moveCab(Level &level, Player &player, Customer &customer) {
         uint16_t customerXPosition = customer.getX();
         uint16_t customerYPosition = customer.getY() + CUSTOMER_HEIGHT;
 
-        int16_t left = customerXPosition - CUSTOMER_WIDTH - CUSTOMER_PICKUP_RANGE - PLAYER_WIDTH;
+        int16_t left = customerXPosition - CUSTOMER_PICKUP_RANGE - PLAYER_WIDTH;
         int16_t right = customerXPosition + CUSTOMER_WIDTH + CUSTOMER_PICKUP_RANGE;
 
         if ((left <= static_cast<int16_t>(playerXPosition) && static_cast<int16_t>(playerXPosition) <= right) &&
