@@ -253,11 +253,18 @@ void checkCollisionWithLevelElements_TestElement(Level &level, Player &player, u
 
     case FUEL1:
       player.setFuelling(true);
+      if (fuelSound[0] == 0) { fuelSound[0] = 1000; }
+
       if (arduboy.getFrameCount(4) == 0) {
         Fuel *fuel = level.getFuel(x, y);
         if (fuel->getFuelLeft() > 0 && player.getFuel() < level.getFuelMax()) {
+          fuelSound[0] = fuelSound[0] - 10;
+          sound.tonesInRAM(fuelSound);
           player.incFuel();
           fuel->decFuel();
+        }
+        else {
+          fuelSound[0] = 0;
         }
       }
       break;
@@ -317,7 +324,12 @@ void updateStatus(Player &player, Customer &customer) {
 
   switch (player.getStatus()) {
 
-    case PlayerStatus::OutOfFuel_Min ... PlayerStatus::OutOfFuel_Max:
+    case PlayerStatus::OutOfFuel_Max:
+      sound.tones(crashSound);
+      player.decStatus();
+      break;
+
+    case PlayerStatus::OutOfFuel_Min ... PlayerStatus::OutOfFuel_MaxMinusOne:
       player.decStatus();
       break;
 
