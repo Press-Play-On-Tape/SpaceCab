@@ -189,6 +189,7 @@ void moveCab(Level &level, Player &player, Customer &customer) {
 
       player.decRetractLandingGear();
       player.setJustLanded(false);
+      fuelSound[0] = 0;
 
       if (level.yOffset < 0) {
 
@@ -239,6 +240,7 @@ void moveCab(Level &level, Player &player, Customer &customer) {
       if (player.getY().getInteger() == 0) {
 
         player.setScore(player.getScore() + customer.getFare());
+        sound.tones(coinsSound);
 
         if (levelNumber == MAX_NUMBER_OF_LEVELS) {
           //TODO End of GameState
@@ -350,6 +352,7 @@ void moveCab(Level &level, Player &player, Customer &customer) {
           player.setCarryingCustomer(false);
           player.setScore(player.getScore() + customer.getFare());
           player.incFaresCompleted();
+          sound.tones(coinsSound);
           dollarsCount = DOLLARS_COUNT_MAX;
 
           if (player.getFaresCompleted() >= level.getFaresRequired()) {

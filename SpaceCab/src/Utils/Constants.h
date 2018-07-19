@@ -160,7 +160,8 @@ enum class PlayerStatus : uint8_t {
   OutOfFuel_Img4_4,
   OutOfFuel_Img4_5,
   OutOfFuel_Img4_End,
-  OutOfFuel_Max = OutOfFuel_Img4_End
+  OutOfFuel_Max = OutOfFuel_Img4_End,
+  OutOfFuel_MaxMinusOne = OutOfFuel_Img4_5
 
 };
 
