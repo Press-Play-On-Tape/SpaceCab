@@ -68,7 +68,7 @@ void setup() {
 
 void loop() {
   
-  if (!(arduboy.nextFrameDEV())) return;
+  if (!(arduboy.nextFrame())) return;
 
   arduboy.pollButtons();
 

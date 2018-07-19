@@ -1,7 +1,7 @@
 #pragma once
 
 #define _DEBUG
-#define _SPARKLE
+#define SPARKLE
 
 
 // --------------------------------------------------------------------------
