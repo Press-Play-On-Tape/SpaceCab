@@ -1,6 +1,7 @@
 #include "src/utils/Arduboy2Ext.h"
 
-__attribute__((noinline)) void gameoverScreen() {
+//__attribute__((noinline)) 
+void gameoverScreen() {
 
   scrollingBackground(true);
   arduboy.fillRect(0, 16, 128, 31, BLACK);
