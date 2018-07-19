@@ -57,7 +57,7 @@ void drawLevel_Intro(Level &level, uint8_t gateToRender) {
 
 
 void drawLevel(Level &level) {
-  
+
   for (uint8_t y = 0; y < level.getHeightInTiles(); y++) {
 
     for (uint8_t x = 0; x < level.getWidthInTiles(); x++) {
@@ -77,7 +77,18 @@ void drawLevel(Level &level) {
 
       switch (tile) {
 
-        //case EMPTY: break;
+        case EMPTY: 
+          {
+            uint16_t tileFrame = ((y * level.getHeightInTiles()) + x + 3) % 27;
+#ifdef SPARKLE
+            if (tileFrame % 8 == 0 && arduboy.getFrameCount() % 4 != (y * level.getHeightInTiles() + x) % 4) {
+#else
+            if (tileFrame % 8 == 0) {
+#endif              
+              Sprites::drawOverwrite(bitmapX, bitmapY, Empty_With_Stars, tileFrame >> 3);
+            }
+          }
+          break;
 
         case SIGN1:
 
@@ -123,13 +134,14 @@ void drawLevel(Level &level) {
     }
 
   }
-
+             
 }
 
 #define HUD_OFFSET 10
 #define HUD_WIDTH 66
 
-__attribute__((noinline)) void drawHUD(Font4x6 &font4x6, Player &player, Customer &customer) {
+//__attribute__((noinline)) 
+void drawHUD(Font4x6 &font4x6, Player &player, Customer &customer) {
 
   Sprites::drawOverwrite(0, 56, SpaceCabHUD, 0);
   font4x6.setCursor(13, 57);

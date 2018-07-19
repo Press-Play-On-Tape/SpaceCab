@@ -68,10 +68,9 @@ void setup() {
 
 void loop() {
   
-  if (!(arduboy.nextFrame())) return;
+  if (!(arduboy.nextFrameDEV())) return;
 
   arduboy.pollButtons();
-  arduboy.clear();
 
   switch (state) {
 
@@ -164,7 +163,7 @@ void loop() {
 
   }
 
-  arduboy.display();
+  arduboy.display(true);
 
   switch (state) {
 

@@ -3,7 +3,7 @@
 const uint16_t LevelTransition_Theme[] PROGMEM = {
     NOTE_F5,166, NOTE_A6,166, NOTE_A5,166, NOTE_REST,166, NOTE_F5,166, NOTE_REST,166, NOTE_F6,166, NOTE_GS5,166,
     NOTE_D6,166, NOTE_REST,166, NOTE_E6,166, NOTE_GS5,166, NOTE_G6,166, NOTE_F5,166, NOTE_FS6,166, NOTE_GS6,166,
-    TONES_END
+    NOTE_REST, 1000, TONES_REPEAT
 };
 
 const uint16_t GameOver_Theme[] PROGMEM = {
@@ -12,3 +12,5 @@ const uint16_t GameOver_Theme[] PROGMEM = {
   NOTE_A6,250,
   TONES_END
 };
+
+
