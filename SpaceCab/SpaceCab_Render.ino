@@ -81,8 +81,7 @@ void drawLevel(Level &level) {
           {
             uint16_t tileFrame = ((y * level.getHeightInTiles()) + x + 3) % 27;
 #ifdef SPARKLE
-//            if (tileFrame % 8 == 0 && arduboy.getFrameCount() % 4 != (y * level.getHeightInTiles() + x) % 4) {
-            if (tileFrame % 8 == 0 && (arduboy.getFrameCount() % 4 + (y * level.getHeightInTiles() + x) % 4) < 2) {
+            if (tileFrame % 8 == 0 && arduboy.getFrameCount() % 4 != (y * level.getHeightInTiles() + x) % 4) {
 #else
             if (tileFrame % 8 == 0) {
 #endif              
@@ -170,14 +169,18 @@ void drawHUD(Font4x6 &font4x6, Player &player, Customer &customer) {
   }
 
   {
-    font4x6.print(player.getNumberOfLives());
+    uint8_t digitsLives[1];
+    font4x6.setCursor(94, 57);
+    extractDigits(digitsLives, player.getNumberOfLives());
+    for(uint8_t i = 1; i > 0; --i) 
+    font4x6.print(digitsLives[i - 1]);
   }
 
   {
     uint8_t digitsFare[2];
     font4x6.setCursor(115, 57);
     extractDigits(digitsFare, customer.getFare());
-    for (uint8_t i = 2; i > 0; --i)
+    for(uint8_t i = 2; i > 0; --i)
     font4x6.print(digitsFare[i - 1]);
   }
 
