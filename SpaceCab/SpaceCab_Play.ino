@@ -271,6 +271,7 @@ void checkCollisionWithLevelElements_TestElement(Level &level, Player &player, u
     
     case LEVE1:
       level.changeInternalGate(GateMode::Open);
+      sound.tone(NOTE_C1, 80, NOTE_D3, 50, NOTE_F6, 80);
       break;
 
     case SPIKU:
