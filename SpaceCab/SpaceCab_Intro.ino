@@ -2,7 +2,7 @@
 
 void vsBoot() {
   
-  Sprites::drawOverwrite(29, 17, bootlogo, 0);
+  Sprites::drawOverwrite(30, 17, bootlogo, 0);
 
   switch (bootCounter) {
 
@@ -48,7 +48,8 @@ void titleScreen(Level &level, Player &player, Customer &customer) {
 
   }
 
-  Sprites::drawOverwrite(0, 7, SpaceCabSplash, 0);
+  Sprites::drawOverwrite(0, 7, SpaceCabSplash_1, 0);
+  Sprites::drawOverwrite(29, 31, SpaceCabSplash_2, 0);
   drawLevel_Intro(level, gateToRender);
 
   playerDisplay(player);

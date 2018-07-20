@@ -81,7 +81,8 @@ void drawLevel(Level &level) {
           {
             uint16_t tileFrame = ((y * level.getHeightInTiles()) + x + 3) % 27;
 #ifdef SPARKLE
-            if (tileFrame % 8 == 0 && arduboy.getFrameCount() % 4 != (y * level.getHeightInTiles() + x) % 4) {
+//            if (tileFrame % 8 == 0 && arduboy.getFrameCount() % 4 != (y * level.getHeightInTiles() + x) % 4) {
+            if (tileFrame % 8 == 0 && (arduboy.getFrameCount() % 4 + (y * level.getHeightInTiles() + x) % 4) < 2) {
 #else
             if (tileFrame % 8 == 0) {
 #endif              

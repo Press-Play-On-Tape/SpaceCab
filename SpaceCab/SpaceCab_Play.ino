@@ -208,7 +208,7 @@ void checkCollisionWithLevelElements(Level &level, Player &player) {
   uint8_t tile = level.getLevelData(tileX1, tileY1);
   if (tileAlreadyTested[tile] == 0) {
     checkCollisionWithLevelElements_TestElement(level, player, tileX1, tileY1, tile);
-    tileAlreadyTested[tile];
+    tileAlreadyTested[tile] = 1;
   }
 
   tile = level.getLevelData(tileX2, tileY1);
@@ -253,12 +253,12 @@ void checkCollisionWithLevelElements_TestElement(Level &level, Player &player, u
 
     case FUEL1:
       player.setFuelling(true);
-      if (fuelSound[0] == 0) { fuelSound[0] = 1000; }
+      if (fuelSound[0] == 0) { fuelSound[0] = 200; }
 
       if (arduboy.getFrameCount(4) == 0) {
         Fuel *fuel = level.getFuel(x, y);
         if (fuel->getFuelLeft() > 0 && player.getFuel() < level.getFuelMax()) {
-          fuelSound[0] = fuelSound[0] - 10;
+          fuelSound[0] = fuelSound[0] + 10;
           sound.tonesInRAM(fuelSound);
           player.incFuel();
           fuel->decFuel();
