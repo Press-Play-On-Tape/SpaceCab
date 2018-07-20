@@ -62,8 +62,7 @@
   - [SH 2018-07-13] ~~I haven't investigated this but I would assume that if the player positions and so forth are not set correctly for level 5 then this may occur.  Also does this occur now that you have 9 levels or only peviously when you had 5 (and MAX_NUMBER_OF_LEVELS was equal to 4)?~~
 - A customer can walk through tiles to get to the player, i noticed that issue on level 4
   - [SH 2018-07-12] Customers will only walk 16 pixels (or thereabouts) to a player.  I could add logic to prevent this but it would be better to ensure that there are no locations where this can actually occur.  If the customer location is too close to a wall that a player can land on the other side of then this can occur.
- 
-
+- ***The number of lives for some reason is not displayed in the spot it should ***
 
 ## Before going live:
 
