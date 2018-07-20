@@ -170,18 +170,14 @@ void drawHUD(Font4x6 &font4x6, Player &player, Customer &customer) {
   }
 
   {
-    uint8_t digitsLives[1];
-    font4x6.setCursor(94, 57);
-    extractDigits(digitsLives, player.getNumberOfLives());
-    for(uint8_t i = 1; i > 0; --i) 
-    font4x6.print(digitsLives[i - 1]);
+    font4x6.print(player.getNumberOfLives());
   }
 
   {
     uint8_t digitsFare[2];
     font4x6.setCursor(115, 57);
     extractDigits(digitsFare, customer.getFare());
-    for(uint8_t i = 2; i > 0; --i)
+    for (uint8_t i = 2; i > 0; --i)
     font4x6.print(digitsFare[i - 1]);
   }
 
