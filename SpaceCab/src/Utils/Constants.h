@@ -59,7 +59,7 @@ constexpr uint16_t FARE_MIN                    = 10;
 constexpr uint16_t FARE_MAX                    = 30;
 
 constexpr uint8_t CUSTOMER_NO_STARTING_POS     = 255;
-constexpr uint8_t CUSTOMER_PICKUP_RANGE        = 8;
+constexpr uint8_t CUSTOMER_PICKUP_RANGE        = 16;
 
 constexpr uint8_t GOTO_COUNTER_MAX             = 120;
 constexpr uint8_t OUCH_COUNTER_MAX             = 120;
