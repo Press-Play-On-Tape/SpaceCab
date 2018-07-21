@@ -1,5 +1,5 @@
-#include "src/utils/Arduboy2Ext.h"
-#include "src/utils/Vector2.h"
+#include "src/Utils/Arduboy2Ext.h"
+#include "src/Utils/Vector2.h"
 
 Vector2 stars[16];
 

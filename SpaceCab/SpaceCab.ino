@@ -1,4 +1,4 @@
-#include "src/utils/Arduboy2Ext.h"
+#include "src/Utils/Arduboy2Ext.h"
 
 #include <ArduboyTones.h>
 #include "src/Images/Images.h"
