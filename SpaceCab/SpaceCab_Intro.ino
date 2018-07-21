@@ -35,6 +35,9 @@ void vsBoot() {
 }
 
 void titleScreen(Level &level, Player &player, Customer &customer) {
+  
+  int16_t customerXVal = customer.getX() + level.xOffset.getInteger();
+  int16_t customerYVal = customer.getY() + level.yOffset.getInteger();
 
   if (gotoCounter != 0)   gotoCounter--;
 
@@ -53,14 +56,14 @@ void titleScreen(Level &level, Player &player, Customer &customer) {
   drawLevel_Intro(level, gateToRender);
 
   playerDisplay(player);
-  customerDisplay(level, player, customer);
+  customerDisplay(level, player, customer, customerXVal, customerYVal);
   handleInput(player);
 
 
   checkCollisionWithCustomer(level, player, customer);
 
-  drawGoto(level, player, customer);
-  drawOuch(level, customer);
+  drawGoto(level, player, customer, customerXVal, customerYVal);
+  drawOuch(level, customer, customerXVal, customerYVal);
 
   if (player.getY() >= 41 && player.getYDelta()> 0) {
     player.setLandingGearDown(true);

@@ -58,7 +58,6 @@ template<typename T> T absT(const T & v) {
 }
 
 
-
 // ----------------------------------------------------------------------------
 //  Return the absolute difference between values .. 
 //
@@ -68,10 +67,10 @@ template<typename T> T diffT(const T & v, const T & u) {
 
 }
 
+
 // ----------------------------------------------------------------------------------------------------------
 //  Is the nominated tile solid?
-// ----------------------------------------------------------------------------------------------------------
-
+// 
 bool isTileSolid(uint8_t tileType) {
 
   switch (tileType) {
@@ -83,8 +82,6 @@ bool isTileSolid(uint8_t tileType) {
     case SAND1:
     case GATE1:
     case GATE2:
-    //case LEVE1:
-    //case LEVE2:
     case SHADE:
       return true;
 
@@ -96,12 +93,18 @@ bool isTileSolid(uint8_t tileType) {
 }
 
 
+// ----------------------------------------------------------------------------------------------------------
+//  Get the level name from PROGMEM ..
+// 
 const char * getLevelName(uint8_t index) {
 
 	return reinterpret_cast<const char *>(pgm_read_ptr(&levelNames[index]));
   
 }
 
+// ----------------------------------------------------------------------------------------------------------
+//  Get the level name from PROGMEM ..
+// 
 const __FlashStringHelper * getLevelName(Level &level) {
 
   const uint8_t levelNumber = level.getLevelNumber() - 1;

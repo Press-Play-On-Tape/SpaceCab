@@ -380,6 +380,8 @@ void inGame(Font4x6 &font4x6, Level &level, Player &player, Customer &customer) 
   flashingCounter++;
   flashingCounter = flashingCounter % FLASH_MAX;
 
+  int16_t customerXVal = customer.getX() + level.xOffset.getInteger();
+  int16_t customerYVal = customer.getY() + level.yOffset.getInteger();
 
   // Handle counters ..
 
@@ -414,10 +416,10 @@ void inGame(Font4x6 &font4x6, Level &level, Player &player, Customer &customer) 
   }
 
   drawDollars(player);
-  customerDisplay(level, player, customer);
+  customerDisplay(level, player, customer, customerXVal, customerYVal);
   drawHUD(font4x6, player, customer);
-  drawGoto(level, player, customer);
-  drawOuch(level, customer);
+  drawGoto(level, player, customer, customerXVal, customerYVal);
+  drawOuch(level, customer, customerXVal, customerYVal);
 
   if (state == GameState::PlayGame_FlashingCar) {
 

@@ -1,8 +1,8 @@
 #pragma once
 
-#define _DEBUG
 #define SPARKLE
-
+#define _DEBUG
+#define _SAVESPACE
 
 // --------------------------------------------------------------------------
 

@@ -290,10 +290,9 @@ void playerDisplay(Player &player) {
 }
 
 
-void customerDisplay(Level &level, Player &player, Customer &customer) {
+void customerDisplay(Level &level, Player &player, Customer &customer, int16_t customerXVal, int16_t customerYVal) {
 
-  int16_t customerXVal = customer.getX() + level.xOffset.getInteger();
-  int16_t customerYVal = customer.getY() + level.yOffset.getInteger();
+  uint8_t frame = customer.getFrame();
 
   if (!player.isCarryingCustomer() && customerXVal >= -CUSTOMER_WIDTH && customerXVal < WIDTH && customerYVal >= -CUSTOMER_HEIGHT && customerYVal < HEIGHT) {
 
@@ -306,8 +305,7 @@ void customerDisplay(Level &level, Player &player, Customer &customer) {
 
       case CustomerStatus::Alive:
 
-        Sprites::drawExternalMask(customerXVal, customerYVal, Customer_Img, Customer_Img_Mask, customer.getFrame(), customer.getFrame());
-
+        Sprites::drawExternalMask(customerXVal, customerYVal, Customer_Img, Customer_Img_Mask, frame, frame);
         if (arduboy.everyXFrames(15)) {
           customer.incFrame();
         }
@@ -315,41 +313,45 @@ void customerDisplay(Level &level, Player &player, Customer &customer) {
         break;
 
       case CustomerStatus::BoardingCab:
+        {
+          int8_t walkingOffset = customer.getXWalkingOffset();
 
-        if (customer.getWalkingDirection() == Direction::Left) {
+          if (customer.getWalkingDirection() == Direction::Left) {
 
-          Sprites::drawExternalMask(customerXVal + customer.getXWalkingOffset(), customerYVal, Customer_WalkingLeft, Customer_WalkingLeft_Mask, customer.getFrame(), customer.getFrame());
-
-        }
-        else {
-
-          Sprites::drawExternalMask(customerXVal + customer.getXWalkingOffset(), customerYVal, Customer_WalkingRight, Customer_WalkingRight_Mask, customer.getFrame(), customer.getFrame());
-
-        }
-
-        if (arduboy.everyXFrames(8)) {
-
-          uint16_t customerXPosition = customer.getX();
-
-          if (customerXPosition + CUSTOMER_WIDTH_HALF + customer.getXWalkingOffset() != player.getXDisplay() - level.getXOffsetDisplay() + PLAYER_WIDTH_HALF) {
-
-            customer.incFrame();
-
-            if (customer.getWalkingDirection() == Direction::Left) {
-              customer.decXWalkingOffset();
-            }
-            else {
-              customer.incXWalkingOffset();
-            }
+            Sprites::drawExternalMask(customerXVal + walkingOffset, customerYVal, Customer_WalkingLeft, Customer_WalkingLeft_Mask, frame, frame);
 
           }
           else {
 
-            player.setCarryingCustomer(true);
-            player.setPickingUpCustomer(false);
-            if (player.getFaresCompleted() >= level.getFaresRequired())  level.openLevelGates(); 
+            Sprites::drawExternalMask(customerXVal + walkingOffset, customerYVal, Customer_WalkingRight, Customer_WalkingRight_Mask, frame, frame);
 
-            sound.tone(NOTE_E6, 50, NOTE_E3, 50, NOTE_E2, 50);
+          }
+
+          if (arduboy.everyXFrames(8)) {
+
+            uint16_t customerXPosition = customer.getX();
+
+            if (customerXPosition + CUSTOMER_WIDTH_HALF + walkingOffset != player.getXDisplay() - level.getXOffsetDisplay() + PLAYER_WIDTH_HALF) {
+
+              customer.incFrame();
+
+              if (customer.getWalkingDirection() == Direction::Left) {
+                customer.decXWalkingOffset();
+              }
+              else {
+                customer.incXWalkingOffset();
+              }
+
+            }
+            else {
+
+              player.setCarryingCustomer(true);
+              player.setPickingUpCustomer(false);
+              if (player.getFaresCompleted() >= level.getFaresRequired())  level.openLevelGates(); 
+
+              sound.tone(NOTE_E6, 50, NOTE_E3, 50, NOTE_E2, 50);
+
+            }
 
           }
 
@@ -452,33 +454,29 @@ void drawDollars(Player &player) {
 }
 
 
-void drawGoto(Level &level, Player &player, Customer &customer) {
+void drawGoto(Level &level, Player &player, Customer &customer, int16_t customerXVal, int16_t customerYVal) {
 
-  if (gotoCounter > 0 /* && flashingCounter < (FLASH_MAX / 2) */) {
+  if (gotoCounter > 0) {
 
-    int16_t customerXVal = customer.getX() + level.xOffset.getInteger() + 1 + customer.getXWalkingOffset();
-    int16_t customerYVal = customer.getY() + level.yOffset.getInteger() - 13;
+    int8_t walkingOffset = customer.getXWalkingOffset() + 1;
     
     if (player.getFaresCompleted() >= level.getFaresRequired()) {
-      Sprites::drawExternalMask(customerXVal, customerYVal, Hail_GoGate, Hail_Mask, 0, 0);
+      Sprites::drawExternalMask(customerXVal + walkingOffset, customerYVal - 13, Hail_GoGate, Hail_Mask, 0, 0);
     }
     else {
-      Sprites::drawExternalMask(customerXVal, customerYVal, Hail, Hail_Mask, 0, 0);
-      Sprites::drawErase(customerXVal + 25, customerYVal + 4, font4x6_Full, customer.getDestinationPosition() + 53);
+      Sprites::drawExternalMask(customerXVal + walkingOffset, customerYVal - 13, Hail, Hail_Mask, 0, 0);
+      Sprites::drawErase(customerXVal + walkingOffset + 25, customerYVal - 9, font4x6_Full, customer.getDestinationPosition() + 53);
     }
 
   }
 
 }
 
-void drawOuch(Level &level, Customer &customer) {
+void drawOuch(Level &level, Customer &customer, int16_t customerXVal, int16_t customerYVal) {
 
-  if (ouchCounter > 0 /* && flashingCounter < (FLASH_MAX / 2) */) {
+  if (ouchCounter > 0) {
 
-    int16_t customerXVal = customer.getX() + level.xOffset.getInteger() + 1 + customer.getXWalkingOffset();
-    int16_t customerYVal = customer.getY() + level.yOffset.getInteger() - 13;
-
-    Sprites::drawExternalMask(customerXVal, customerYVal, Ouch, Hail_Mask, 0, 0);
+    Sprites::drawExternalMask(customerXVal + customer.getXWalkingOffset() + 1, customerYVal - 13, Ouch, Hail_Mask, 0, 0);
 
   }
 

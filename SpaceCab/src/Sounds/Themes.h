@@ -24,7 +24,6 @@ const uint16_t coinsSound[] PROGMEM = {
   TONES_END 
 };
 
-
 const uint16_t crashSound[] PROGMEM = {
   NOTE_C0, 45, NOTE_B1, 35, NOTE_F0, 25, NOTE_C0, 45, NOTE_F0, 15, NOTE_C0, 45, NOTE_F2, 15,
   NOTE_A1, 5, NOTE_C0, 45, NOTE_B1, 15, NOTE_C0, 45, NOTE_F0, 45, NOTE_A1, 20, NOTE_B2, 15,

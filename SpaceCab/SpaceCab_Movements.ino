@@ -5,10 +5,7 @@
 //  Can the player move left ?
 // ----------------------------------------------------------------------------------------------------------
 
-bool canMoveLeft(Level &level, Player &player) {
-
-  uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay();
-  uint16_t playerYPosition = player.getYDisplay() - level.getYOffsetDisplay();
+bool canMoveLeft(Level &level, uint16_t playerXPosition, uint16_t playerYPosition) {
  
 
   // We are not yet at the left hand edge of tile so movement is possible ..
@@ -45,20 +42,17 @@ bool canMoveLeft(Level &level, Player &player) {
 //  Can the player move right ?
 // ----------------------------------------------------------------------------------------------------------
 
-bool canMoveRight(Level &level, Player &player) {
-
-  uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay() + PLAYER_WIDTH;
-  uint16_t playerYPosition = player.getYDisplay() - level.getYOffsetDisplay();
+bool canMoveRight(Level &level, uint16_t playerXPosition, uint16_t playerYPosition) {
 
 
   // We are not yet at the right hand edge of tile so movement is possible..
 
-  if (playerXPosition % TILE_SIZE != TILE_SIZE - 1) return true;
+  if ((playerXPosition + PLAYER_WIDTH) % TILE_SIZE != TILE_SIZE - 1) return true;
 
 
   // Retrieve the tile from the level defintion for x, y1 ..
   
-  uint8_t tileX = (playerXPosition / 8) + 1;
+  uint8_t tileX = ((playerXPosition + PLAYER_WIDTH) / 8) + 1;
   uint8_t tileY1 = (playerYPosition / 8);
   uint8_t tile1 = level.getLevelData(tileX, tileY1);
 
@@ -85,10 +79,7 @@ bool canMoveRight(Level &level, Player &player) {
 //  Can the player move up ?
 // ----------------------------------------------------------------------------------------------------------
 
-bool canMoveUp(Level &level, Player &player) {
-
-  uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay();
-  uint16_t playerYPosition = player.getYDisplay() - level.getYOffsetDisplay();
+bool canMoveUp(Level &level, uint16_t playerXPosition, uint16_t playerYPosition) {
 
 
   // We are not yet at the top edge of tile so movement is possible ..
@@ -130,26 +121,22 @@ bool canMoveUp(Level &level, Player &player) {
 //  Can the player move down ?
 // ----------------------------------------------------------------------------------------------------------
 
-bool canMoveDown(Level &level, Player &player, uint8_t size) {
-
-  uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay();
-  uint16_t playerYPosition = player.getYDisplay() - level.getYOffsetDisplay() + size;
+bool canMoveDown(Level &level, uint16_t playerXPosition, uint16_t playerYPosition, uint8_t size) {
 
 
   // We are not yet at the bottom edge of tile so movement is possible ..
 
-  //if (playerYPosition % TILE_SIZE != TILE_SIZE - 1) return true;
-  if (playerYPosition % TILE_SIZE != 0) return true;
+  if ((playerYPosition + size) % TILE_SIZE != 0) return true;
 
 
   // We are at the bottom of the level so no further movement is possible ..
 
-  if (playerYPosition == level.getHeight()) return false;
+  if ((playerYPosition + size) == level.getHeight()) return false;
 
 
   // The player is 17 pixels wide so always straddles 3 tiles .. 
 
-  uint8_t tileY = (playerYPosition / 8);
+  uint8_t tileY = ((playerYPosition + size) / 8);
   uint8_t tileX1 = (playerXPosition / 8);
   uint8_t tileX2 = (playerXPosition / 8) + 1;
   uint8_t tileX3 = (playerXPosition / 8) + 2;
@@ -180,12 +167,15 @@ void moveCab(Level &level, Player &player, Customer &customer) {
   SQ15x16 playerYDeltaVal = player.getYDeltaVal();
   SQ15x16 playerXDeltaVal = player.getXDeltaVal();
 
+  uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay();
+  uint16_t playerYPosition = player.getYDisplay() - level.getYOffsetDisplay();
+
 
   // --  Moving up -----------------------------------------------------------------------------------------
 
   if (player.getYDelta() < 0) { 
 
-    if (canMoveUp(level, player)) {
+    if (canMoveUp(level, playerXPosition, playerYPosition)) {
 
       player.decRetractLandingGear();
       player.setJustLanded(false);
@@ -268,7 +258,7 @@ void moveCab(Level &level, Player &player, Customer &customer) {
 
   if (player.getYDelta() > 0) { 
     
-    if (canMoveDown(level, player, player.getHeight())) {
+    if (canMoveDown(level, playerXPosition, playerYPosition, player.getHeight())) {
       if (player.getY() < PLAYER_Y_CENTRE) {                         
         if (player.getY() + playerYDeltaVal < PLAYER_Y_CENTRE) {
           player.setY(player.getY() + playerYDeltaVal);
@@ -280,12 +270,14 @@ void moveCab(Level &level, Player &player, Customer &customer) {
           player.setY(PLAYER_Y_CENTRE);
         }
       }
-      else if (player.getY() == PLAYER_Y_CENTRE) {                            
+      else if (player.getY() == PLAYER_Y_CENTRE) {    
+        
         if (level.yOffset - playerYDeltaVal > -level.getHeight() + HEIGHT && (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8)) {
           level.yOffset = level.yOffset - playerYDeltaVal;
         }
         else {
-          player.setY(player.getY() + ((level.getHeight() - HEIGHT) + level.yOffset) + playerYDeltaVal);
+          // player.setY(player.getY() + ((level.getHeight() - HEIGHT) + level.yOffset) + playerYDeltaVal);
+          player.setY(player.getY() + playerYDeltaVal);
           if (level.getWidthInTiles() != 16 || level.getHeightInTiles() != 8) {
             level.yOffset = -level.getHeight() + HEIGHT;
           }
@@ -312,8 +304,6 @@ void moveCab(Level &level, Player &player, Customer &customer) {
 
       if (!player.getPickingUpCustomer() && !player.isCarryingCustomer() && customer.getStatus() != CustomerStatus::Dead) {
 
-        uint16_t playerXPosition = player.getXDisplay() - level.getXOffsetDisplay();
-        uint16_t playerYPosition = player.getYDisplay() - level.getYOffsetDisplay() + player.getHeight();
         uint16_t customerXPosition = customer.getX();
         uint16_t customerYPosition = customer.getY() + CUSTOMER_HEIGHT;
 
@@ -321,7 +311,7 @@ void moveCab(Level &level, Player &player, Customer &customer) {
         int16_t right = customerXPosition + CUSTOMER_WIDTH + CUSTOMER_PICKUP_RANGE;
 
         if ((left <= static_cast<int16_t>(playerXPosition) && static_cast<int16_t>(playerXPosition) <= right) &&
-            (customerYPosition - 2 <= playerYPosition && playerYPosition <= customerYPosition + 2)) {
+            (customerYPosition - 2 <= playerYPosition + player.getHeight() && playerYPosition <= customerYPosition + player.getHeight() + 2)) {
 
           customer.setStatus(CustomerStatus::BoardingCab);
           customer.setXWalkingOffset(0);
@@ -377,7 +367,7 @@ void moveCab(Level &level, Player &player, Customer &customer) {
 
   if (player.getXDelta() < 0) { 
 
-    if (canMoveLeft(level, player)) {
+    if (canMoveLeft(level, playerXPosition, playerYPosition)) {
 
       if (level.xOffset < 0) {
 
@@ -429,7 +419,7 @@ void moveCab(Level &level, Player &player, Customer &customer) {
 
   if (player.getXDelta() > 0) {
 
-    if (canMoveRight(level, player)) {
+    if (canMoveRight(level, playerXPosition, playerYPosition)) {
 
       if (player.getX() < PLAYER_X_CENTRE) {
         if (player.getX() + playerXDeltaVal < PLAYER_X_CENTRE) {
