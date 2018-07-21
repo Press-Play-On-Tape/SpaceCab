@@ -63,7 +63,7 @@ void titleScreen(Level &level, Player &player, Customer &customer) {
   checkCollisionWithCustomer(level, player, customer);
 
   drawGoto(level, player, customer, customerXVal, customerYVal);
-  drawOuch(level, customer, customerXVal, customerYVal);
+  drawOuch(customer, customerXVal, customerYVal);
 
   if (player.getY() >= 41 && player.getYDelta()> 0) {
     player.setLandingGearDown(true);

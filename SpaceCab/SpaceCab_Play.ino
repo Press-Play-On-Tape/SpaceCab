@@ -419,7 +419,7 @@ void inGame(Font4x6 &font4x6, Level &level, Player &player, Customer &customer) 
   customerDisplay(level, player, customer, customerXVal, customerYVal);
   drawHUD(font4x6, player, customer);
   drawGoto(level, player, customer, customerXVal, customerYVal);
-  drawOuch(level, customer, customerXVal, customerYVal);
+  drawOuch(customer, customerXVal, customerYVal);
 
   if (state == GameState::PlayGame_FlashingCar) {
 

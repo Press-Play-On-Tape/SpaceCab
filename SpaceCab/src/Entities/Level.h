@@ -211,14 +211,25 @@ struct Level {
 
       // Clear fuel locations ..
 
-      for (uint8_t y = 0; y < FUEL_TILES_MAX; y++) {
+      for (uint8_t i = 0; i < FUEL_TILES_MAX; i++) {
 
-        Fuel *fuel = _fuels[y];
+        Fuel *fuel = _fuels[i];
         fuel->setXTile(0);
         fuel->setYTile(0);
         fuel->setFuelLeft(0);
 
       }
+
+
+      // Clear gate locations ..
+
+      for (uint8_t i = 0; i < GATE_TILES_MAX; i++) {
+
+        Gate *gate = _gates[i];
+        gate->setActive(false);
+
+      }
+
 
       // Read map data ..
       {

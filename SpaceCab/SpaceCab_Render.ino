@@ -472,7 +472,7 @@ void drawGoto(Level &level, Player &player, Customer &customer, int16_t customer
 
 }
 
-void drawOuch(Level &level, Customer &customer, int16_t customerXVal, int16_t customerYVal) {
+void drawOuch(Customer &customer, int16_t customerXVal, int16_t customerYVal) {
 
   if (ouchCounter > 0) {
 
