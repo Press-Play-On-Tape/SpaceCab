@@ -22,7 +22,6 @@ As always, thanks to @pharap for his advice, help and problem solving skills.  T
 Code and hex are available here > https://github.com/Press-Play-On-Tape/SpaceCab/releases
 Play Online > https://felipemanga.github.io/ProjectABE/?hex=https://raw.githubusercontent.com/Press-Play-On-Tape/SpaceCab/master/distributable/SpaceCab.hex
 
-<img src="/distributable/Screenshot_01.png" data-canonical-src="/distributable/Screenshot_01.png" width="512" height="256" />
-<img src="/distributable/Screenshot_02.png" data-canonical-src="/distributable/Screenshot_02.png" width="512" height="256" />
-<img src="/distributable/Screenshot_03.png" data-canonical-src="/distributable/Screenshot_03.png" width="512" height="256" />
-<img src="/distributable/Screenshot_04.png" data-canonical-src="/distributable/Screenshot_04.png" width="512" height="256" />
+<img src="/distributable/Screenshot_01.png" data-canonical-src="/distributable/Screenshot_01.png" width="320" height="160" />&nbsp;&nbsp;<img src="/distributable/Screenshot_02.png" data-canonical-src="/distributable/Screenshot_02.png" width="320" height="160" />
+
+<img src="/distributable/Screenshot_03.png" data-canonical-src="/distributable/Screenshot_03.png" width="320" height="160" />&nbsp;&nbsp;<img src="/distributable/Screenshot_04.png" data-canonical-src="/distributable/Screenshot_04.png" width="320" height="160" />
