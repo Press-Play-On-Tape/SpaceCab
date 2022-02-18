@@ -1,38 +1,38 @@
 #include "src/Utils/Arduboy2Ext.h"
 
-void vsBoot() {
+// void vsBoot() {
   
-  Sprites::drawOverwrite(30, 17, bootlogo, 0);
+//   Sprites::drawOverwrite(30, 17, bootlogo, 0);
 
-  switch (bootCounter) {
+//   switch (bootCounter) {
 
-    case 0:
+//     case 0:
       
-      if (!fadeOutEffect.isComplete()) {
+//       if (!fadeOutEffect.isComplete()) {
 
-        fadeOutEffect.draw(arduboy);
-        fadeOutEffect.update();
+//         fadeOutEffect.draw(arduboy);
+//         fadeOutEffect.update();
 
-      }
+//       }
 
-      if (fadeOutEffect.isComplete())   state = GameState::SplashScreen_Init;
+//       if (fadeOutEffect.isComplete())   state = GameState::SplashScreen_Init;
 
-      break;
+//       break;
 
-    case 1:
+//     case 1:
 
-      fadeOutEffect.reset(0, HEIGHT, 1);
-      --bootCounter;
-      break;
+//       fadeOutEffect.reset(0, HEIGHT, 1);
+//       --bootCounter;
+//       break;
 
-    default:
+//     default:
   
-      --bootCounter;
-      break;
+//       --bootCounter;
+//       break;
       
-  }
+//   }
 
-}
+// }
 
 void titleScreen(Level &level, Player &player, Customer &customer) {
   

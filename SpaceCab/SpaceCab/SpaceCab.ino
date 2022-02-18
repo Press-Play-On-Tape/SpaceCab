@@ -29,8 +29,8 @@ HighScore highScore;
 
 // Global Variables now --------------------------------------------------------
 
-GameState state = GameState::VSBoot;
-GameState nextState = GameState::VSBoot;
+GameState state = GameState::PPOT_Init;
+GameState nextState = GameState::PPOT_Init;
 
 uint8_t levelNumber = 0;
 uint8_t thrusterFrame = 0;
@@ -74,8 +74,12 @@ void loop() {
 
   switch (state) {
 
-    case GameState::VSBoot:
-      vsBoot();
+    case GameState::PPOT_Init:
+      splashScreen_Init();
+      break;
+
+    case GameState::PPOT:
+      splashScreen();
       break;
 
     case GameState::SplashScreen_Init:

@@ -74,7 +74,8 @@ constexpr uint8_t FUEL_MAX                     = 80;
 
 enum class GameState : uint8_t {
 
-  VSBoot,
+  PPOT_Init,
+  PPOT,
   SplashScreen_Init,
   SplashScreen,
   PlayGame_InitGame,
