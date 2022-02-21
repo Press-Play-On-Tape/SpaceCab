@@ -1,4 +1,6 @@
 {
-    "board": "arduino:avr:leonardo",
-    "sketch": "SpaceCab/SpaceCab/SpaceCab.ino"
+    "board": "arduboy-homemade:avr:arduboy-homemade",
+    "sketch": "SpaceCab/SpaceCab/SpaceCab.ino",
+    "configuration": "based_on=leonardo,boot=org,core=arduboy-core,display=sh1106,flashselect=sda,contrast=normal",
+    "port": "/dev/tty.usbmodem14101"
 }
